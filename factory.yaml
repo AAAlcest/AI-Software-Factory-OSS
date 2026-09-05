@@ -1,0 +1,50 @@
+factory:
+  framework: ai-software-factory
+  schema_version: 0.1
+  human_owner:
+    role: Factory Director
+    identity: UNCONFIGURED
+
+management:
+  primary_ai:
+    display_title: Deputy Factory Director
+    responsibilities:
+      - deputy-factory-leadership
+      - product-management
+      - development-management
+      - secretary-records
+      - portfolio-coordination
+      - task-routing
+      - management-review
+
+roles:
+  governance:
+    display_title: Factory Consistency Officer
+    recommended_separate_ai: true
+  runtime:
+    display_title: Runtime & Infrastructure Lead
+    recommended_separate_ai: true
+  engineering:
+    display_title: Development Lead
+  project_primary:
+    display_title: Project Primary
+
+facilities:
+  staff_offices: enabled
+  project_rooms: enabled
+  project_mailboxes: enabled
+  meeting_hall_via_github_issues: enabled
+  candidate_change_envelopes_via_prs: enabled
+  correspondence_cc_references: enabled
+  development_portfolio_console: enabled
+  office_wardrobe_work_history: optional_recommended
+  immutable_handoff_and_succession: enabled
+
+privacy:
+  mode: deny_by_default
+  examples: synthetic_only
+  private_history_import: prohibited
+
+publication:
+  license: TBD_HUMAN_DECISION
+  public_visibility: HUMAN_GATE
