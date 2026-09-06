@@ -4,10 +4,14 @@ A repository-first operating framework for Human-led software work with AI
 management and coding agents. Roles, authority, project state and evidence
 survive a conversation; a model name or account credential never grants authority.
 
-**V1 release-candidate preparation, private staging.** No license has been chosen.
-Final independent privacy/public-safety review and actual fresh-agent cold-start
-validation remain required. Passing scripts or merging staging code is not a
-publication decision. Exact candidate and observed results are recorded in Issue #1.
+**1.0.0 publication preparation, private staging; not yet released.**
+The Human owner selected the [MIT License](LICENSE) and GitHub Private
+Vulnerability Reporting, without publishing a personal email address.
+Completed engineering, fresh-Agent and privacy results remain pinned to their
+reviewed targets in Issue #1. This license/security/documentation-only preparation
+preserves that evidence; it is not a new execution or independent certification.
+Public visibility and Release publication still require explicit Human approval.
+See [prepared release notes](docs/releases/1.0.0.md) and [reporting availability](SECURITY.md).
 
 ## Start with the useful path
 
@@ -60,6 +64,10 @@ Follow the [publication checklist](docs/PUBLICATION_CHECKLIST.md),
 [public privacy standard](docs/PUBLIC_PRIVACY_STANDARD.md) and
 [cold-start evaluator procedure](docs/COLD_TAKEOVER_EXERCISE.md).
 Do not import private histories, rename real messages into examples, commit
-credentials, select a license or change repository visibility implicitly.
+credentials, change license terms or change repository visibility implicitly.
+
+The MIT license covers this distribution. The unconfigured publication defaults
+in `factory.yaml` and synthetic Human gates concern separately operated instances;
+they do not add restrictions to the MIT license or approve other projects' releases.
 
 [Documentation index](docs/README.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)

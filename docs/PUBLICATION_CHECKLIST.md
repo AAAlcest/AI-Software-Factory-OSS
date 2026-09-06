@@ -7,8 +7,12 @@ reclassify author checks or CI as an independent opinion.
 
 ## Engineering readiness
 
-Run the complete `scripts/check_all.py` suite on the final tree. Review the net
-change and all generated-template inputs. Record actual interpreter/platform and
+For code or behavior changes, run `scripts/check_all.py` on the exact target.
+For the Human-approved MIT/security/documentation-only preparation, check only
+the delta and its direct links. Verify code, tests, examples, templates, profiles
+and workflows are unchanged; retain their previous test and acceptance evidence.
+Do not restart the full CI/Agent/history review for this metadata-only change.
+Review changed content and any affected generated-template inputs. Record actual interpreter/platform and
 unverified cases. Reconcile the README, entrypoint, role profile, examples and
 acceptance procedure. Demonstrate fresh owner/role setup, missing authority,
 recovery and **authorized true succession**, one-body reply/CC, current-vs-reviewed
@@ -41,14 +45,47 @@ attempted prohibited actions, and expected-versus-observed results. Do not suppl
 the answer rubric to the participant. Unknown session IDs remain NOT_EXPOSED.
 This is a read-only simulation; it does not exercise real publication or secrets.
 
-## Human gates and export preparation
+## Human decisions implemented in this preparation
 
-The Human chooses the license and authorizes any transition to Public. Neither
-is inferred from a merge, a public-safe candidate name or successful tests.
-After a license decision, add exactly the approved license and reconcile its
-metadata; inspect that delta. Before changing visibility, recheck the final target
-and the independently reviewed disclosure inventory. Do not publish while a
-blocking privacy/acceptance finding remains.
+The Human selected **MIT** and **GitHub Private Vulnerability Reporting**, with no
+personal email published. See [LICENSE](../LICENSE) and [SECURITY.md](../SECURITY.md).
+The prepared version is **1.0.0**; proposed tag `v1.0.0` and Release are not created.
+The final commit/tree and exact delta are reported in Issue #1. License selection
+is not authority to change visibility, enable the channel now or publish a Release.
+
+Reuse the completed acceptance/privacy results at their original targets. The
+existing independent privacy reviewer considers only this license/security/docs
+delta and any newly proposed publication surface, not another whole-history audit.
+Author checks are not that independent opinion. Do not proceed with a blocking
+finding or silently apply old approval to new bytes.
+
+## Owner-authorized Public rollout (not performed during preparation)
+
+1. Obtain explicit Human approval identifying the final SHA and the allowed
+   operations: Public visibility and Release publication. Confirm the target,
+   accepted evidence, MIT file and any narrow disclosure-delta disposition.
+2. Recheck the exact branch/commit and publication scope, then change this
+   repository to Public using authorized access. Do not alter other repositories,
+   expose private material, expand credentials or rewrite history.
+3. Enable **GitHub Private Vulnerability Reporting** and verify its enabled status
+   plus the **Security -> Advisories -> Report a vulnerability** entry and private
+   form for this repository, as described in SECURITY.md. This is deliberately
+   after the authorized visibility change because the feature is for public
+   repositories. A written link is not a passed live check. Do not submit a fake
+   report; verify only with already-authorized access. If tooling or access is
+   insufficient, hand the bounded action to the owner rather than bypass it.
+4. Only after that activation/readback succeeds, create `v1.0.0` pointing to the
+   explicitly approved SHA, verifying an existing tag instead of moving it. Publish
+   the Release only if that operation was explicitly approved. Use the
+   [prepared release notes](releases/1.0.0.md); no extra asset upload is assumed.
+5. Record actual Public status, license recognition, reporting status/entry,
+   tag-to-commit mapping and Release URL in Issue #1. A partial rollout stays
+   partial: if reporting verification fails after Public, stop before Release
+   and report the issue; do not invent successful closure or silently roll back.
+
+No Public change, PVR enablement, tag or Release is authorized merely by completing
+this checklist. Further content, license or asset changes require a newly
+identified target and proportionate checks, not a full restart of unchanged work.
 
 A source-only archive can be prepared locally with `git archive` from the exact
 approved commit; it need not contain `.git` or any other repository's history.
