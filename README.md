@@ -6,13 +6,21 @@ A repository-first operating framework for Human-led software work with AI
 management and coding agents. Roles, authority, project state and evidence
 survive a conversation; a model name or account credential never grants authority.
 
-**1.0.0 publication preparation, private staging; not yet released.**
+By keeping planning, governance, task routing and review coordination in ChatGPT
+while reserving Codex for implementation-heavy work, the Factory is designed to
+materially reduce unnecessary Codex token consumption. Combined with reusable
+skills and role-specific workflows, it can increase utilization across the AI
+toolchain and improve the practical return from the same token and subscription
+budget. Actual savings depend on workload, model choice and how the Factory is
+configured; this is an operating-efficiency goal, not a guaranteed quota result.
+
+**1.0.0 public rollout in progress; Release not yet published.**
 The Human owner selected the [MIT License](LICENSE) and GitHub Private
 Vulnerability Reporting, without publishing a personal email address.
 Completed engineering, fresh-Agent and privacy results remain pinned to their
 reviewed targets in Issue #1. This license/security/documentation-only preparation
 preserves that evidence; it is not a new execution or independent certification.
-Public visibility and Release publication still require explicit Human approval.
+Release publication still requires completion of the retained rollout checks.
 See [prepared release notes](docs/releases/1.0.0.md) and [reporting availability](SECURITY.md).
 
 ## Start with the useful path
