@@ -1,0 +1,17 @@
+{
+  "role_id": "project-primary",
+  "incumbent_id": "UNCONFIGURED",
+  "project_id": "UNCONFIGURED",
+  "phase": "UNKNOWN",
+  "blockers": [],
+  "next_action": {
+    "action": "UNKNOWN",
+    "scope": "project:UNCONFIGURED"
+  },
+  "continuity": {
+    "kind": "FIRST_APPOINTMENT",
+    "previous_incumbent_id": null,
+    "handoff": null
+  },
+  "evidence": []
+}

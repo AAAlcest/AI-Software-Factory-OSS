@@ -1,0 +1,19 @@
+{
+  "role_id": "project-primary",
+  "incumbent_id": "demo-primary-1",
+  "project_id": "atlas",
+  "phase": "DOCUMENTATION_BASELINE",
+  "blockers": [],
+  "next_action": {
+    "action": "DOCS_CHANGE",
+    "scope": "project:atlas"
+  },
+  "continuity": {
+    "kind": "FIRST_APPOINTMENT",
+    "previous_incumbent_id": null,
+    "handoff": null
+  },
+  "evidence": [
+    "ASSIGNMENT.md"
+  ]
+}

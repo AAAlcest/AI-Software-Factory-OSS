@@ -1,0 +1,15 @@
+{
+  "status": "UNKNOWN",
+  "role_id": "project-primary",
+  "incumbent_id": "UNCONFIGURED",
+  "project_id": "UNCONFIGURED",
+  "decision_record": "UNKNOWN",
+  "grants": [],
+  "gates": {
+    "LICENSE": "HUMAN_REQUIRED",
+    "PUBLICATION": "HUMAN_REQUIRED",
+    "PRODUCTION": "HUMAN_REQUIRED",
+    "DESTRUCTIVE": "HUMAN_REQUIRED",
+    "CREDENTIAL_CHANGE": "HUMAN_REQUIRED"
+  }
+}

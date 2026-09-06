@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "mode": "SYNTHETIC",
+  "human_owner": "Demo Human",
+  "role": {
+    "id": "project-primary",
+    "incumbent_id": "demo-primary-1",
+    "display_title": "Project Primary"
+  },
+  "project_id": "atlas",
+  "authority": "authority.json",
+  "state": "state.json",
+  "current": "CURRENT.md"
+}

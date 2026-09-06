@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "mode": "TEMPLATE",
+  "human_owner": "UNCONFIGURED",
+  "role": {
+    "id": "project-primary",
+    "incumbent_id": "UNCONFIGURED",
+    "display_title": "Project Primary"
+  },
+  "project_id": "UNCONFIGURED",
+  "authority": "authority.json",
+  "state": "state.json",
+  "current": "CURRENT.md"
+}

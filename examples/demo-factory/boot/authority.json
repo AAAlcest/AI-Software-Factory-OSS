@@ -1,0 +1,20 @@
+{
+  "status": "ACTIVE",
+  "role_id": "project-primary",
+  "incumbent_id": "demo-primary-1",
+  "project_id": "atlas",
+  "decision_record": "ASSIGNMENT.md",
+  "grants": [
+    {
+      "action": "DOCS_CHANGE",
+      "scope": "project:atlas"
+    }
+  ],
+  "gates": {
+    "LICENSE": "HUMAN_REQUIRED",
+    "PUBLICATION": "HUMAN_REQUIRED",
+    "PRODUCTION": "HUMAN_REQUIRED",
+    "DESTRUCTIVE": "HUMAN_REQUIRED",
+    "CREDENTIAL_CHANGE": "HUMAN_REQUIRED"
+  }
+}
