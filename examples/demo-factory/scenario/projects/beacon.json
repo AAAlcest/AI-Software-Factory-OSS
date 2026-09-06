@@ -1,0 +1,13 @@
+{
+  "classification": "SYNTHETIC_ONLY",
+  "project_id": "beacon",
+  "owner_role": "project:beacon",
+  "incumbent": "UNKNOWN",
+  "phase": "BLOCKED",
+  "current_candidate": "UNKNOWN",
+  "next_action": "request-assignment",
+  "blockers": [
+    "No authorized incumbent or project assignment."
+  ],
+  "handoffs": []
+}

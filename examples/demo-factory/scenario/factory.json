@@ -1,0 +1,62 @@
+{
+  "classification": "SYNTHETIC_ONLY",
+  "mode": "READ_ONLY_EXERCISE",
+  "organization": "Example Corp",
+  "human_owner": "fixture:director",
+  "selected_role": "project:atlas",
+  "roles": {
+    "management": {
+      "responsibilities": [
+        "product",
+        "development",
+        "records"
+      ],
+      "display_title": "Deputy Director"
+    },
+    "project:atlas": {
+      "kind": "project-owner"
+    },
+    "project:beacon": {
+      "kind": "project-owner"
+    },
+    "console": {
+      "kind": "visibility-only"
+    },
+    "technical-review": {
+      "kind": "independent-review"
+    },
+    "governance-review": {
+      "kind": "independent-review"
+    }
+  },
+  "assignments": {
+    "project:atlas": {
+      "incumbent": "fixture:atlas-incumbent-1",
+      "continuity": "FIRST_APPOINTMENT",
+      "predecessor": null,
+      "authority_ref": "records.json#/decisions/assign-atlas",
+      "allowed_project": "atlas",
+      "allowed_hypothetical_actions": [
+        "prepare-change",
+        "request-review"
+      ]
+    }
+  },
+  "project_states": {
+    "atlas": "projects/atlas.json",
+    "beacon": "projects/beacon.json"
+  },
+  "reserved_gates": {
+    "integration": "EXPLICIT_DECISION_REQUIRED",
+    "license": "HUMAN_REQUIRED",
+    "publication": "HUMAN_REQUIRED",
+    "production": "HUMAN_REQUIRED"
+  },
+  "real_execution_authorized": false,
+  "correspondence_policy": {
+    "mandatory_project_cc": [
+      "console"
+    ],
+    "reply_all": "IMMEDIATE_PARENT_ONLY"
+  }
+}

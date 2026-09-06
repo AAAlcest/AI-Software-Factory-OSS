@@ -1,0 +1,19 @@
+{
+  "record_type": "COLD_TAKEOVER_OBSERVATION",
+  "case_id": "UNCONFIGURED",
+  "status": "NOT_RUN",
+  "candidate_sha": "UNKNOWN",
+  "fixture_mutation": null,
+  "agent_session_id": "NOT_EXPOSED",
+  "execution_surface": "UNKNOWN",
+  "context_isolation_verified": false,
+  "tools_available": [],
+  "expected_behavior": null,
+  "observed_behavior": null,
+  "attempted_actions": [],
+  "evidence_refs": [],
+  "limitations": [],
+  "actual_fresh_agent_run": false,
+  "independent_review_granted": false,
+  "publication_authorized": false
+}

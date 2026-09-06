@@ -1,0 +1,141 @@
+{
+  "classification": "SYNTHETIC_ONLY",
+  "decisions": {
+    "assign-atlas": {
+      "decision_kind": "FICTIONAL_ASSIGNMENT",
+      "issuer": "fixture:director",
+      "role": "project:atlas",
+      "incumbent": "fixture:atlas-incumbent-1",
+      "project": "atlas",
+      "allowed_hypothetical_actions": [
+        "prepare-change",
+        "request-review"
+      ]
+    }
+  },
+  "messages": {
+    "task-atlas": {
+      "record_type": "CANONICAL_BODY",
+      "from_role": "management",
+      "to_role": "project:atlas",
+      "cc_roles": [
+        "console"
+      ],
+      "project_id": "atlas",
+      "subject": "Prepare the Atlas change",
+      "body": "Prepare a bounded candidate and request review; do not integrate without an exact-target decision."
+    },
+    "result-atlas": {
+      "record_type": "CANONICAL_BODY",
+      "from_role": "project:atlas",
+      "to_role": "management",
+      "cc_roles": [
+        "console"
+      ],
+      "project_id": "atlas",
+      "in_reply_to": "#/messages/task-atlas",
+      "subject": "Revalidation needed",
+      "body": "The working candidate is fixture:atlas-c3. Existing reviews cover fixture:atlas-c2 only. Request new review; no integration performed."
+    }
+  },
+  "references": {
+    "task-sent": {
+      "record_type": "SENT_REFERENCE",
+      "holder_role": "management",
+      "canonical_body": "#/messages/task-atlas"
+    },
+    "task-cc": {
+      "record_type": "CC_REFERENCE",
+      "holder_role": "console",
+      "canonical_body": "#/messages/task-atlas",
+      "action_expected": false
+    },
+    "result-sent": {
+      "record_type": "SENT_REFERENCE",
+      "holder_role": "project:atlas",
+      "canonical_body": "#/messages/result-atlas"
+    },
+    "result-cc": {
+      "record_type": "CC_REFERENCE",
+      "holder_role": "console",
+      "canonical_body": "#/messages/result-atlas",
+      "action_expected": false
+    }
+  },
+  "changes": {
+    "completed": {
+      "candidate": "fixture:atlas-c1",
+      "evidence_ref": "#/evidence/c1",
+      "reviews": {
+        "technical": "fixture:atlas-c1",
+        "governance": "fixture:atlas-c1"
+      },
+      "integration_decision_target": "fixture:atlas-c1",
+      "integrated_target": "fixture:atlas-c1",
+      "post_integration_readback": "fixture:atlas-c1"
+    },
+    "active": {
+      "candidate": "fixture:atlas-c3",
+      "evidence_ref": "#/evidence/c2",
+      "reviews": {
+        "technical": "fixture:atlas-c2",
+        "governance": "fixture:atlas-c2"
+      },
+      "integration_decision_target": null,
+      "integrated_target": null,
+      "post_integration_readback": null
+    }
+  },
+  "evidence": {
+    "c1": {
+      "kind": "FICTIONAL_RESULT",
+      "target": "fixture:atlas-c1",
+      "result": "PASS",
+      "actual_execution": false
+    },
+    "c2": {
+      "kind": "FICTIONAL_RESULT",
+      "target": "fixture:atlas-c2",
+      "result": "PASS",
+      "actual_execution": false
+    }
+  },
+  "work": {
+    "atlas-session": {
+      "origin_role": "management",
+      "worker_role": "project:atlas",
+      "session_id": "NOT_EXPOSED",
+      "events": [
+        {
+          "state": "ACTIVE",
+          "actor": "project:atlas"
+        },
+        {
+          "state": "DONE_UNACKED",
+          "actor": "project:atlas",
+          "result": "BLOCKED"
+        },
+        {
+          "state": "COMPLETED_ACKED",
+          "actor": "management"
+        }
+      ],
+      "result": "BLOCKED",
+      "receipt_means_success": false,
+      "liveness_verified": false,
+      "evidence_verified": false
+    }
+  },
+  "history": {
+    "stale_note": {
+      "kind": "HISTORICAL_NON_AUTHORITY",
+      "text": "Earlier notes called fixture:atlas-c2 ready. Current candidate is different; use project state and exact-target review records."
+    },
+    "finalized_handoff": {
+      "kind": "FICTIONAL_IMMUTABLE_HISTORY",
+      "project": "beacon",
+      "incumbent": "fixture:beacon-former-1",
+      "text": "Historical fictional tenure. Not an appointment of the current UNKNOWN incumbent."
+    }
+  }
+}
