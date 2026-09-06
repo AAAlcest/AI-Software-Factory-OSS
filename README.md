@@ -1,5 +1,7 @@
 # AI Software Factory OSS
 
+**A Quirmn product.**
+
 A repository-first operating framework for Human-led software work with AI
 management and coding agents. Roles, authority, project state and evidence
 survive a conversation; a model name or account credential never grants authority.
@@ -48,10 +50,11 @@ A generated Factory is not a duplicate copy of product source trees.
 
 ## Product example: [FlowThread](https://flowthread.quirmn.com/)
 
-**[FlowThread](https://flowthread.quirmn.com/)** is a real product incubated through
-this AI Software Factory and used by its author in day-to-day AI development and
-collaboration. Problems found in actual use can feed back into the Factory workflow,
-while the Factory provides a durable way to keep improving the product.
+**[FlowThread](https://flowthread.quirmn.com/)** is another **Quirmn product**—a
+real product incubated through this AI Software Factory and used by its author in
+day-to-day AI development and collaboration. Problems found in actual use can
+feed back into the Factory workflow, while the Factory provides a durable way to
+keep improving the product.
 
 This repository demonstrates the **working method**. FlowThread demonstrates the
 kind of **real product** that can be built with that method.
