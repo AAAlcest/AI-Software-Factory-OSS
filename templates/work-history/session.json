@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "record_kind": "TEMPLATE",
+  "work_id": "UNCONFIGURED",
+  "project_id": "UNCONFIGURED",
+  "origin_role": "UNCONFIGURED",
+  "incumbent_id": "UNCONFIGURED",
+  "task_ref": "UNCONFIGURED",
+  "authority_ref": "UNCONFIGURED",
+  "session": {
+    "entry": "UNKNOWN",
+    "session_id": "NOT_EXPOSED",
+    "title": "NOT_EXPOSED",
+    "cwd": "NOT_EXPOSED"
+  },
+  "events": []
+}
