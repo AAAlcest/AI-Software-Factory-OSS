@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "record_kind": "SYNTHETIC",
+  "work_id": "fictional-atlas-work-01",
+  "project_id": "fictional-atlas",
+  "origin_role": "fictional-management",
+  "incumbent_id": "fictional-incumbent-01",
+  "task_ref": "fixture:atlas-documentation-task",
+  "authority_ref": "fixture:bounded-documentation-assignment",
+  "session": {
+    "entry": "CREATED",
+    "session_id": "NOT_EXPOSED",
+    "title": "Fictional documentation exercise",
+    "cwd": "NOT_EXPOSED"
+  },
+  "events": [
+    {
+      "state": "ACTIVE",
+      "at": "2000-01-01T09:00:00+00:00",
+      "by_role": "fictional-worker",
+      "evidence_ref": "fixture:execution-entry-observation"
+    },
+    {
+      "state": "DONE_UNACKED",
+      "at": "2000-01-01T09:05:00+00:00",
+      "by_role": "fictional-worker",
+      "evidence_ref": "fixture:result-with-unresolved-review"
+    },
+    {
+      "state": "COMPLETED_ACKED",
+      "at": "2000-01-01T09:10:00+00:00",
+      "by_role": "fictional-management",
+      "evidence_ref": "fixture:management-result-receipt"
+    }
+  ]
+}
