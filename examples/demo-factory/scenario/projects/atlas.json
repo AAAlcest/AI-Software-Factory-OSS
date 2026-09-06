@@ -1,0 +1,19 @@
+{
+  "classification": "SYNTHETIC_ONLY",
+  "project_id": "atlas",
+  "owner_role": "project:atlas",
+  "incumbent": "fixture:atlas-incumbent-1",
+  "phase": "REVIEW_REQUIRED",
+  "task_ref": "records.json#/messages/task-atlas",
+  "canonical_baseline": "fixture:atlas-c1",
+  "completed_change_ref": "records.json#/changes/completed",
+  "current_change_ref": "records.json#/changes/active",
+  "current_candidate": "fixture:atlas-c3",
+  "next_action": "request-review",
+  "blockers": [
+    "Reviews target fixture:atlas-c2, not the current candidate.",
+    "No integration decision for the current candidate."
+  ],
+  "handoffs": [],
+  "work_ref": "records.json#/work/atlas-session"
+}

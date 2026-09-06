@@ -1,0 +1,28 @@
+{
+  "classification": "SYNTHETIC_ONLY",
+  "role": "console",
+  "execution_owner": false,
+  "project_state_refs": [
+    "projects/atlas.json",
+    "projects/beacon.json"
+  ],
+  "visible_message_refs": [
+    "records.json#/references/task-cc",
+    "records.json#/references/result-cc"
+  ],
+  "open_loops": [
+    {
+      "project": "atlas",
+      "reason": "candidate-review-target-mismatch",
+      "owner": "project:atlas",
+      "source": "projects/atlas.json#/current_change_ref"
+    },
+    {
+      "project": "beacon",
+      "reason": "assignment-missing",
+      "owner": "management",
+      "source": "projects/beacon.json#/incumbent"
+    }
+  ],
+  "policy": "Read linked current states; surface gaps to the owner. Visibility does not grant permission to fix another project, appoint a worker, approve a candidate or publish."
+}
