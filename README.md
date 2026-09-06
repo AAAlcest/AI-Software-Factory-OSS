@@ -46,6 +46,20 @@ The distribution also includes the original compact [scenario](examples/demo-fac
 [reusable starters](templates/README.md), PR/Issue templates and focused examples.
 A generated Factory is not a duplicate copy of product source trees.
 
+## Product example: FlowThread
+
+**FlowThread** is a real product incubated through this AI Software Factory and
+used by its author in day-to-day AI development and collaboration. Problems found
+in actual use can feed back into the Factory workflow, while the Factory provides
+a durable way to keep improving the product.
+
+This repository demonstrates the **working method**. FlowThread demonstrates the
+kind of **real product** that can be built with that method.
+
+**Using AI Software Factory does not require installing or purchasing FlowThread.**
+FlowThread is a product example and author workflow tool, not a framework
+dependency, required companion app or condition of using this repository.
+
 ## What V1 includes
 
 Configurable Human/executive/role bundles; offices and project rooms; current and
