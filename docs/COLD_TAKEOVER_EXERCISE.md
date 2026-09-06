@@ -1,8 +1,9 @@
 # Actual fresh-Agent cold-takeover procedure
 
-Status: PROCEDURE_READY / ACTUAL_AGENT_RUN_NOT_RECORDED. This is an evaluator
-runbook, not an agent launcher or an acceptance result. It supersedes using only
-the compact scenario's negative successor case as CT-04 coverage.
+Status: PROCEDURE_READY. Actual case observations and revision dispositions live
+in Issue #1 for an exact candidate; this runbook is not an acceptance result.
+It supersedes using only the compact scenario's negative successor case as CT-04
+coverage.
 
 ## Pin and isolate
 
@@ -54,6 +55,31 @@ unverifiable context isolation is a disclosed limitation or BLOCKED, not PASS.
 CT-04 requires both 04a and 04b; success at a negative “unappointed successor”
 question is not a substitute for authorized true succession. Add a negative
 successor mutation only as an additional case, recording its exact diff.
+
+## CT-05 policy discovery and focused retest
+
+Generate `--case routing` into a new directory. Its TASK.md and AI_ENTRYPOINT.md
+now point to package-local CORRESPONDENCE.md and reply-request.json. The latter
+explicitly declares both mandatory roles and the Console role; the policy
+explains mandatory versus inherited CC, de-duplication, direct-recipient handling
+and visibility-only references. These are governing synthetic inputs, not a
+preloaded answer rubric. The participant does not need the repository's helper
+source or execution access: keep the same read-only prompt and package boundary.
+
+A CT-05 revision must be observed by a new isolated participant session, not the
+failed session resumed with hints. Preserve the original failure and report the
+new candidate, generated manifest hash, actual prompt/response/attempted actions
+and before/after file hashes. Compare both reply modes with the evaluator-only
+matrix. Helper agreement and software regressions are not fresh-Agent acceptance.
+
+The other eight variants are intentionally unchanged by this routing revision;
+regression checks pin their original manifest hashes. Their prior observations
+remain historical evidence at the original candidate. The evaluator may reuse
+those observations only after verifying unchanged participant inputs, including
+any supplemental root documents, and explicitly recording the reuse scope for
+the new target. Do not relabel historical runs as newly executed or silently
+transfer privacy approval to changed files. Keep Issue #1 open until the revised
+CT-05 result and applicable disclosure delta review are dispositioned.
 
 ## Preserve observations, not just conclusions
 
