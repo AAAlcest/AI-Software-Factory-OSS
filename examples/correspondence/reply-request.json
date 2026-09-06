@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "actor": "project:atlas",
+  "reply_id": "synthetic-reply-002",
+  "reply_mode": "REPLY_ALL",
+  "parent": {
+    "record_type": "MESSAGE",
+    "message_id": "synthetic-task-001",
+    "from_role": "role:management",
+    "to_role": "project:atlas",
+    "cc_roles": ["role:governance", "role:portfolio-console"],
+    "project_id": "atlas"
+  },
+  "mandatory_cc": [],
+  "endpoints": {
+    "role:management": "offices/management",
+    "project:atlas": "projects/atlas",
+    "role:governance": "offices/governance",
+    "role:portfolio-console": "offices/portfolio-console"
+  }
+}
