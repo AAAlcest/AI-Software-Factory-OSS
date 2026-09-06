@@ -1,96 +1,73 @@
 # AI ENTRYPOINT
 
-## 1. What you are entering
+## 1. Context before action
 
-This repository defines an AI-native software Factory: a durable organizational control plane around software projects, Human decisions, AI/agent roles, evidence, and GitHub-native workflows.
+This is a reusable AI Software Factory framework, not an already-appointed
+organization. A chat, tool, GitHub account or model is an execution surface, not
+a durable role or authority source. Read AGENTS.md first.
 
-The Factory is not one chat. Chats, coding agents, Work sessions and tools are interaction/execution surfaces. Durable identity and authority live in repository-defined roles, projects, state and evidence.
-
-## 2. First mental model
-
-```text
-Human Factory Director / Owner
-        |
-        v
-Primary Management AI
-Executive / Deputy responsibility bundle
-        |
-        +-- Governance / Consistency AI
-        +-- Runtime / Infrastructure AI
-        +-- Engineering / Project Primary agents
-```
-
-Small Factories may combine functions. Large Factories may split them. Logical roles do not require one permanent chat each.
-
-## 2.1 Select the operating context
-
-Before applying a role, read [the instance boot protocol](docs/INSTANCE_BOOT_PROTOCOL.md).
 Distinguish framework maintenance, an explicitly selected operating instance,
-and a synthetic exercise. Framework defaults and demo assignments cannot appoint
-the reader. Unknown context or authority means no execution.
+and a synthetic exercise. A real task chooses the context. Missing authority
+never causes fallback to a convenient demo identity. `factory.yaml` and role
+profiles are unconfigured defaults, not real assignments.
 
-After reading the required mechanism documents below, follow that protocol's
-ordered authority/state/inbox/Git/current-cursor checks. The read-only preflight
-is optional assistance, not proof of authority or completion of takeover.
+## 2. Initial boot order
 
-## 3. Authority model
+1. Read [the short model](docs/AI_FACTORY_IN_30_SECONDS.md),
+   [roles](docs/ROLES_AND_AUTHORITY.md) and [role setup](docs/RECOMMENDED_ROLE_SETUP.md).
+2. Read [the instance boot protocol](docs/INSTANCE_BOOT_PROTOCOL.md), then resolve
+   the original assignment and current authority/state for the selected instance.
+3. Read [facilities](docs/FACILITIES_AND_SURFACES.md),
+   [GitHub workflow](docs/GITHUB_NATIVE_WORKFLOW.md),
+   [correspondence](docs/CORRESPONDENCE_AND_CC.md),
+   [mailbox/Console](docs/PROJECT_MAILBOX_AND_CONSOLE.md),
+   [Work History](docs/WORK_INVOCATION_WARDROBE.md),
+   [continuity](docs/HANDOFF_AND_SUCCESSION.md) and [privacy](docs/PUBLIC_PRIVACY_STANDARD.md).
+4. Follow the selected role/project task and unprocessed primary working surface
+   (Issue/PR or inbox according to the actual workflow), verify relevant Git/ref
+   and environment facts, then current cursor and pending work. Report conflicts.
+5. Identify current role, known scope, unresolved facts, retained gates, evidence
+   and next safe action. A helper's VALID output does not complete this process.
 
-Keep these distinctions explicit:
+For a real successor, read the finalized predecessor record unchanged, then
+reconcile newer state. For same-incumbent recovery do not fabricate a new tenure.
+For a first incumbent do not fabricate a predecessor handoff.
 
-```text
-Human / technical credential
-    -> AI or agent instance
-    -> Factory role
-    -> authority scope
-    -> action
-    -> evidence
-    -> policy / review gate
-    -> canonical integration
-```
+## 3. Default operational picture
 
-`display title != authority scope`
+Human owner -> ChatGPT management/staff -> Codex engineering/project execution.
+The deputy may combine compatible staff duties, while the Development Lead may
+also carry Console visibility. The [recommended profile](profiles/chatgpt-codex.json)
+is replaceable and grants no execution rights. An independent reviewer must be
+separate from the author, even when staff titles are combined. Keep Work exceptional.
 
-`GitHub identity != Factory organizational identity`
+## 4. Continue without re-onboarding every turn
 
-## 4. Main facilities
+After initial boot, refresh new/unprocessed messages and changed relevant files.
+Do not repeat a full Factory audit, old handoffs or unrelated office records for
+a small task. Expand the bounded inspection when authority/environment changes,
+a concrete conflict or defect appears, or an actual audit is assigned. Current
+repository facts still override a remembered summary or rolling cursor.
 
-Read:
+Finish authorized work and post the result in its original Issue/PR; avoid
+kickoff/received/ACK-to-ACK cycles and duplicate mail records. A short Human-facing
+wake-up may identify the next action role, repository and Issue/PR. A posted
+comment does not prove another chat or worker was dispatched.
 
-- `docs/AI_FACTORY_IN_30_SECONDS.md`
-- `docs/ROLES_AND_AUTHORITY.md`
-- `docs/FACILITIES_AND_SURFACES.md`
-- `docs/GITHUB_NATIVE_WORKFLOW.md`
-- `docs/CORRESPONDENCE_AND_CC.md`
-- `docs/PROJECT_MAILBOX_AND_CONSOLE.md`
-- `docs/WORK_INVOCATION_WARDROBE.md`
-- `docs/HANDOFF_AND_SUCCESSION.md`
-- `docs/PUBLIC_PRIVACY_STANDARD.md`
+## 5. Boundaries and final acceptance
 
-## 5. GitHub specialization
+Issues coordinate decisions; PRs hold exact candidate changes and evidence.
+Review intensity is proportional to risk and explicit authority. A Human may
+permit continuous private-staging integration with concentrated final acceptance;
+that does not erase defects, independent review or retained Human gates.
 
-GitHub Issue may act as a Factory Meeting / Coordination Surface for product, architecture, cross-role deliberation, evidence collection and Human decision points.
+Use only synthetic, newly authored examples. Never import private history or
+rename real correspondence/handoffs into distributable fixtures. No implicit
+credentials, production/destructive, external-company, license or publication
+authority exists. Unknown facts remain UNKNOWN and the affected action stops.
 
-GitHub PR acts as a Candidate Change Envelope: an exact candidate state plus evidence and review, not merely a developer asking a maintainer to merge code.
-
-## 6. Recovery and succession
-
-Changing chat, model, computer or execution surface does not automatically mean succession. Same-incumbent recovery should restore the same role from current state and evidence.
-
-Only a real incumbent change creates a succession handoff. Finalized tenure handoffs are immutable append-only historical records and never override fresher current state.
-
-## 7. Privacy and trust
-
-Examples must be synthetic. Do not publish private correspondence, real customer/company material, credentials, server topology, private runtime evidence, real tenure history or other identifying operational records merely after renaming them.
-
-Re-author reusable mechanisms; do not sanitize-copy private history.
-
-## 8. Safe first action
-
-If this is a fresh Factory bootstrap, inspect `factory.yaml` as framework defaults, then resolve the explicitly selected instance and original authority under `docs/INSTANCE_BOOT_PROTOCOL.md`. Unconfigured values stay unresolved. State:
-
-- who you are acting as;
-- what authority is known;
-- what remains unknown;
-- which project or Factory surface owns the next action.
-
-Do not invent missing authority.
+For this candidate's product scope see [V1 status](docs/V1_BASELINE_STATUS.md).
+Use [the generated demo](docs/QUICKSTART.md) for an offline exercise and
+[the evaluator runbook](docs/COLD_TAKEOVER_EXERCISE.md) for actual fresh-Agent
+validation. Final privacy/public-safety review and Human release decisions remain
+separate from tests and staging commits.

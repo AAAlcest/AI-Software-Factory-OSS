@@ -1,0 +1,35 @@
+{
+  "auto_create_workers": false,
+  "compatible_bundles": [
+    [
+      "deputy",
+      "secretary",
+      "governance_maintenance",
+      "infrastructure_planning"
+    ],
+    [
+      "development_lead",
+      "portfolio_console"
+    ]
+  ],
+  "development_surface": "Codex",
+  "execution_authorized": false,
+  "human_owner": "UNCONFIGURED",
+  "independent_reviewer_must_differ_from_author": true,
+  "kind": "RECOMMENDATION_NOT_APPOINTMENT",
+  "roles": {
+    "deputy": "ChatGPT",
+    "development_lead": "Codex",
+    "governance_maintenance": "ChatGPT",
+    "independent_privacy_reviewer": "ChatGPT",
+    "independent_technical_reviewer": "Codex",
+    "infrastructure_planning": "ChatGPT",
+    "portfolio_console": "Codex",
+    "project_development": "Codex",
+    "project_manager": "ChatGPT",
+    "secretary": "ChatGPT"
+  },
+  "schema_version": 1,
+  "staff_surface": "ChatGPT",
+  "work_policy": "EXCEPTIONAL_CAPABILITY_OR_WORKLOAD_ONLY"
+}

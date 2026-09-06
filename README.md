@@ -1,51 +1,65 @@
 # AI Software Factory OSS
 
-An AI-native software factory framework for coordinating roles, projects, governance, evidence, and GitHub-native workflows.
+A repository-first operating framework for Human-led software work with AI
+management and coding agents. Roles, authority, project state and evidence
+survive a conversation; a model name or account credential never grants authority.
 
-## Start here
+**V1 release-candidate preparation, private staging.** No license has been chosen.
+Final independent privacy/public-safety review and actual fresh-agent cold-start
+validation remain required. Passing scripts or merging staging code is not a
+publication decision. Exact candidate and observed results are recorded in Issue #1.
 
-For humans: read this README, then `docs/AI_FACTORY_IN_30_SECONDS.md`.
+## Start with the useful path
 
-For AI agents: read `AGENTS.md` first, then follow `AI_ENTRYPOINT.md`.
+Humans: [quickstart](docs/QUICKSTART.md), [中文上手说明](docs/QUICKSTART_ZH.md),
+and [recommended ChatGPT + Codex roles](docs/RECOMMENDED_ROLE_SETUP.md).
+AI agents: [AGENTS.md](AGENTS.md), then [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md).
 
-## What this repository is
+Recommended setup: **ChatGPT for Factory staff and management; Codex for project
+development, Development Lead and Console.** The deputy may combine records,
+governance maintenance and infrastructure planning. Keep independent acceptance
+separate from its author; use Work sparingly, not for routine status/ACK cycles.
+This is a configurable operating recommendation, not a vendor permission rule.
 
-This repository is a reusable operating framework for running software work with Human leadership and multiple AI/agent execution surfaces. It separates organizational authority from technical credentials, keeps project state durable outside chat history, and specializes GitHub Issues and Pull Requests as first-class Factory coordination surfaces.
+## Try the integrated fictional Factory
 
-Core ideas include:
-
-- configurable executive/deputy management roles rather than one mandatory title;
-- Staff Offices, Project Rooms, Project Mailboxes and portfolio visibility;
-- GitHub Issues as meeting / coordination surfaces;
-- Pull Requests as Candidate Change Envelopes;
-- one-canonical-body correspondence with `SENT_REFERENCE` and `CC_REFERENCE`;
-- Work Invocation History / Office Wardrobe for execution-session continuity;
-- immutable append-only tenure handoffs with same-incumbent recovery kept separate from succession;
-- deny-by-default privacy and trust boundaries.
-
-## Current maturity
-
-This repository is an early private staging build. Documentation and synthetic examples are being assembled before any public release decision.
-
-No license is selected yet. Public visibility and publication are separate Human decisions.
-
-## V1 candidate baseline
-
-The first bounded implementation connects a deterministic instance boot protocol,
-reusable templates, a synthetic boot fixture and a read-only preflight. See
-[the candidate scope and remaining work](docs/V1_BASELINE_STATUS.md),
-[the boot protocol](docs/INSTANCE_BOOT_PROTOCOL.md) and
-[the template guide](templates/README.md).
-
-With Python 3.10 or later and no third-party dependencies:
+Python 3.10+; no third-party Python dependencies, model API key or cloud deployment
+is required for these local exercises. From this repository:
 
 ```sh
-python scripts/validate_instance.py --root examples/demo-factory/boot
-python -m unittest discover -s tests -v
+python -B scripts/create_demo.py --destination ../example-factory --case first
+python -B scripts/validate_demo.py ../example-factory
+python -B scripts/check_all.py
 ```
 
-The synthetic fixture expects `VALID` (exit 0), which is structural consistency,
-not actual authority. The unconfigured `templates/instance` starter intentionally
-returns `BLOCKED` (exit 3). Every result keeps `execution_authorized: false`.
-Fresh-agent acceptance, full demo completion and independent review are separate
-work; successful unit tests do not prove them or authorize publication.
+The destination must not exist. The builder creates synthetic files only; it does
+not create repositories, agents or credentials. The validator connects instance,
+reply-routing and Work History contracts over a real generated Office/Project
+Room/mailbox/Console layout. `VALID` still grants no authority, sends no mail and
+is not an actual fresh-agent result. Use a new destination for another case.
+
+The distribution also includes the original compact [scenario](examples/demo-factory/scenario/WALKTHROUGH.md),
+[reusable starters](templates/README.md), PR/Issue templates and focused examples.
+A generated Factory is not a duplicate copy of product source trees.
+
+## What V1 includes
+
+Configurable Human/executive/role bundles; offices and project rooms; current and
+pending records; Issue meetings and exact-candidate PRs; optional one-body mail,
+Reply-All and visibility-only CC; Console/open-loop records; Work result receipts;
+first appointment, same-incumbent recovery and authorized true-succession examples;
+repeatable software checks; and a nine-variant package for eight cold-start cases.
+
+This is not an autonomous scheduler, authorization service, production deployment
+system or authenticated mail transport. Its helpers check declared consistency;
+read [the limits and readiness status](docs/V1_BASELINE_STATUS.md).
+
+## Before publication
+
+Follow the [publication checklist](docs/PUBLICATION_CHECKLIST.md),
+[public privacy standard](docs/PUBLIC_PRIVACY_STANDARD.md) and
+[cold-start evaluator procedure](docs/COLD_TAKEOVER_EXERCISE.md).
+Do not import private histories, rename real messages into examples, commit
+credentials, select a license or change repository visibility implicitly.
+
+[Documentation index](docs/README.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)

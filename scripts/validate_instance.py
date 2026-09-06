@@ -182,7 +182,7 @@ def inspect(root: Path) -> dict[str, Any]:
         result["diagnostics"] = blocked
         result["declared_role"] = role["id"]
         result["declared_project"] = project
-    except (Invalid, json.JSONDecodeError, UnicodeError, OSError, RuntimeError) as error:
+    except (ValueError, UnicodeError, OSError, RuntimeError) as error:
         # Do not echo supplied file contents, host paths or OS error details.
         result["diagnostics"] = [str(error) if isinstance(error, Invalid) else
                                  "input: unreadable, malformed or inaccessible"]

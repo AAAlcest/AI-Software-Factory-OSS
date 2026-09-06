@@ -1,45 +1,54 @@
-# V1 baseline — candidate slice A
+# V1 integrated release-candidate baseline
 
-Coordination: repository Issue #1. This page describes the bounded deliverable;
-review state, exact candidate HEAD and execution evidence belong in its PR.
-It is not a second source of appointment, license or publication authority.
+Version: see [VERSION](../VERSION). Current delivery scope: private-staging
+release-candidate preparation. The exact Git target, executed checks, CI links,
+open findings and final dispositions are recorded once in repository Issue #1.
+This page is not an appointment record or an independent acceptance result.
 
-## Candidate contents
+## Implemented scope
 
-The first implementation connects a deterministic instance boot protocol,
-strict read-only JSON preflight, an intentionally blocked starter, reusable
-Office/Project Room templates and a synthetic Atlas boot exercise. It targets
-Issue #1's boot/authority/facilities/state foundation rather than the whole V1.
+AI-first entry and bounded refresh; configurable role/staffing profile; instance,
+Office and Project Room starters; exact-candidate PR and Issue templates; one-body
+reply routing; visibility-only Console; declaration-only Work History; static
+Atlas/Beacon scenario; deterministic generation of a full fictional office/project/
+mailbox layout; combined validation through all three helper contracts; and nine
+fixture variants covering the eight cold-start cases, including positive authorized
+true succession and same-incumbent recovery.
 
-Start with [the boot protocol](INSTANCE_BOOT_PROTOCOL.md), then
-[the template guide](../templates/README.md) and
-[the demo guide](../examples/demo-factory/README.md).
+The integrated generator materializes the educational layout rather than copying
+an organization's operational files. It has no automatic worker, transport,
+credential, server or publication operation. Existing compact examples remain
+available as focused teaching material, not competing real project truth.
 
-The current automated tests check declared identity, scope, missing authority,
-reserved actions, first appointment/recovery/succession, input errors, references
-and read-only behavior. These are software tests, not cold-agent acceptance.
-The compact boot fixture is not the promised end-to-end multi-project Factory.
+## Verification and limits
 
-## Explicit remaining work under Issue #1
+Run `python -B scripts/check_all.py`. Its output records actually observed software
+tests, skips, docs/JSON checks and synthetic integration checks. CI is ordinary
+engineering evidence, not an independent privacy reviewer or a fresh AI session.
+`VALID`, `PLANNED`, `COMPLETED_ACKED` and historical fixture integration each retain
+their narrower meanings; none grants real authority or publication approval.
 
-Correspondence/Reply-All helpers and complete message/reference fixtures;
-Portfolio Console/register examples; the full Atlas/Beacon demo including PR
-candidate/review/integration readback; Wardrobe transition examples; actual
-fresh-agent CT-01 through CT-08 execution; independent governance/privacy review;
-and any separately authorized integration remain open.
+Only platform/interpreter combinations with returned execution evidence are
+verified. A configured CI matrix is not evidence it ran. A symlink skip on a
+platform must remain visible. Relative file links, not external link availability
+or all Markdown anchors, are mechanically checked. Filesystem guards are not
+sandboxes against concurrent mutation by a hostile local actor.
 
-Human license selection and publication/visibility decisions are separate from
-V1 staging completion. No checkbox, tool return or successful test waives them.
+The preflight's large-integer JSON exception has an explicit regression test:
+malformed/unsupported input returns INVALID rather than an uncaught traceback.
 
-## Verification discipline
+## Remaining final acceptance gates
 
-Use `python -m unittest discover -s tests -v` and the two CLI examples in the boot
-protocol. Record tested HEAD, interpreter/platform, commands, observed results
-and skips. Preserve `NOT_RUN` for fresh-agent tests until a genuinely separate
-agent/session has run them without inherited conversation context. An author
-cannot certify their own independent review.
+- Independent integrated privacy/public-safety review: pending until a separate
+  reviewer records a result for the final candidate and publication surfaces.
+- Actual new-Agent cold start: NOT_RUN until the evaluator records isolated
+  session observations; generated fixtures and tests do not fulfill this gate.
+- Human-selected license: pending; no license is inserted by automation.
+- Human-authorized public visibility/publication: pending; keep private staging.
 
-Review an exact candidate. Any later implementation commit changes the review
-target and requires appropriate revalidation. Store result reports outside the
-candidate or record their precise tested code tree so that adding a report does
-not falsely claim its own commit was already tested.
+These gates are checked against the final candidate. Earlier slice-specific
+reviews remain historical scoped evidence, not blanket approval of later changes.
+The Human-authorized consolidated staging workflow removes per-slice procedural
+holds, not actual defects or these final gates. Issue #1 stays open until its
+remaining acceptance work is dispositioned. No further feature expansion is
+needed merely to create more slices; address actual final findings first.

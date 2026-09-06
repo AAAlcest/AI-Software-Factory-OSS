@@ -1,43 +1,40 @@
-# Demo Factory
+# Synthetic Factory demonstrations
 
-All examples here are fictional. They do not encode real organization facts,
-private conversations, actual appointments or real operating evidence.
+All people, organizations, assignments, dates, candidate labels and records here
+are fictional. No example grants real authority or contains a renamed private
+operating history.
 
-## Implemented candidate: compact Atlas boot fixture
+## Complete generated layout
 
-The [boot/instance.json](boot/instance.json) manifest selects a fictional Human,
-role and project with separate [authority](boot/authority.json),
-[assignment](boot/ASSIGNMENT.md), [state](boot/state.json) and
-[current cursor](boot/CURRENT.md). This deliberately flat fixture exercises the
-boot contract; it is not yet a complete multi-project Factory layout.
-
-From the repository root:
+From the repository root, run:
 
 ```sh
-python scripts/validate_instance.py --root examples/demo-factory/boot
+python -B scripts/create_demo.py --destination ../example-factory --case first
+python -B scripts/validate_demo.py ../example-factory
 ```
 
-Expected: `VALID`, exit 0, and `execution_authorized: false`. The result proves
-only structural consistency of declarations. It neither appoints the reader
-nor authorizes real work. Tests mutate copies in temporary directories, never
-these checked-in records. No fictional timestamp, commit or PR is represented
-as actual runtime evidence.
+Use a new destination. The generated directory contains its own AGENTS/entrypoint,
+ChatGPT staff / Codex engineering role registry, Atlas and Beacon Project Rooms,
+authority/state/current/pending files, actual synthetic one-body mailbox records,
+Console/role/open-loop registers, a Meeting Hall and Work result receipts. All
+three helper contracts are exercised together; no real delivery or worker starts.
 
-## Fresh-agent exercise — not executed by this fixture
+Nine variants cover first appointment, missing assignment, stale history, same-
+incumbent recovery, **explicitly authorized true succession**, reply routing,
+changed exact candidate, Human gates and source isolation. The succession variant
+contains an explicitly assigned successor and finalized fictional handoff.
+Generating/validating it is not observing a fresh Agent.
 
-Give a genuinely fresh session only this repository at the exact candidate HEAD
-and a read-only exercise task: start at root AGENTS, follow the entrypoint, use
-this synthetic instance, report its declared role/scope and identify why no real
-authority follows. Do not provide earlier conversations or private repositories.
-Record supplied inputs, observed references/actions, expected versus observed
-behavior and PASS / FAIL / BLOCKED / NOT_RUN. A scripted validator invocation is
-not that agent run. The remaining CT-01 through CT-08 matrix lives in Issue #1.
+## Focused teaching examples retained
 
-## Remaining fictional scenario
+- [Compact boot fixture](boot/instance.json): instance/authority/state preflight.
+- [Connected record scenario](scenario/WALKTHROUGH.md): compact cross-file story.
+- [Correspondence](../correspondence/README.md): reply planning.
+- [Work History](../work-history/README.md): result receipt and prior snapshots.
 
-The full demo will use Example Corp, Project Atlas and Project Beacon, a Human
-Factory Director, a configurable primary management AI, separate Governance and
-Runtime roles, and Project Primaries. It will connect Offices, Project Rooms,
-mailboxes, Issue deliberation, PR candidates/review/readback, Console visibility,
-Wardrobe records and true succession. Those end-to-end fixtures are not yet
-implemented by this first boot slice.
+These are different educational views, not competing live sources of project
+truth. Real instances belong in a separate authorized operating repository.
+
+For actual acceptance use [the cold-start runbook](../../docs/COLD_TAKEOVER_EXERCISE.md).
+The evaluator must create a new session, retain real observations and verify
+source/context isolation. Static checks do not satisfy that requirement.
