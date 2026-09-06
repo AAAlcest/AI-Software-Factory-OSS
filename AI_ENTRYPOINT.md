@@ -22,6 +22,17 @@ Executive / Deputy responsibility bundle
 
 Small Factories may combine functions. Large Factories may split them. Logical roles do not require one permanent chat each.
 
+## 2.1 Select the operating context
+
+Before applying a role, read [the instance boot protocol](docs/INSTANCE_BOOT_PROTOCOL.md).
+Distinguish framework maintenance, an explicitly selected operating instance,
+and a synthetic exercise. Framework defaults and demo assignments cannot appoint
+the reader. Unknown context or authority means no execution.
+
+After reading the required mechanism documents below, follow that protocol's
+ordered authority/state/inbox/Git/current-cursor checks. The read-only preflight
+is optional assistance, not proof of authority or completion of takeover.
+
 ## 3. Authority model
 
 Keep these distinctions explicit:
@@ -75,7 +86,7 @@ Re-author reusable mechanisms; do not sanitize-copy private history.
 
 ## 8. Safe first action
 
-If this is a fresh Factory bootstrap, inspect `factory.yaml`, identify the Human owner and your assigned responsibility bundle, then state:
+If this is a fresh Factory bootstrap, inspect `factory.yaml` as framework defaults, then resolve the explicitly selected instance and original authority under `docs/INSTANCE_BOOT_PROTOCOL.md`. Unconfigured values stay unresolved. State:
 
 - who you are acting as;
 - what authority is known;

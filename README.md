@@ -28,3 +28,24 @@ Core ideas include:
 This repository is an early private staging build. Documentation and synthetic examples are being assembled before any public release decision.
 
 No license is selected yet. Public visibility and publication are separate Human decisions.
+
+## V1 candidate baseline
+
+The first bounded implementation connects a deterministic instance boot protocol,
+reusable templates, a synthetic boot fixture and a read-only preflight. See
+[the candidate scope and remaining work](docs/V1_BASELINE_STATUS.md),
+[the boot protocol](docs/INSTANCE_BOOT_PROTOCOL.md) and
+[the template guide](templates/README.md).
+
+With Python 3.10 or later and no third-party dependencies:
+
+```sh
+python scripts/validate_instance.py --root examples/demo-factory/boot
+python -m unittest discover -s tests -v
+```
+
+The synthetic fixture expects `VALID` (exit 0), which is structural consistency,
+not actual authority. The unconfigured `templates/instance` starter intentionally
+returns `BLOCKED` (exit 3). Every result keeps `execution_authorized: false`.
+Fresh-agent acceptance, full demo completion and independent review are separate
+work; successful unit tests do not prove them or authorize publication.
