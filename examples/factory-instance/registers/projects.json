@@ -1,0 +1,7 @@
+{
+  "synthetic_only": true,
+  "projects": [
+    {"id":"project:atlas","state":"ACTIVE","primary":"fixture:atlas-primary"},
+    {"id":"project:beacon","state":"BLOCKED","primary":"UNKNOWN"}
+  ]
+}

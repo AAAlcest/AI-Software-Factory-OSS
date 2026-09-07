@@ -20,6 +20,12 @@ AI Agent 应先读 [AGENTS.md](AGENTS.md)，再读 [AI_ENTRYPOINT.md](AI_ENTRYPO
 
 推荐配置：**ChatGPT 负责 Factory 管理与职能岗位；Codex 负责项目开发、Development Lead 与 Console。** 副厂长可以兼任记录、厂务维护与基础设施规划等兼容职责。独立验收应与作者分离；Work 应谨慎使用，不应用于普通状态同步或 ACK 循环。这是一种可配置的协作建议，不是厂商权限规则。
 
+## 不运行脚本也能先看懂一个 Factory
+
+可以直接浏览仓库里的 [合成 Factory 实例](examples/factory-instance/README.md)。其中包含可见的 Staff Offices、Project Rooms、Factory state、registers、Meeting Hall、收发件引用、Work receipt 与 handoff archive 结构。
+
+这套实例全部是公开安全的虚构内容，**不是**从任何私有 Factory 复制、删改或脱敏而来。它的用途是让你在 GitHub 页面上直接看懂“工厂长什么样”；需要生成可重复、可验证的临时 fixture 时，再使用 `scripts/create_demo.py`。
+
 ## 试用集成式虚构 Factory
 
 需要 Python 3.10+；这些本地演练不需要第三方 Python 依赖、模型 API Key 或云部署。

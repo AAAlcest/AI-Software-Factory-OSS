@@ -1,0 +1,9 @@
+{
+  "synthetic_only": true,
+  "roles": [
+    {"id":"role:management","title":"Deputy Factory Director","recommended_surface":"ChatGPT"},
+    {"id":"role:governance","title":"Factory Consistency Officer","recommended_surface":"ChatGPT"},
+    {"id":"role:runtime","title":"Runtime & Infrastructure Lead","recommended_surface":"ChatGPT"},
+    {"id":"role:portfolio-console","title":"Development Portfolio Console","recommended_surface":"Codex"}
+  ]
+}

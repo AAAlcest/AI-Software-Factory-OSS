@@ -17,11 +17,11 @@ budget. Actual savings depend on workload, model choice and how the Factory is
 configured; this is an operating-efficiency goal, not a guaranteed quota result.
 
 **1.0.0 public rollout in progress; Release not yet published.**
-The Human owner selected the [MIT License](LICENSE), and GitHub Private
-Vulnerability Reporting is enabled without publishing a personal email address.
+The Human owner selected the [MIT License](LICENSE) and GitHub Private
+Vulnerability Reporting, without publishing a personal email address.
 Completed engineering, fresh-Agent and privacy results remain pinned to their
-reviewed targets in Issue #1. Later README, branding and publication-text changes
-do not represent a rerun of those acceptance steps.
+reviewed targets in Issue #1. This license/security/documentation-only preparation
+preserves that evidence; it is not a new execution or independent certification.
 Release publication still requires completion of the retained rollout checks.
 See [prepared release notes](docs/releases/1.0.0.md) and [reporting availability](SECURITY.md).
 
@@ -36,6 +36,15 @@ development, Development Lead and Console.** The deputy may combine records,
 governance maintenance and infrastructure planning. Keep independent acceptance
 separate from its author; use Work sparingly, not for routine status/ACK cycles.
 This is a configurable operating recommendation, not a vendor permission rule.
+
+## Browse a Factory before generating one
+
+Open the checked-in [synthetic Factory instance](examples/factory-instance/README.md)
+to browse Staff Offices, Project Rooms, Factory state, registers, a Meeting Hall,
+mailbox/reference examples, a Work receipt and a handoff archive shape directly in
+GitHub. It is public-safe fictional material, not a copy or redaction of any private
+Factory. Use it to understand the layout; use `scripts/create_demo.py` when you want
+deterministic disposable fixtures for validation.
 
 ## Try the integrated fictional Factory
 

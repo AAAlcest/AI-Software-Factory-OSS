@@ -1,0 +1,11 @@
+{
+  "synthetic_only": true,
+  "work_id": "fixture:atlas-work-1",
+  "office_role": "role:management",
+  "project": "project:atlas",
+  "state": "DONE_UNACKED",
+  "invocation_surface": "Codex",
+  "result_ref": "fixture:atlas-result-1",
+  "execution_authorized": false,
+  "note": "Example receipt only; this record does not prove a real session or grant authority."
+}
