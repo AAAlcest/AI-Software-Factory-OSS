@@ -8,8 +8,8 @@
 
 通过让 ChatGPT 负责规划、治理、任务路由与评审协调，并把 Codex 尽量留给真正需要实现能力的开发工作，这套 Factory 的目标是显著减少不必要的 Codex token 消耗。再结合可复用的 skills 与角色化工作流，可以提高整套 AI 工具链的利用率，并让相同的 token 与订阅预算产生更高的实际回报。具体节省幅度取决于任务类型、模型选择与 Factory 配置方式；这是一个运营效率目标，不是固定额度承诺。
 
-**1.0.0 正处于公开发布流程中；GitHub Release 尚未发布。**
-本项目已采用 [MIT License](LICENSE)，并已启用 GitHub Private Vulnerability Reporting，不公开私人邮箱作为安全报告联系方式。此前完成的软件验证、fresh-Agent 验收与隐私／公开安全结果继续保留在 Issue #1 的对应记录中；后续 README、品牌和发布文案调整不等同于重新执行这些验收。
+**1.0.0 是 AI Software Factory OSS 的首个公开发布版本线。**
+仓库已经公开，采用 [MIT License](LICENSE)，并已启用 GitHub Private Vulnerability Reporting；不公开私人邮箱作为漏洞报告联系方式。此前完成的软件验证、fresh-Agent 验收与隐私／公开安全结果继续保留在 Issue #1 的对应记录中；后续公开文档、品牌或示例调整采用与风险相称的增量检查，不会把它们说成重新执行了原有验收。
 
 发布说明见 [1.0.0 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
 
@@ -59,7 +59,7 @@ V1 包含：可配置的 Human / executive / role 组合；Staff Offices 与 Pro
 
 ## 发布与安全
 
-遵循 [发布检查清单](docs/PUBLICATION_CHECKLIST.md)、[公开隐私标准](docs/PUBLIC_PRIVACY_STANDARD.md) 与 [cold-start 验收流程](docs/COLD_TAKEOVER_EXERCISE.md)。不要把私有运行历史重新包装成示例，不要提交凭据，也不要通过 README 或配置暗中改变许可证或权限边界。
+1.0.0 以及后续版本应按照变更风险使用 [发布检查清单](docs/PUBLICATION_CHECKLIST.md)、[公开隐私标准](docs/PUBLIC_PRIVACY_STANDARD.md) 与 [cold-start 验收流程](docs/COLD_TAKEOVER_EXERCISE.md)。不要把私有运行历史重新包装成示例，不要提交凭据，也不要通过 README、配置或示例暗中改变许可证或权限边界。
 
 MIT License 只覆盖本仓库的这份发行内容。`factory.yaml` 中未配置的 publication defaults 与 synthetic Human gates 面向各自单独运行的 Factory instance；它们不会给 MIT License 增加额外限制，也不会自动批准其他项目的发布。
 
