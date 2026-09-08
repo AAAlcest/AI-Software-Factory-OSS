@@ -1,9 +1,12 @@
-# V1 integrated publication candidate
+# V1 public baseline
 
-Version: see [VERSION](../VERSION). Current delivery scope: **1.0.0 prepared in
-private staging, not a published Release**. The exact Git target, executed checks, CI links,
-open findings and final dispositions are recorded once in repository Issue #1.
-This page is not an appointment record or an independent acceptance result.
+Version: see [VERSION](../VERSION). The current delivery line is **1.0.0**.
+The repository is public, distributed under MIT, and uses GitHub Private
+Vulnerability Reporting. Exact Git targets, executed checks, review evidence and
+final release readback are recorded in repository Issue #1.
+
+This page is a product-status summary, not an appointment record or an independent
+acceptance result.
 
 ## Implemented scope
 
@@ -14,6 +17,11 @@ Atlas/Beacon scenario; deterministic generation of a full fictional office/proje
 mailbox layout; combined validation through all three helper contracts; and nine
 fixture variants covering the eight cold-start cases, including positive authorized
 true succession and same-incumbent recovery.
+
+A checked-in [browseable synthetic Factory instance](../examples/factory-instance/README.md)
+shows Staff Offices, Project Rooms, Factory state, registers, a Meeting Hall,
+mailbox/reference examples, Work history and handoff shapes without exposing any
+private Factory. The generated demo remains the deterministic validation path.
 
 The integrated generator materializes the educational layout rather than copying
 an organization's operational files. It has no automatic worker, transport,
@@ -37,34 +45,35 @@ sandboxes against concurrent mutation by a hostile local actor.
 The preflight's large-integer JSON exception has an explicit regression test:
 malformed/unsupported input returns INVALID rather than an uncaught traceback.
 
-## Accepted baseline and remaining publication steps
+## Accepted baseline and release packaging
 
-The behavioral baseline is `41a1b127daa69308839490eecf06fbb82ee2cb8c` (rc.2).
-Its [fresh-Agent result](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/1#issuecomment-5561859245)
+The behavioral baseline is `41a1b127daa69308839490eecf06fbb82ee2cb8c`
+(`1.0.0-rc.2`). Its [fresh-Agent result](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/1#issuecomment-5561859245)
 and [privacy closeout](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/1#issuecomment-5561877291)
 are PASS in their recorded scopes. CT-05 was actually rerun; the other eight
 observations were retained after input-equivalence verification. The earlier
 failure and shared-host isolation limitation remain in the evidence history.
-Existing exact-head CI results are retained, not claimed as a run on new metadata.
+Existing exact-head CI results are retained, not claimed as a run on later
+publication-only changes.
 
-The 1.0.0 preparation changes only license, security/release documentation and
-version metadata. Code, tests, fixtures, templates, profiles, root agent entrypoints
-and workflow definitions remain unchanged. No new full suite or Agent run is
-claimed or required solely by this documentation delta.
+Changes after rc.2 are publication packaging and public-facing documentation/example
+surfaces: MIT licensing, PVR instructions/status, version metadata, Quirmn branding,
+bilingual README content, the FlowThread product example and the browseable
+synthetic Factory instance. Core validators, generator behavior, tests, profiles,
+root Agent entrypoints and workflow definitions remain unchanged. These additions
+receive proportionate delta checks instead of a full behavioral/fresh-Agent rerun.
 
-- MIT: selected by the Human and included as [LICENSE](../LICENSE).
-- Security channel: GitHub Private Vulnerability Reporting selected; no personal
-  email published. Enablement and live entry verification occur only during the
-  later owner-authorized Public rollout, before publishing the Release.
-- New documentation/disclosure delta: checked separately from the accepted
-  baseline; the author's checks are not a new independent privacy certification.
-  Its independent delta disposition belongs in Issue #1, without a full restart.
-- Public visibility, tag and Release: not performed; await explicit Human approval
-  for the final SHA reported in Issue #1. See [release notes](releases/1.0.0.md).
+Current release decisions:
 
-These gates are checked against the final candidate. Earlier slice-specific
-reviews remain historical scoped evidence, not blanket approval of later changes.
-The Human-authorized consolidated staging workflow removes per-slice procedural
-holds, not actual defects or these final gates. Issue #1 stays open until its
-remaining acceptance work is dispositioned. No further feature expansion is
-needed merely to create more slices; address actual final findings first.
+- License: **MIT**, included as [LICENSE](../LICENSE).
+- Security channel: **GitHub Private Vulnerability Reporting**, enabled; no personal
+  email is published. See [SECURITY.md](../SECURITY.md).
+- Repository visibility: **Public**.
+- Release tag: `v1.0.0`, fixed to the exact final release commit when created.
+- GitHub Release: use [the 1.0.0 release notes](releases/1.0.0.md) and record the
+  final tag/Release readback in Issue #1.
+
+Earlier slice-specific reviews remain historical scoped evidence, not blanket
+approval of later bytes. The consolidated release workflow reuses accepted evidence
+for unchanged behavior while requiring proportionate inspection of new public
+surfaces. Issue #1 is the durable release closeout surface.
