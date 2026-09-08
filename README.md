@@ -16,14 +16,13 @@ toolchain and improve the practical return from the same token and subscription
 budget. Actual savings depend on workload, model choice and how the Factory is
 configured; this is an operating-efficiency goal, not a guaranteed quota result.
 
-**1.0.0 public rollout in progress; Release not yet published.**
-The Human owner selected the [MIT License](LICENSE) and GitHub Private
-Vulnerability Reporting, without publishing a personal email address.
+**Version 1.0.0 is the first public release line of AI Software Factory OSS.**
+The repository is public, distributed under the [MIT License](LICENSE), and uses
+GitHub Private Vulnerability Reporting without publishing a personal email address.
 Completed engineering, fresh-Agent and privacy results remain pinned to their
-reviewed targets in Issue #1. This license/security/documentation-only preparation
-preserves that evidence; it is not a new execution or independent certification.
-Release publication still requires completion of the retained rollout checks.
-See [prepared release notes](docs/releases/1.0.0.md) and [reporting availability](SECURITY.md).
+reviewed targets in Issue #1; later public-surface documentation changes use
+proportionate delta checks rather than pretending those acceptance steps reran.
+See [1.0.0 release notes](docs/releases/1.0.0.md) and [security reporting](SECURITY.md).
 
 ## Start with the useful path
 
@@ -96,13 +95,13 @@ This is not an autonomous scheduler, authorization service, production deploymen
 system or authenticated mail transport. Its helpers check declared consistency;
 read [the limits and readiness status](docs/V1_BASELINE_STATUS.md).
 
-## Before publication
+## Release and safety
 
-Follow the [publication checklist](docs/PUBLICATION_CHECKLIST.md),
+For 1.0.0 and future releases, follow the [publication checklist](docs/PUBLICATION_CHECKLIST.md),
 [public privacy standard](docs/PUBLIC_PRIVACY_STANDARD.md) and
-[cold-start evaluator procedure](docs/COLD_TAKEOVER_EXERCISE.md).
-Do not import private histories, rename real messages into examples, commit
-credentials, change license terms or change repository visibility implicitly.
+[cold-start evaluator procedure](docs/COLD_TAKEOVER_EXERCISE.md) when the changed
+surface requires them. Do not import private histories, rename real messages into
+examples, commit credentials or silently change license/authority boundaries.
 
 The MIT license covers this distribution. The unconfigured publication defaults
 in `factory.yaml` and synthetic Human gates concern separately operated instances;
