@@ -11,12 +11,14 @@
 ## Operate and develop
 
 - [Facilities and surfaces](FACILITIES_AND_SURFACES.md).
+- [ChatGPT Project cockpit](CHATGPT_PROJECT_COCKPIT.md).
+- [Skills layer](SKILLS_LAYER.md) and [token-efficiency objective](TOKEN_EFFICIENCY.md).
 - [GitHub-native workflow](GITHUB_NATIVE_WORKFLOW.md).
 - [Correspondence and CC](CORRESPONDENCE_AND_CC.md), [routing contract](REPLY_ROUTING_CONTRACT.md).
 - [Project mailboxes and Console](PROJECT_MAILBOX_AND_CONSOLE.md).
 - [Work Invocation History](WORK_INVOCATION_WARDROBE.md), [record contract](WORK_HISTORY_CONTRACT.md).
 - [Handoff and succession](HANDOFF_AND_SUCCESSION.md).
-- [Templates](../templates/README.md) and [synthetic demo](../examples/demo-factory/README.md).
+- [Templates](../templates/README.md), [skill contracts](../skills/README.md), [synthetic demo](../examples/demo-factory/README.md) and [browseable Factory/cockpit](../examples/factory-instance/README.md).
 
 ## Validate and prepare publication
 

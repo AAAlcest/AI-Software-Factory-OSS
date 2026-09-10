@@ -13,9 +13,10 @@ Use the [instance contract](../docs/INSTANCE_BOOT_PROTOCOL.md) when configuring
 an organization's own records. File existence is not proof of real authority.
 
 [STAFF_OFFICE_TEMPLATE.md](STAFF_OFFICE_TEMPLATE.md) and
-[PROJECT_ROOM_TEMPLATE.md](PROJECT_ROOM_TEMPLATE.md) define the durable facility
-layout without creating one permanent chat per role. The compact demo uses flat
-records for testing; it does not yet instantiate all facilities in this guide.
+[PROJECT_ROOM_TEMPLATE.md](PROJECT_ROOM_TEMPLATE.md) define durable facilities.
+[PROJECT_COCKPIT_TEMPLATE.md](PROJECT_COCKPIT_TEMPLATE.md) defines the optional
+derived ChatGPT Project/cockpit view used to summarize projects, roles, recovery,
+health and bounded Codex task packages without becoming a competing truth source.
 
 ## Suggested instance layout
 
@@ -24,6 +25,7 @@ instance.json                   # explicit pointers, not secret storage
 factory/                        # current Factory state and governed rules
 registers/                      # thin role/project/decision/evidence indexes
 meeting-hall/                   # shared meeting indexes, not copied bodies
+project-cockpit/                # optional derived overview/recovery/task package
 offices/<role>/
   README.md                     # scope, authority pointers, reporting line
   inbox/                        # canonical addressed messages or CC references
@@ -41,8 +43,9 @@ projects/<project>/
 ```
 
 Map logical roles to actual permitted endpoints. An executive display title can
-change without changing its responsibility bundle. Register entries and cursors
-reference canonical facts; they must not become conflicting copies of them.
+change without changing its responsibility bundle. Register entries, cursors and
+cockpit summaries reference canonical facts; they must not become conflicting
+copies of them.
 
 Finalized handoffs are added only for a real tenure boundary. The starter does
 not ship an invented predecessor. Record unknown session/thread identifiers as

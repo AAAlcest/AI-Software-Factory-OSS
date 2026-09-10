@@ -36,6 +36,18 @@ governance maintenance and infrastructure planning. Keep independent acceptance
 separate from its author; use Work sparingly, not for routine status/ACK cycles.
 This is a configurable operating recommendation, not a vendor permission rule.
 
+## V1.1 Project cockpit and skills
+
+The next operating layer adds an optional [ChatGPT Project cockpit](docs/CHATGPT_PROJECT_COCKPIT.md)
+for Factory/project/role overview, recovery/handoff support and bounded Codex task
+packages while the repository remains canonical truth. The [skill contracts](skills/README.md)
+standardize overview, recovery, handoff, health and task packaging; the
+[token-efficiency design](docs/TOKEN_EFFICIENCY.md) explains how to measure the
+benefit without promising a fixed saving percentage.
+
+Browse the fictional implementation under
+[`examples/factory-instance/project-cockpit`](examples/factory-instance/project-cockpit/PROJECT_INSTRUCTIONS.md).
+
 ## Browse a Factory before generating one
 
 Open the checked-in [synthetic Factory instance](examples/factory-instance/README.md)
@@ -53,14 +65,15 @@ is required for these local exercises. From this repository:
 ```sh
 python -B scripts/create_demo.py --destination ../example-factory --case first
 python -B scripts/validate_demo.py ../example-factory
+python -B scripts/validate_cockpit.py --root examples/factory-instance
 python -B scripts/check_all.py
 ```
 
 The destination must not exist. The builder creates synthetic files only; it does
 not create repositories, agents or credentials. The validator connects instance,
 reply-routing and Work History contracts over a real generated Office/Project
-Room/mailbox/Console layout. `VALID` still grants no authority, sends no mail and
-is not an actual fresh-agent result. Use a new destination for another case.
+Room/mailbox/Console layout. Cockpit validation checks only derived bundle structure.
+`VALID` still grants no authority, sends no mail and is not an actual fresh-agent result.
 
 The distribution also includes the original compact [scenario](examples/demo-factory/scenario/WALKTHROUGH.md),
 [reusable starters](templates/README.md), PR/Issue templates and focused examples.
@@ -95,13 +108,13 @@ This is not an autonomous scheduler, authorization service, production deploymen
 system or authenticated mail transport. Its helpers check declared consistency;
 read [the limits and readiness status](docs/V1_BASELINE_STATUS.md).
 
-## Release and safety
+## Publication and security
 
-For 1.0.0 and future releases, follow the [publication checklist](docs/PUBLICATION_CHECKLIST.md),
+Use the [publication checklist](docs/PUBLICATION_CHECKLIST.md),
 [public privacy standard](docs/PUBLIC_PRIVACY_STANDARD.md) and
-[cold-start evaluator procedure](docs/COLD_TAKEOVER_EXERCISE.md) when the changed
-surface requires them. Do not import private histories, rename real messages into
-examples, commit credentials or silently change license/authority boundaries.
+[cold-start evaluator procedure](docs/COLD_TAKEOVER_EXERCISE.md) in proportion to
+change risk. Do not import private histories, rename real messages into examples,
+commit credentials, or silently change license/authority boundaries.
 
 The MIT license covers this distribution. The unconfigured publication defaults
 in `factory.yaml` and synthetic Human gates concern separately operated instances;
