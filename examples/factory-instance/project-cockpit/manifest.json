@@ -50,6 +50,7 @@
     "project-cockpit/ROLES.md",
     "project-cockpit/RECOVERY_BRIEF.md",
     "project-cockpit/HEALTH.md",
-    "project-cockpit/CODEX_TASK_PACKAGE.md"
+    "project-cockpit/CODEX_TASK_PACKAGE.md",
+    "project-cockpit/END_TO_END.md"
   ]
 }
