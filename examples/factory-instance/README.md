@@ -24,6 +24,7 @@ factory-instance/
 │   ├── RECOVERY_BRIEF.md
 │   ├── HEALTH.md
 │   ├── CODEX_TASK_PACKAGE.md
+│   ├── END_TO_END.md
 │   └── manifest.json
 ├── offices/
 │   ├── management/
@@ -56,7 +57,7 @@ factory-instance/
     └── README.md
 ```
 
-The `project-cockpit/` directory demonstrates how a ChatGPT Project can present Factory/project/role overviews, recovery context, health findings and a bounded Codex task package while keeping the surrounding repository records canonical.
+The `project-cockpit/` directory demonstrates how a ChatGPT Project can present Factory/project/role overviews, recovery context, health findings and a bounded Codex task package while keeping the surrounding repository records canonical. [END_TO_END.md](project-cockpit/END_TO_END.md) walks through the complete Human → ChatGPT management → bounded refresh → Codex package → result reconciliation path.
 
 Validate that derived bundle with:
 

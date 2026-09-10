@@ -31,9 +31,10 @@ A Project-facing bundle normally contains:
 - `ROLES.md` — compact role-by-role view;
 - `RECOVERY_BRIEF.md` — first-appointment, recovery or true-succession context;
 - `HEALTH.md` — stale/unowned/blocked/missing-evidence findings;
-- `CODEX_TASK_PACKAGE.md` — bounded engineering context for one implementation task.
+- `CODEX_TASK_PACKAGE.md` — bounded engineering context for one implementation task;
+- `END_TO_END.md` — optional walk-through showing Human → ChatGPT management → bounded Codex package → result reconciliation.
 
-The reusable starter is [PROJECT_COCKPIT_TEMPLATE.md](../templates/PROJECT_COCKPIT_TEMPLATE.md). A fully fictional example is under [examples/factory-instance/project-cockpit](../examples/factory-instance/project-cockpit/PROJECT_INSTRUCTIONS.md).
+The reusable starter is [PROJECT_COCKPIT_TEMPLATE.md](../templates/PROJECT_COCKPIT_TEMPLATE.md). A fully fictional example is under [examples/factory-instance/project-cockpit](../examples/factory-instance/project-cockpit/PROJECT_INSTRUCTIONS.md), including an [end-to-end management-to-Codex flow](../examples/factory-instance/project-cockpit/END_TO_END.md).
 
 ## Refresh protocol
 
@@ -81,7 +82,7 @@ ChatGPT management should package a bounded implementation request for Codex ins
 - explicit exclusions and Human gates;
 - source pointers for anything Codex may need to refresh.
 
-Codex should expand beyond the package only when implementation discovers a concrete dependency, conflict or missing fact.
+Codex should expand beyond the package only when implementation discovers a concrete dependency, conflict or missing fact. The checked-in [end-to-end example](../examples/factory-instance/project-cockpit/END_TO_END.md) shows this sequence and explicitly identifies unrelated Factory material that is not reread.
 
 ## Derived-bundle validation
 
