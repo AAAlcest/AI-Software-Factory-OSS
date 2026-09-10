@@ -20,6 +20,14 @@ AI Agent 应先读 [AGENTS.md](AGENTS.md)，再读 [AI_ENTRYPOINT.md](AI_ENTRYPO
 
 推荐配置：**ChatGPT 负责 Factory 管理与职能岗位；Codex 负责项目开发、Development Lead 与 Console。** 副厂长可以兼任记录、厂务维护与基础设施规划等兼容职责。独立验收应与作者分离；Work 应谨慎使用，不应用于普通状态同步或 ACK 循环。这是一种可配置的协作建议，不是厂商权限规则。
 
+## V1.1 Project cockpit 与 Skills
+
+下一层加入可选的 [ChatGPT Project cockpit](docs/CHATGPT_PROJECT_COCKPIT.md)，用于对 Factory、项目和角色做总览，辅助 recovery / handoff，并给 Codex 生成有边界的任务包；**仓库仍然是唯一 canonical truth**。
+
+[Skill contracts](skills/README.md) 统一 `factory-overview`、`project-overview`、`role-overview`、recovery、handoff、health 和 task-packaging 的输入输出规则。[Token 效率设计](docs/TOKEN_EFFICIENCY.md) 给出可重复的对比方法，不承诺固定节省比例。
+
+可直接浏览虚构示例：[`examples/factory-instance/project-cockpit`](examples/factory-instance/project-cockpit/PROJECT_INSTRUCTIONS.md)。
+
 ## 不运行脚本也能先看懂一个 Factory
 
 可以直接浏览仓库里的 [合成 Factory 实例](examples/factory-instance/README.md)。其中包含可见的 Staff Offices、Project Rooms、Factory state、registers、Meeting Hall、收发件引用、Work receipt 与 handoff archive 结构。
@@ -33,10 +41,11 @@ AI Agent 应先读 [AGENTS.md](AGENTS.md)，再读 [AI_ENTRYPOINT.md](AI_ENTRYPO
 ```sh
 python -B scripts/create_demo.py --destination ../example-factory --case first
 python -B scripts/validate_demo.py ../example-factory
+python -B scripts/validate_cockpit.py --root examples/factory-instance
 python -B scripts/check_all.py
 ```
 
-目标目录必须不存在。构建器只会创建合成数据，不会创建真实仓库、Agent 或凭据。验证器会在一个真实生成的 Office / Project Room / mailbox / Console 布局中串联 instance、reply-routing 与 Work History 三类契约。`VALID` 只代表结构一致，不会授予权限、发送消息，也不等于 fresh-Agent 验收结果。
+目标目录必须不存在。构建器只会创建合成数据，不会创建真实仓库、Agent 或凭据。现有 validator 串联 instance、reply-routing 与 Work History 契约；cockpit validator 只检查派生 bundle 的结构和引用。任何 `VALID` 都不会授予权限、发送消息，也不等于 fresh-Agent 验收结果。
 
 仓库还包含原始的精简 [scenario](examples/demo-factory/scenario/WALKTHROUGH.md)、[可复用模板](templates/README.md)、PR/Issue 模板以及聚焦示例。生成的 Factory 不是产品源代码仓库的重复副本。
 

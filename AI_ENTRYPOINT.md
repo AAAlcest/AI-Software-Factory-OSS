@@ -23,10 +23,14 @@ profiles are unconfigured defaults, not real assignments.
    [mailbox/Console](docs/PROJECT_MAILBOX_AND_CONSOLE.md),
    [Work History](docs/WORK_INVOCATION_WARDROBE.md),
    [continuity](docs/HANDOFF_AND_SUCCESSION.md) and [privacy](docs/PUBLIC_PRIVACY_STANDARD.md).
-4. Follow the selected role/project task and unprocessed primary working surface
+4. If the instance exposes a [Project cockpit](docs/CHATGPT_PROJECT_COCKPIT.md), use
+   it as a **derived index** to select the smallest relevant Office/Project/Issue
+   source set. Never treat cockpit text or a skill output as newer authority than
+   the repository records it references.
+5. Follow the selected role/project task and unprocessed primary working surface
    (Issue/PR or inbox according to the actual workflow), verify relevant Git/ref
    and environment facts, then current cursor and pending work. Report conflicts.
-5. Identify current role, known scope, unresolved facts, retained gates, evidence
+6. Identify current role, known scope, unresolved facts, retained gates, evidence
    and next safe action. A helper's VALID output does not complete this process.
 
 For a real successor, read the finalized predecessor record unchanged, then
@@ -40,6 +44,10 @@ The deputy may combine compatible staff duties, while the Development Lead may
 also carry Console visibility. The [recommended profile](profiles/chatgpt-codex.json)
 is replaceable and grants no execution rights. An independent reviewer must be
 separate from the author, even when staff titles are combined. Keep Work exceptional.
+
+The optional [Skills layer](docs/SKILLS_LAYER.md) can compress Factory/project/role
+context and build bounded Codex task packages. Skills reduce repeated context; they
+do not grant authority or replace freshness checks.
 
 ## 4. Continue without re-onboarding every turn
 

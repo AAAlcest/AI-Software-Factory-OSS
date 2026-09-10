@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "derived": true,
+  "canonical_truth": "repository",
+  "execution_authorized": false,
+  "recovery_mode": "SAME_INCUMBENT_RECOVERY",
+  "source_refs": [
+    "factory/FACTORY_STATE.md",
+    "factory/OPEN_LOOPS.md",
+    "registers/projects.json",
+    "registers/roles.json"
+  ],
+  "projects": [
+    {
+      "id": "project:atlas",
+      "room_ref": "projects/atlas/README.md",
+      "state_ref": "projects/atlas/STATE.md"
+    },
+    {
+      "id": "project:beacon",
+      "room_ref": "projects/beacon/README.md",
+      "state_ref": "projects/beacon/STATE.md"
+    }
+  ],
+  "roles": [
+    {
+      "id": "role:management",
+      "office_ref": "offices/management/README.md",
+      "current_ref": "offices/management/desk/CURRENT.md"
+    },
+    {
+      "id": "role:governance",
+      "office_ref": "offices/governance/README.md",
+      "current_ref": "offices/governance/desk/CURRENT.md"
+    },
+    {
+      "id": "role:runtime",
+      "office_ref": "offices/runtime/README.md",
+      "current_ref": "offices/runtime/desk/CURRENT.md"
+    },
+    {
+      "id": "role:portfolio-console",
+      "office_ref": "offices/portfolio-console/README.md",
+      "current_ref": "offices/portfolio-console/desk/CURRENT.md"
+    }
+  ],
+  "outputs": [
+    "project-cockpit/FACTORY_OVERVIEW.md",
+    "project-cockpit/PROJECTS.md",
+    "project-cockpit/ROLES.md",
+    "project-cockpit/RECOVERY_BRIEF.md",
+    "project-cockpit/HEALTH.md",
+    "project-cockpit/CODEX_TASK_PACKAGE.md"
+  ]
+}

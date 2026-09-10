@@ -16,6 +16,15 @@ factory-instance/
 ├── registers/
 │   ├── roles.json
 │   └── projects.json
+├── project-cockpit/
+│   ├── PROJECT_INSTRUCTIONS.md
+│   ├── FACTORY_OVERVIEW.md
+│   ├── PROJECTS.md
+│   ├── ROLES.md
+│   ├── RECOVERY_BRIEF.md
+│   ├── HEALTH.md
+│   ├── CODEX_TASK_PACKAGE.md
+│   └── manifest.json
 ├── offices/
 │   ├── management/
 │   │   ├── README.md
@@ -47,9 +56,18 @@ factory-instance/
     └── README.md
 ```
 
+The `project-cockpit/` directory demonstrates how a ChatGPT Project can present Factory/project/role overviews, recovery context, health findings and a bounded Codex task package while keeping the surrounding repository records canonical.
+
+Validate that derived bundle with:
+
+```sh
+python -B scripts/validate_cockpit.py --root examples/factory-instance
+```
+
 This browseable instance complements, rather than replaces, `scripts/create_demo.py`:
 
 - this directory is for **reading and understanding**;
+- the cockpit is for **derived overview/recovery/task context**;
 - the generator is for **creating deterministic disposable fixtures and running validation**.
 
 Nothing in this example grants real authority. Treat all identities, decisions, evidence labels and correspondence as fictional.

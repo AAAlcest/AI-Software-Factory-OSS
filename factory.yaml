@@ -39,6 +39,8 @@ facilities:
   development_portfolio_console: enabled
   office_wardrobe_work_history: optional_recommended
   immutable_handoff_and_succession: enabled
+  chatgpt_project_cockpit: optional_recommended
+  skills_context_layer: optional_recommended
 
 privacy:
   mode: deny_by_default
