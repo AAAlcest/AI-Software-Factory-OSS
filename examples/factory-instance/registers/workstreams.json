@@ -1,0 +1,42 @@
+{
+  "synthetic_only": true,
+  "workstreams": [
+    {
+      "id": "workstream:atlas-release-readiness",
+      "project_id": "project:atlas",
+      "owner_role": "role:management",
+      "status": "REVIEW",
+      "priority": "P0",
+      "surface": "fixture:issue-atlas-42",
+      "controlling_refs": [
+        "fixture:atlas-review-current",
+        "fixture:atlas-candidate-b"
+      ],
+      "superseded_refs": [
+        "fixture:atlas-review-obsolete"
+      ],
+      "blockers": [],
+      "human_gate": null,
+      "next_action": "Request fresh review for the current Atlas candidate; do not replay the superseded approval."
+    },
+    {
+      "id": "workstream:beacon-environment",
+      "project_id": "project:beacon",
+      "owner_role": "role:runtime",
+      "status": "BLOCKED",
+      "priority": "P1",
+      "surface": "fixture:issue-beacon-17",
+      "controlling_refs": [
+        "fixture:beacon-environment-plan"
+      ],
+      "superseded_refs": [
+        "fixture:beacon-legacy-plan"
+      ],
+      "blockers": [
+        "fixture:environment-coordinate-missing"
+      ],
+      "human_gate": "fixture:human-environment-approval",
+      "next_action": "Wait for the explicit environment decision; do not infer coordinates or create a runtime."
+    }
+  ]
+}
