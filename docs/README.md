@@ -12,6 +12,7 @@
 
 - [Facilities and surfaces](FACILITIES_AND_SURFACES.md).
 - [ChatGPT Project cockpit](CHATGPT_PROJECT_COCKPIT.md).
+- [Workstream recovery and supersession-aware cockpit](WORKSTREAM_RECOVERY.md).
 - [Skills layer](SKILLS_LAYER.md) and [token-efficiency objective](TOKEN_EFFICIENCY.md).
 - [GitHub-native workflow](GITHUB_NATIVE_WORKFLOW.md).
 - [Correspondence and CC](CORRESPONDENCE_AND_CC.md), [routing contract](REPLY_ROUTING_CONTRACT.md).
