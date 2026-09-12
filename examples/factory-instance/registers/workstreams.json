@@ -37,6 +37,21 @@
       ],
       "human_gate": "fixture:human-environment-approval",
       "next_action": "Wait for the explicit environment decision; do not infer coordinates or create a runtime."
+    },
+    {
+      "id": "workstream:atlas-governance-transition",
+      "project_id": "project:atlas",
+      "owner_role": "role:governance",
+      "status": "DONE",
+      "priority": "P2",
+      "surface": "fixture:issue-atlas-9",
+      "controlling_refs": [
+        "fixture:governance-handoff-1"
+      ],
+      "superseded_refs": [],
+      "blockers": [],
+      "human_gate": null,
+      "next_action": "Use the successor continuity context for future governance work; keep the finalized predecessor handoff immutable."
     }
   ]
 }
