@@ -1,0 +1,29 @@
+{
+  "synthetic_only": true,
+  "contexts": [
+    {
+      "project_id": "project:atlas",
+      "role_id": "role:management",
+      "mode": "SAME_INCUMBENT_RECOVERY",
+      "incumbent": "fixture:manager-1",
+      "previous_incumbent": "fixture:manager-1",
+      "handoff_ref": null
+    },
+    {
+      "project_id": "project:beacon",
+      "role_id": "role:runtime",
+      "mode": "FIRST_APPOINTMENT",
+      "incumbent": "fixture:runtime-1",
+      "previous_incumbent": null,
+      "handoff_ref": null
+    },
+    {
+      "project_id": "project:atlas",
+      "role_id": "role:governance",
+      "mode": "TRUE_SUCCESSION",
+      "incumbent": "fixture:governance-2",
+      "previous_incumbent": "fixture:governance-1",
+      "handoff_ref": "fixture:governance-handoff-1"
+    }
+  ]
+}
