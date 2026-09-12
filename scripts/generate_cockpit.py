@@ -69,22 +69,46 @@ def unique_strings(value, name):
     return value
 
 
+def validate_continuity(item: dict, project_ids: set[str], role_ids: set[str]) -> tuple[str, str]:
+    require(isinstance(item, dict), "invalid continuity entry")
+    project_id = item.get("project_id")
+    role_id = item.get("role_id")
+    require(project_id in project_ids, "unknown continuity project")
+    require(role_id in role_ids, "unknown continuity role")
+    mode = item.get("mode")
+    require(mode in RECOVERY_MODES, "invalid continuity mode")
+    incumbent = item.get("incumbent")
+    previous = item.get("previous_incumbent")
+    handoff = item.get("handoff_ref")
+    require(isinstance(incumbent, str) and incumbent, "continuity incumbent required")
+    if mode == "FIRST_APPOINTMENT":
+        require(previous is None and handoff is None, "first appointment cannot invent predecessor handoff")
+    elif mode == "SAME_INCUMBENT_RECOVERY":
+        require(previous == incumbent and handoff is None, "recovery must preserve incumbent without succession handoff")
+    else:
+        require(isinstance(previous, str) and previous and previous != incumbent, "succession requires distinct predecessor")
+        require(isinstance(handoff, str) and handoff, "succession handoff reference required")
+    return project_id, role_id
+
+
 def parse_instance(root: Path) -> dict:
     root = root.resolve()
     require(root.exists() and root.is_dir(), "invalid root")
     project_reg = load_json(safe_file(root, "registers/projects.json"))
     role_reg = load_json(safe_file(root, "registers/roles.json"))
     workstream_reg = load_json(safe_file(root, "registers/workstreams.json"))
+    continuity_reg = load_json(safe_file(root, "registers/continuity.json"))
 
     projects = project_reg.get("projects")
     roles = role_reg.get("roles")
     workstreams = workstream_reg.get("workstreams")
-    require(project_reg.get("synthetic_only") is True, "public fixture project register must be synthetic")
-    require(role_reg.get("synthetic_only") is True, "public fixture role register must be synthetic")
-    require(workstream_reg.get("synthetic_only") is True, "public fixture workstream register must be synthetic")
+    continuity = continuity_reg.get("contexts")
+    for register, label in ((project_reg, "project"), (role_reg, "role"), (workstream_reg, "workstream"), (continuity_reg, "continuity")):
+        require(register.get("synthetic_only") is True, f"public fixture {label} register must be synthetic")
     require(isinstance(projects, list) and projects, "projects required")
     require(isinstance(roles, list) and roles, "roles required")
     require(isinstance(workstreams, list) and workstreams, "workstreams required")
+    require(isinstance(continuity, list) and continuity, "continuity contexts required")
 
     project_ids = set()
     for item in projects:
@@ -102,6 +126,12 @@ def parse_instance(root: Path) -> dict:
         require(ident not in role_ids, "duplicate role id")
         role_ids.add(ident)
 
+    continuity_by_pair = {}
+    for item in continuity:
+        pair = validate_continuity(item, project_ids, role_ids)
+        require(pair not in continuity_by_pair, "duplicate continuity context")
+        continuity_by_pair[pair] = item
+
     ws_ids = set()
     for item in workstreams:
         require(isinstance(item, dict), "invalid workstream")
@@ -109,8 +139,11 @@ def parse_instance(root: Path) -> dict:
         require(isinstance(ident, str) and ident.startswith("workstream:") and ID_RE.fullmatch(ident), "invalid workstream id")
         require(ident not in ws_ids, "duplicate workstream id")
         ws_ids.add(ident)
-        require(item.get("project_id") in project_ids, "unknown workstream project")
-        require(item.get("owner_role") in role_ids, "unknown workstream owner")
+        project_id = item.get("project_id")
+        owner_role = item.get("owner_role")
+        require(project_id in project_ids, "unknown workstream project")
+        require(owner_role in role_ids, "unknown workstream owner")
+        require((project_id, owner_role) in continuity_by_pair, "workstream continuity context missing")
         require(item.get("status") in STATUSES, "invalid workstream status")
         require(item.get("priority") in PRIORITIES, "invalid workstream priority")
         require(isinstance(item.get("surface"), str) and item["surface"], "workstream surface required")
@@ -128,6 +161,7 @@ def parse_instance(root: Path) -> dict:
         "registers/projects.json",
         "registers/roles.json",
         "registers/workstreams.json",
+        "registers/continuity.json",
     }
     for item in projects:
         slug = item["id"].split(":", 1)[1]
@@ -137,21 +171,14 @@ def parse_instance(root: Path) -> dict:
         sources.update({f"offices/{slug}/README.md", f"offices/{slug}/desk/CURRENT.md"})
     source_paths = {ref: safe_file(root, ref) for ref in sorted(sources)}
 
-    return {
-        "root": root,
-        "projects": projects,
-        "roles": roles,
-        "workstreams": workstreams,
-        "source_paths": source_paths,
-    }
+    return {"root": root, "projects": projects, "roles": roles, "workstreams": workstreams, "continuity_by_pair": continuity_by_pair, "source_paths": source_paths}
 
 
 def lines(values):
     return ", ".join(f"`{item}`" for item in values) if values else "none"
 
 
-def generate(root: Path, output: Path, recovery_mode: str, selected_workstream: str | None = None) -> dict:
-    require(recovery_mode in RECOVERY_MODES, "invalid recovery mode")
+def generate(root: Path, output: Path, selected_workstream: str | None = None) -> dict:
     instance = parse_instance(root)
     output = Path(output)
     require(not output.exists(), "output already exists")
@@ -166,6 +193,8 @@ def generate(root: Path, output: Path, recovery_mode: str, selected_workstream: 
     else:
         require(selected_workstream in by_ws, "unknown selected workstream")
         selected = by_ws[selected_workstream]
+    continuity = instance["continuity_by_pair"][(selected["project_id"], selected["owner_role"])]
+    recovery_mode = continuity["mode"]
 
     fingerprints = {ref: digest(path) for ref, path in instance["source_paths"].items()}
     source_bytes = sum(item["bytes"] for item in fingerprints.values())
@@ -190,30 +219,29 @@ def generate(root: Path, output: Path, recovery_mode: str, selected_workstream: 
     workstreams_md = "# Workstreams\n\n" + DERIVED
     workstreams_md += "Controlling references are pointers to current accepted direction; superseded references remain history and must not be replayed as current authority.\n\n"
     for item in workstreams:
+        mode = instance["continuity_by_pair"][(item["project_id"], item["owner_role"])]["mode"]
         workstreams_md += (
-            f"## {item['id']}\n\n"
-            f"Project: `{item['project_id']}`  \nOwner role: `{item['owner_role']}`  \n"
-            f"Status / priority: `{item['status']}` / `{item['priority']}`  \n"
-            f"Visible work surface: `{item['surface']}`  \n"
-            f"Controlling refs: {lines(item['controlling_refs'])}  \n"
-            f"Superseded refs: {lines(item['superseded_refs'])}  \n"
-            f"Blockers: {lines(item['blockers'])}  \n"
-            f"Human gate: `{item['human_gate'] or 'none'}`  \n"
-            f"Next action: {item['next_action']}\n\n"
+            f"## {item['id']}\n\nProject: `{item['project_id']}`  \nOwner role: `{item['owner_role']}`  \nContinuity: `{mode}`  \n"
+            f"Status / priority: `{item['status']}` / `{item['priority']}`  \nVisible work surface: `{item['surface']}`  \n"
+            f"Controlling refs: {lines(item['controlling_refs'])}  \nSuperseded refs: {lines(item['superseded_refs'])}  \n"
+            f"Blockers: {lines(item['blockers'])}  \nHuman gate: `{item['human_gate'] or 'none'}`  \nNext action: {item['next_action']}\n\n"
         )
 
     recovery_md = "# Recovery brief\n\n" + DERIVED
     recovery_md += (
-        f"Recovery mode: `{recovery_mode}`\n\n"
-        f"Selected workstream: `{selected['id']}`  \n"
-        f"Project: `{selected['project_id']}`  \nOwner role: `{selected['owner_role']}`  \n"
-        f"Visible work surface: `{selected['surface']}`  \n"
-        f"Current controlling refs: {lines(selected['controlling_refs'])}  \n"
-        f"Do not reopen as current: {lines(selected['superseded_refs'])}  \n"
-        f"Blockers: {lines(selected['blockers'])}  \nHuman gate: `{selected['human_gate'] or 'none'}`  \n"
-        f"Next safe action: {selected['next_action']}\n\n"
-        "Before action, refresh the visible work surface and controlling references. This brief does not appoint an incumbent, approve a gate or prove receipt by another role.\n"
+        f"Recovery mode: `{recovery_mode}` (derived from `registers/continuity.json`, not chosen by this bundle)\n\n"
+        f"Selected workstream: `{selected['id']}`  \nProject: `{selected['project_id']}`  \nOwner role: `{selected['owner_role']}`  \n"
+        f"Visible work surface: `{selected['surface']}`  \nCurrent controlling refs: {lines(selected['controlling_refs'])}  \n"
+        f"Do not reopen as current: {lines(selected['superseded_refs'])}  \nBlockers: {lines(selected['blockers'])}  \n"
+        f"Human gate: `{selected['human_gate'] or 'none'}`  \nNext safe action: {selected['next_action']}\n\n"
     )
+    if recovery_mode == "FIRST_APPOINTMENT":
+        recovery_md += "No predecessor or handoff is claimed.\n"
+    elif recovery_mode == "SAME_INCUMBENT_RECOVERY":
+        recovery_md += f"Incumbent remains `{continuity['incumbent']}`; no succession handoff is created.\n"
+    else:
+        recovery_md += f"Current incumbent: `{continuity['incumbent']}`  \nPredecessor: `{continuity['previous_incumbent']}`  \nFinalized handoff pointer: `{continuity['handoff_ref']}`\n"
+    recovery_md += "\nBefore action, refresh the visible work surface and controlling references. This brief does not appoint an incumbent, approve a gate or prove receipt by another role.\n"
 
     health_md = "# Factory health\n\n" + DERIVED
     findings = []
@@ -232,85 +260,38 @@ def generate(root: Path, output: Path, recovery_mode: str, selected_workstream: 
 
     pslug = selected["project_id"].split(":", 1)[1]
     rslug = selected["owner_role"].split(":", 1)[1]
-    bounded_sources = [
-        f"projects/{pslug}/README.md",
-        f"projects/{pslug}/STATE.md",
-        f"offices/{rslug}/desk/CURRENT.md",
-        "registers/workstreams.json",
-    ]
+    bounded_sources = [f"projects/{pslug}/README.md", f"projects/{pslug}/STATE.md", f"offices/{rslug}/desk/CURRENT.md", "registers/workstreams.json", "registers/continuity.json"]
     task_md = "# Bounded Codex task package\n\n" + DERIVED
     task_md += (
-        f"Workstream: `{selected['id']}`  \nProject: `{selected['project_id']}`  \n"
-        f"Work surface: `{selected['surface']}`\n\n"
-        "## Start with\n\n" + "\n".join(f"- `{ref}`" for ref in bounded_sources) + "\n\n"
-        "## Current direction\n\n"
-        f"- controlling refs: {lines(selected['controlling_refs'])}\n"
-        f"- superseded refs: {lines(selected['superseded_refs'])}\n"
-        f"- blockers: {lines(selected['blockers'])}\n"
-        f"- Human gate: `{selected['human_gate'] or 'none'}`\n"
-        f"- expected next action: {selected['next_action']}\n\n"
-        "Expand read scope only for a concrete dependency, conflict or missing fact discovered during implementation. Do not infer authority from this package.\n"
+        f"Workstream: `{selected['id']}`  \nProject: `{selected['project_id']}`  \nWork surface: `{selected['surface']}`\n\n"
+        "## Start with\n\n" + "\n".join(f"- `{ref}`" for ref in bounded_sources) + "\n\n## Current direction\n\n"
+        f"- controlling refs: {lines(selected['controlling_refs'])}\n- superseded refs: {lines(selected['superseded_refs'])}\n"
+        f"- blockers: {lines(selected['blockers'])}\n- Human gate: `{selected['human_gate'] or 'none'}`\n"
+        f"- expected next action: {selected['next_action']}\n\nExpand read scope only for a concrete dependency, conflict or missing fact discovered during implementation. Do not infer authority from this package.\n"
     )
 
     instructions = "# ChatGPT Project bootstrap\n\n" + DERIVED
-    instructions += (
-        "This directory is a portable bootstrap package, not an automatically installed ChatGPT Project.\n\n"
-        "Read `RECOVERY_BRIEF.md`, then `WORKSTREAMS.md`, then refresh only the canonical sources needed for the selected action. "
-        "If generated text conflicts with repository evidence, repository evidence wins and the bundle is stale.\n"
-    )
+    instructions += "This directory is a portable bootstrap package, not an automatically installed ChatGPT Project.\n\nRead `RECOVERY_BRIEF.md`, then `WORKSTREAMS.md`, then refresh only the canonical sources needed for the selected action. If generated text conflicts with repository evidence, repository evidence wins and the bundle is stale.\n"
 
-    outputs = {
-        "PROJECT_INSTRUCTIONS.md": instructions,
-        "FACTORY_OVERVIEW.md": overview,
-        "PROJECTS.md": projects_md,
-        "ROLES.md": roles_md,
-        "WORKSTREAMS.md": workstreams_md,
-        "RECOVERY_BRIEF.md": recovery_md,
-        "HEALTH.md": health_md,
-        "CODEX_TASK_PACKAGE.md": task_md,
-    }
-
-    manifest = {
-        "schema_version": 2,
-        "derived": True,
-        "canonical_truth": "repository",
-        "execution_authorized": False,
-        "recovery_mode": recovery_mode,
-        "selected_workstream": selected["id"],
-        "source_fingerprints": fingerprints,
-        "outputs": sorted(outputs),
-        "metrics": {
-            "source_files_fingerprinted": len(fingerprints),
-            "source_bytes_fingerprinted": source_bytes,
-            "bounded_task_source_files": len(bounded_sources),
-        },
-    }
+    outputs = {"PROJECT_INSTRUCTIONS.md": instructions, "FACTORY_OVERVIEW.md": overview, "PROJECTS.md": projects_md, "ROLES.md": roles_md, "WORKSTREAMS.md": workstreams_md, "RECOVERY_BRIEF.md": recovery_md, "HEALTH.md": health_md, "CODEX_TASK_PACKAGE.md": task_md}
+    manifest = {"schema_version": 2, "derived": True, "canonical_truth": "repository", "execution_authorized": False, "recovery_mode": recovery_mode, "selected_workstream": selected["id"], "source_fingerprints": fingerprints, "outputs": sorted(outputs), "metrics": {"source_files_fingerprinted": len(fingerprints), "source_bytes_fingerprinted": source_bytes, "bounded_task_source_files": len(bounded_sources)}}
 
     output.mkdir()
     for name, text in outputs.items():
         (output / name).write_text(text, encoding="utf-8")
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     output_bytes = sum(path.stat().st_size for path in output.iterdir() if path.is_file())
-    return {
-        "status": "GENERATED",
-        "output": str(output),
-        "selected_workstream": selected["id"],
-        "source_files_fingerprinted": len(fingerprints),
-        "source_bytes_fingerprinted": source_bytes,
-        "output_bytes": output_bytes,
-        "execution_authorized": False,
-    }
+    return {"status": "GENERATED", "output": str(output), "selected_workstream": selected["id"], "recovery_mode": recovery_mode, "source_files_fingerprinted": len(fingerprints), "source_bytes_fingerprinted": source_bytes, "output_bytes": output_bytes, "execution_authorized": False}
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", required=True)
     parser.add_argument("--output", required=True)
-    parser.add_argument("--recovery-mode", default="SAME_INCUMBENT_RECOVERY", choices=sorted(RECOVERY_MODES))
     parser.add_argument("--workstream")
     args = parser.parse_args()
     try:
-        result = generate(Path(args.root), Path(args.output), args.recovery_mode, args.workstream)
+        result = generate(Path(args.root), Path(args.output), args.workstream)
     except (Invalid, OSError, UnicodeError, ValueError, RecursionError):
         result = {"status": "INVALID", "execution_authorized": False}
         print(json.dumps(result, sort_keys=True, indent=2))
