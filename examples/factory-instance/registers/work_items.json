@@ -1,0 +1,60 @@
+{
+  "synthetic_only": true,
+  "work_items": [
+    {
+      "id": "workitem:atlas-release-readiness",
+      "workstream_id": "workstream:atlas-release-readiness",
+      "project_id": "project:atlas",
+      "owner_role": "role:management",
+      "work_type": "RELEASE_READINESS",
+      "status": "REVIEW",
+      "priority": "P0",
+      "surface": "fixture:issue-atlas-42",
+      "projection_state": "ACTIVE",
+      "checkpoint_ref": "checkpoints/atlas-release-readiness-current.md",
+      "superseded_checkpoint_refs": [
+        "checkpoints/atlas-release-readiness-obsolete.md"
+      ],
+      "last_evidence_ref": "projects/atlas/STATE.md",
+      "next_action": "Request fresh review for the current Atlas candidate; do not replay the superseded approval.",
+      "human_gate": null,
+      "risk": "A review attached to older candidate bytes must not be treated as approval of the current candidate."
+    },
+    {
+      "id": "workitem:beacon-environment",
+      "workstream_id": "workstream:beacon-environment",
+      "project_id": "project:beacon",
+      "owner_role": "role:runtime",
+      "work_type": "ENVIRONMENT_READINESS",
+      "status": "BLOCKED",
+      "priority": "P1",
+      "surface": "fixture:issue-beacon-17",
+      "projection_state": "ACTIVE",
+      "checkpoint_ref": "checkpoints/beacon-environment-current.md",
+      "superseded_checkpoint_refs": [
+        "checkpoints/beacon-environment-legacy.md"
+      ],
+      "last_evidence_ref": "projects/beacon/STATE.md",
+      "next_action": "Wait for the explicit environment decision; do not infer coordinates or create a runtime.",
+      "human_gate": "fixture:human-environment-approval",
+      "risk": "Environment facts remain intentionally unresolved until the Human gate is satisfied."
+    },
+    {
+      "id": "workitem:atlas-governance-transition",
+      "workstream_id": "workstream:atlas-governance-transition",
+      "project_id": "project:atlas",
+      "owner_role": "role:governance",
+      "work_type": "GOVERNANCE_CONTINUITY",
+      "status": "DONE",
+      "priority": "P2",
+      "surface": "fixture:issue-atlas-9",
+      "projection_state": "ARCHIVED",
+      "checkpoint_ref": "checkpoints/atlas-governance-transition-current.md",
+      "superseded_checkpoint_refs": [],
+      "last_evidence_ref": "projects/atlas/STATE.md",
+      "next_action": "Use the successor continuity context for future governance work; keep the finalized predecessor handoff immutable.",
+      "human_gate": null,
+      "risk": null
+    }
+  ]
+}

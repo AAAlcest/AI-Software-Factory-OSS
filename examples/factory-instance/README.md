@@ -15,7 +15,16 @@ factory-instance/
 │   └── OPEN_LOOPS.md
 ├── registers/
 │   ├── roles.json
-│   └── projects.json
+│   ├── projects.json
+│   ├── workstreams.json
+│   ├── continuity.json
+│   └── work_items.json
+├── checkpoints/
+│   ├── atlas-release-readiness-current.md
+│   ├── atlas-release-readiness-obsolete.md
+│   ├── beacon-environment-current.md
+│   ├── beacon-environment-legacy.md
+│   └── atlas-governance-transition-current.md
 ├── project-cockpit/
 │   ├── PROJECT_INSTRUCTIONS.md
 │   ├── FACTORY_OVERVIEW.md
@@ -59,7 +68,16 @@ factory-instance/
 
 The `project-cockpit/` directory demonstrates how a ChatGPT Project can present Factory/project/role overviews, recovery context, health findings and a bounded Codex task package while keeping the surrounding repository records canonical. [END_TO_END.md](project-cockpit/END_TO_END.md) walks through the complete Human → ChatGPT management → bounded refresh → Codex package → result reconciliation path.
 
-Validate that derived bundle with:
+The V1.3 `work_items.json` plus `checkpoints/` fixtures demonstrate a separate idea: one bounded Project-visible work item can point to the current Issue/PR surface, current checkpoint, last evidence, superseded checkpoints, Human gate and next action without copying a long discussion thread.
+
+Generate an executable cockpit or Project-ready management export with:
+
+```sh
+python -B scripts/generate_cockpit.py --root examples/factory-instance --output ../generated-cockpit
+python -B scripts/generate_project_view.py --root examples/factory-instance --output ../project-view
+```
+
+Check either generated bundle for source drift with `scripts/check_cockpit_drift.py`. The checked-in V1.1 cockpit structure can still be validated with:
 
 ```sh
 python -B scripts/validate_cockpit.py --root examples/factory-instance
@@ -69,6 +87,7 @@ This browseable instance complements, rather than replaces, `scripts/create_demo
 
 - this directory is for **reading and understanding**;
 - the cockpit is for **derived overview/recovery/task context**;
-- the generator is for **creating deterministic disposable fixtures and running validation**.
+- the work-item Project view is for **bounded active-work visibility and recovery**;
+- the demo generator is for **creating deterministic disposable fixtures and running validation**.
 
 Nothing in this example grants real authority. Treat all identities, decisions, evidence labels and correspondence as fictional.

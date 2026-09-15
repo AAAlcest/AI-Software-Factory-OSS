@@ -64,15 +64,18 @@ def run_skill(root: Path, bundle: Path, skill: str, project: str | None = None,
     projects = {item["id"]: item for item in instance["projects"]}
     roles = {item["id"]: item for item in instance["roles"]}
     workstreams = {item["id"]: item for item in instance["workstreams"]}
+    work_items = {item["id"]: item for item in instance["work_items"]}
+    work_item_by_workstream = instance["work_item_by_workstream"]
     manifest = json.loads((bundle / "manifest.json").read_text(encoding="utf-8"))
 
     if skill == "factory-overview":
-        result = base_result(skill, "factory", ["factory/FACTORY_STATE.md", "factory/OPEN_LOOPS.md", "registers/projects.json", "registers/roles.json", "registers/workstreams.json"])
+        result = base_result(skill, "factory", ["factory/FACTORY_STATE.md", "factory/OPEN_LOOPS.md", "registers/projects.json", "registers/roles.json", "registers/workstreams.json", "registers/work_items.json"])
         result["content"] = read_bundle_file(bundle, "FACTORY_OVERVIEW.md")
+        result["active_work_items"] = [item["id"] for item in work_items.values() if item["projection_state"] == "ACTIVE"]
         return result
 
     if skill == "factory-health":
-        result = base_result(skill, "factory", ["registers/projects.json", "registers/roles.json", "registers/workstreams.json", "registers/continuity.json"])
+        result = base_result(skill, "factory", ["registers/projects.json", "registers/roles.json", "registers/workstreams.json", "registers/continuity.json", "registers/work_items.json"])
         result["content"] = read_bundle_file(bundle, "HEALTH.md")
         return result
 
@@ -80,44 +83,56 @@ def run_skill(root: Path, bundle: Path, skill: str, project: str | None = None,
         require(project in projects, "unknown project")
         item = projects[project]
         related = [w for w in instance["workstreams"] if w["project_id"] == project]
+        related_items = [w for w in instance["work_items"] if w["project_id"] == project]
         slug = project.split(":", 1)[1]
-        result = base_result(skill, project, [f"projects/{slug}/README.md", f"projects/{slug}/STATE.md", "registers/workstreams.json"])
-        result["facts"] = {"project": item, "workstreams": related}
+        result = base_result(skill, project, [f"projects/{slug}/README.md", f"projects/{slug}/STATE.md", "registers/workstreams.json", "registers/work_items.json"])
+        result["facts"] = {"project": item, "workstreams": related, "work_items": related_items}
         return result
 
     if skill == "role-overview":
         require(role in roles, "unknown role")
         item = roles[role]
         related = [w for w in instance["workstreams"] if w["owner_role"] == role]
+        related_items = [w for w in instance["work_items"] if w["owner_role"] == role]
         slug = role.split(":", 1)[1]
-        result = base_result(skill, role, [f"offices/{slug}/README.md", f"offices/{slug}/desk/CURRENT.md", "registers/workstreams.json"])
-        result["facts"] = {"role": item, "workstreams": related}
+        result = base_result(skill, role, [f"offices/{slug}/README.md", f"offices/{slug}/desk/CURRENT.md", "registers/workstreams.json", "registers/work_items.json"])
+        result["facts"] = {"role": item, "workstreams": related, "work_items": related_items}
         return result
 
     require(workstream in workstreams, "unknown workstream")
     lane = workstreams[workstream]
     continuity = instance["continuity_by_pair"][(lane["project_id"], lane["owner_role"])]
+    work_item = work_item_by_workstream.get(workstream)
+    require(work_item is not None, "workstream missing work item")
+
+    recovery_sources = [
+        "registers/workstreams.json",
+        "registers/continuity.json",
+        "registers/work_items.json",
+        work_item["checkpoint_ref"],
+        work_item["last_evidence_ref"],
+    ]
 
     if skill == "project-recovery":
         if project is not None:
             require(project == lane["project_id"], "workstream/project mismatch")
         pslug = lane["project_id"].split(":", 1)[1]
-        result = base_result(skill, lane["project_id"], [f"projects/{pslug}/README.md", f"projects/{pslug}/STATE.md", "registers/workstreams.json", "registers/continuity.json"])
-        result["facts"] = {"workstream": lane, "continuity": continuity}
+        result = base_result(skill, lane["project_id"], [f"projects/{pslug}/README.md", f"projects/{pslug}/STATE.md", *recovery_sources])
+        result["facts"] = {"workstream": lane, "work_item": work_item, "continuity": continuity}
         return result
 
     if skill == "role-recovery":
         if role is not None:
             require(role == lane["owner_role"], "workstream/role mismatch")
         rslug = lane["owner_role"].split(":", 1)[1]
-        result = base_result(skill, lane["owner_role"], [f"offices/{rslug}/README.md", f"offices/{rslug}/desk/CURRENT.md", "registers/workstreams.json", "registers/continuity.json"])
-        result["facts"] = {"workstream": lane, "continuity": continuity}
+        result = base_result(skill, lane["owner_role"], [f"offices/{rslug}/README.md", f"offices/{rslug}/desk/CURRENT.md", *recovery_sources])
+        result["facts"] = {"workstream": lane, "work_item": work_item, "continuity": continuity}
         return result
 
     if skill == "handoff":
-        result = base_result(skill, workstream, ["registers/workstreams.json", "registers/continuity.json"])
+        result = base_result(skill, workstream, recovery_sources)
         result["classification"] = continuity["mode"]
-        result["facts"] = {"workstream": lane, "continuity": continuity}
+        result["facts"] = {"workstream": lane, "work_item": work_item, "continuity": continuity}
         return result
 
     if skill == "task-packaging":
@@ -130,7 +145,17 @@ def run_skill(root: Path, bundle: Path, skill: str, project: str | None = None,
                 "derived": True,
                 "execution_authorized": False,
             }
-        result = base_result(skill, workstream, ["registers/workstreams.json", "registers/continuity.json"])
+        if manifest.get("selected_work_item") != work_item["id"]:
+            return {
+                "status": "REGENERATE_REQUIRED",
+                "skill": skill,
+                "requested_workstream": workstream,
+                "bundle_work_item": manifest.get("selected_work_item"),
+                "derived": True,
+                "execution_authorized": False,
+            }
+        result = base_result(skill, workstream, recovery_sources)
+        result["work_item"] = work_item["id"]
         result["content"] = read_bundle_file(bundle, "CODEX_TASK_PACKAGE.md")
         return result
 

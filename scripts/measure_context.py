@@ -35,6 +35,9 @@ def measure(root: Path, bundle: Path) -> dict:
     workstreams = {item["id"]: item for item in instance["workstreams"]}
     require(selected_id in workstreams, "unknown selected workstream")
     selected = workstreams[selected_id]
+    work_item = instance["work_item_by_workstream"].get(selected_id)
+    require(work_item is not None, "selected workstream missing work item")
+    require(manifest.get("selected_work_item") == work_item["id"], "bundle work item mismatch")
     pslug = selected["project_id"].split(":", 1)[1]
     rslug = selected["owner_role"].split(":", 1)[1]
     bounded_refs = [
@@ -43,7 +46,11 @@ def measure(root: Path, bundle: Path) -> dict:
         f"offices/{rslug}/desk/CURRENT.md",
         "registers/workstreams.json",
         "registers/continuity.json",
+        "registers/work_items.json",
+        work_item["checkpoint_ref"],
+        work_item["last_evidence_ref"],
     ]
+    bounded_refs = list(dict.fromkeys(bounded_refs))
     require(all(ref in fingerprints for ref in bounded_refs), "bounded source missing from manifest")
 
     broad_files = len(fingerprints)
@@ -58,6 +65,7 @@ def measure(root: Path, bundle: Path) -> dict:
         "derived": True,
         "execution_authorized": False,
         "selected_workstream": selected_id,
+        "selected_work_item": work_item["id"],
         "broad_context": {"files": broad_files, "bytes": broad_bytes},
         "bounded_context": {"files": len(bounded_refs), "bytes": bounded_bytes, "refs": bounded_refs},
         "difference": {"files": broad_files - len(bounded_refs), "bytes": broad_bytes - bounded_bytes},
