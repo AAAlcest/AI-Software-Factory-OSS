@@ -36,17 +36,35 @@ governance maintenance and infrastructure planning. Keep independent acceptance
 separate from its author; use Work sparingly, not for routine status/ACK cycles.
 This is a configurable operating recommendation, not a vendor permission rule.
 
-## V1.1 Project cockpit and skills
+## Project cockpit, recovery and bounded work
 
-The next operating layer adds an optional [ChatGPT Project cockpit](docs/CHATGPT_PROJECT_COCKPIT.md)
-for Factory/project/role overview, recovery/handoff support and bounded Codex task
-packages while the repository remains canonical truth. The [skill contracts](skills/README.md)
-standardize overview, recovery, handoff, health and task packaging; the
-[token-efficiency design](docs/TOKEN_EFFICIENCY.md) explains how to measure the
-benefit without promising a fixed saving percentage.
+The operating layers include an optional [ChatGPT Project cockpit](docs/CHATGPT_PROJECT_COCKPIT.md)
+for Factory/project/role overview, [workstream recovery](docs/WORKSTREAM_RECOVERY.md),
+[work-item checkpoints and Project-ready visibility](docs/WORK_ITEMS_AND_PROJECT_VIEW.md),
+and bounded Codex task packages while the repository remains canonical truth.
+The [skill contracts](skills/README.md) standardize overview, recovery, handoff,
+health and task packaging; the [token-efficiency design](docs/TOKEN_EFFICIENCY.md)
+explains how to measure the benefit without promising a fixed saving percentage.
 
 Browse the fictional implementation under
 [`examples/factory-instance/project-cockpit`](examples/factory-instance/project-cockpit/PROJECT_INSTRUCTIONS.md).
+
+## Fresh Factory Audit
+
+Use the [Fresh Factory Audit](docs/FRESH_FACTORY_AUDIT.md) pattern when you want a
+new AI context to test whether an operating Factory can still be reconstructed
+safely from current repository evidence. The audit prefers bounded current-state
+reads, expands into chronology only for concrete conflicts, classifies governance
+and recovery drift, and reports findings for later Human/management disposition
+without self-authorizing fixes.
+
+Copy-ready starters are available as a
+[consolidated audit Issue template](templates/FRESH_FACTORY_AUDIT_ISSUE.md) and a
+[fresh auditor prompt](templates/FRESH_FACTORY_AUDITOR_PROMPT.md). The
+[synthetic audit example](examples/factory-instance/audit/README.md) demonstrates
+fictional drift patterns such as missing project visibility, frozen-work
+resurrection, superseded direction and stale recovery queues. It contains no
+private Factory audit history.
 
 ## Browse a Factory before generating one
 
