@@ -18,6 +18,13 @@ an organization's own records. File existence is not proof of real authority.
 derived ChatGPT Project/cockpit view used to summarize projects, roles, recovery,
 health and bounded Codex task packages without becoming a competing truth source.
 
+For operating-Factor audit/recovery work, use
+[FRESH_FACTORY_AUDIT_ISSUE.md](FRESH_FACTORY_AUDIT_ISSUE.md) as the consolidated
+audit work surface and [FRESH_FACTORY_AUDITOR_PROMPT.md](FRESH_FACTORY_AUDITOR_PROMPT.md)
+to brief a genuinely fresh evaluator. The audit pattern is read-only by default;
+it reports evidence for later Human/management disposition rather than authorizing
+remediation itself.
+
 ## Suggested instance layout
 
 ```text
