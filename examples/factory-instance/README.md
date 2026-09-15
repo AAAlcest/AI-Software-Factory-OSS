@@ -25,6 +25,9 @@ factory-instance/
 │   ├── beacon-environment-current.md
 │   ├── beacon-environment-legacy.md
 │   └── atlas-governance-transition-current.md
+├── audit/
+│   ├── README.md
+│   └── SAMPLE_AUDIT_REPORT.md
 ├── project-cockpit/
 │   ├── PROJECT_INSTRUCTIONS.md
 │   ├── FACTORY_OVERVIEW.md
@@ -70,6 +73,8 @@ The `project-cockpit/` directory demonstrates how a ChatGPT Project can present 
 
 The V1.3 `work_items.json` plus `checkpoints/` fixtures demonstrate a separate idea: one bounded Project-visible work item can point to the current Issue/PR surface, current checkpoint, last evidence, superseded checkpoints, Human gate and next action without copying a long discussion thread.
 
+The [`audit/`](audit/README.md) directory adds a V1.4-style **Fresh Factory Audit** example. It uses a deliberately fictional counterfactual drift scenario to show how a fresh evaluator can report missing project visibility, frozen-work resurrection, superseded direction, stale state propagation, stale recovery queues and orphaned draft work surfaces without copying any private Factory incident.
+
 Generate an executable cockpit or Project-ready management export with:
 
 ```sh
@@ -88,6 +93,7 @@ This browseable instance complements, rather than replaces, `scripts/create_demo
 - this directory is for **reading and understanding**;
 - the cockpit is for **derived overview/recovery/task context**;
 - the work-item Project view is for **bounded active-work visibility and recovery**;
+- the audit example is for **fresh-context semantic consistency/recoverability review**, not automatic remediation;
 - the demo generator is for **creating deterministic disposable fixtures and running validation**.
 
 Nothing in this example grants real authority. Treat all identities, decisions, evidence labels and correspondence as fictional.
