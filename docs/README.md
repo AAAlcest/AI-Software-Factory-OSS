@@ -14,6 +14,7 @@
 - [ChatGPT Project cockpit](CHATGPT_PROJECT_COCKPIT.md).
 - [Workstream recovery and supersession-aware cockpit](WORKSTREAM_RECOVERY.md).
 - [Work-item checkpoints and Project-ready visibility](WORK_ITEMS_AND_PROJECT_VIEW.md).
+- [Fresh Factory Audit](FRESH_FACTORY_AUDIT.md) for fresh-context consistency, recoverability and governance-drift inspection.
 - [Skills layer](SKILLS_LAYER.md) and [token-efficiency objective](TOKEN_EFFICIENCY.md).
 - [GitHub-native workflow](GITHUB_NATIVE_WORKFLOW.md).
 - [Correspondence and CC](CORRESPONDENCE_AND_CC.md), [routing contract](REPLY_ROUTING_CONTRACT.md).
