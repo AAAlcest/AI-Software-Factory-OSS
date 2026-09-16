@@ -15,12 +15,12 @@
 
 ## 先把精确版本拿到本地
 
-当前正式发布版本是 `v1.4.0`。如果你希望结果可复现，不要直接假定未来某个
-`main` 仍然等于这个版本。
+`1.5.0` 版本线应使用精确 `v1.5.0` tag；如果你希望结果可复现，不要直接假定
+未来某个 `main` 仍然等于这个版本。
 
 ### 不用 Git：Source ZIP
 
-打开 [v1.4.0 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.4.0)，
+打开 [v1.5.0 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.5.0)，
 下载 **Source code (zip)**，解压后在该目录打开终端。
 
 ### 使用 Git
@@ -28,7 +28,7 @@
 ```sh
 git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
 cd AI-Software-Factory-OSS
-git checkout v1.4.0
+git checkout v1.5.0
 ```
 
 先确认版本：
@@ -43,7 +43,7 @@ Windows PowerShell：
 Get-Content VERSION
 ```
 
-应看到 `1.4.0`。
+应看到 `1.5.0`。
 
 ## 运行一套完全虚构的工厂
 
@@ -95,5 +95,5 @@ python -B scripts/generate_project_view.py --root examples/factory-instance --ou
 也可以从 GitHub **New issue** 直接选择对应模板。审计 findings 只作为后续处置证据，
 不会自动授权修改、merge、release、部署或生产操作。
 
-`v1.4.0` 已正式发布。历史 fresh-Agent、隐私与后续版本证据各自只对记录的精确目标
-和范围负责；不要把一个旧验收结果扩张成对未来 `main` 的 blanket approval。
+历史 fresh-Agent、隐私与后续版本证据各自只对记录的精确目标和范围负责；不要把一个旧验收结果
+扩张成对未来 `main` 的 blanket approval。

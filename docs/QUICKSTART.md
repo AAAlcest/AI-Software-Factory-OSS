@@ -8,12 +8,12 @@ no example appoints its reader. Unconfigured values remain unknown.
 
 ## 2. Get an exact release locally
 
-For the current published release, use `v1.4.0` rather than an arbitrary future
-`main` when you want reproducible results.
+For the `1.5.0` release line, use the exact `v1.5.0` tag rather than an arbitrary
+future `main` when you want reproducible results.
 
 ### No Git: GitHub Source ZIP
 
-Open the [v1.4.0 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.4.0),
+Open the [v1.5.0 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.5.0),
 download **Source code (zip)**, extract it, and open a terminal in the extracted
 repository directory.
 
@@ -22,7 +22,7 @@ repository directory.
 ```sh
 git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
 cd AI-Software-Factory-OSS
-git checkout v1.4.0
+git checkout v1.5.0
 ```
 
 Confirm the version before continuing:
@@ -37,7 +37,7 @@ On Windows PowerShell:
 Get-Content VERSION
 ```
 
-It should print `1.4.0` for this release.
+It should print `1.5.0` for this release.
 
 ## 3. Run the fictional exercise locally
 
