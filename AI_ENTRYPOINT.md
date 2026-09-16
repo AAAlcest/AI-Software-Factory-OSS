@@ -11,7 +11,35 @@ and a synthetic exercise. A real task chooses the context. Missing authority
 never causes fallback to a convenient demo identity. `factory.yaml` and role
 profiles are unconfigured defaults, not real assignments.
 
-## 2. Initial boot order
+## 2. Choose the boot depth
+
+Use the **full initial boot** when the Factory/instance is new to you, the role or
+project is unclear, authority/environment may have changed, the task crosses
+projects or retained gates, or an audit/recovery exercise explicitly requires the
+broader model.
+
+Use the **minimal safe boot** only when all of these are already explicit and
+current: selected operating instance, selected project/role, bounded work surface,
+and no known authority/environment conflict. Minimal boot is a progressive-
+disclosure path, not permission to skip authority checks.
+
+### Minimal safe boot for a bounded scoped task
+
+1. Read the selected instance's current authority/state pointer and the specific
+   project/role state needed for the task.
+2. Read the active Issue/PR/work item, current checkpoint/CURRENT pointer and last
+   relevant evidence. If a cockpit/Project view exists, use it only as a derived
+   index to those canonical sources.
+3. Verify exact Git/ref and environment facts that materially affect the task.
+4. Identify retained Human gates, blockers, unresolved facts and next safe action.
+5. Expand into mechanism docs, older history or additional projects only when a
+   concrete dependency, conflict, missing fact, authority change or audit need is
+   discovered.
+
+If any prerequisite is unknown, fall back to the full initial boot or stop the
+affected action fail-closed.
+
+## 3. Full initial boot order
 
 1. Read [the short model](docs/AI_FACTORY_IN_30_SECONDS.md),
    [roles](docs/ROLES_AND_AUTHORITY.md) and [role setup](docs/RECOMMENDED_ROLE_SETUP.md).
@@ -37,7 +65,7 @@ For a real successor, read the finalized predecessor record unchanged, then
 reconcile newer state. For same-incumbent recovery do not fabricate a new tenure.
 For a first incumbent do not fabricate a predecessor handoff.
 
-## 3. Default operational picture
+## 4. Default operational picture
 
 Human owner -> ChatGPT management/staff -> Codex engineering/project execution.
 The deputy may combine compatible staff duties, while the Development Lead may
@@ -49,7 +77,7 @@ The optional [Skills layer](docs/SKILLS_LAYER.md) can compress Factory/project/r
 context and build bounded Codex task packages. Skills reduce repeated context; they
 do not grant authority or replace freshness checks.
 
-## 4. Continue without re-onboarding every turn
+## 5. Continue without re-onboarding every turn
 
 After initial boot, refresh new/unprocessed messages and changed relevant files.
 Do not repeat a full Factory audit, old handoffs or unrelated office records for
@@ -62,7 +90,7 @@ kickoff/received/ACK-to-ACK cycles and duplicate mail records. A short Human-fac
 wake-up may identify the next action role, repository and Issue/PR. A posted
 comment does not prove another chat or worker was dispatched.
 
-## 5. Boundaries and final acceptance
+## 6. Boundaries and final acceptance
 
 Issues coordinate decisions; PRs hold exact candidate changes and evidence.
 Review intensity is proportional to risk and explicit authority. A Human may
@@ -74,8 +102,9 @@ rename real correspondence/handoffs into distributable fixtures. No implicit
 credentials, production/destructive, external-company, license or publication
 authority exists. Unknown facts remain UNKNOWN and the affected action stops.
 
-For this candidate's product scope see [V1 status](docs/V1_BASELINE_STATUS.md).
-Use [the generated demo](docs/QUICKSTART.md) for an offline exercise and
+For current product scope see [V1 status](docs/V1_BASELINE_STATUS.md).
+Use [the generated demo](docs/QUICKSTART.md) for an offline exercise,
 [the evaluator runbook](docs/COLD_TAKEOVER_EXERCISE.md) for actual fresh-Agent
-validation. Final privacy/public-safety review and Human release decisions remain
-separate from tests and staging commits.
+validation, and [Fresh Factory Audit](docs/FRESH_FACTORY_AUDIT.md) for a read-only
+consistency/recoverability audit. Final privacy/public-safety review and Human
+release decisions remain separate from tests and staging commits.
