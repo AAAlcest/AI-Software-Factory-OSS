@@ -16,13 +16,16 @@ toolchain and improve the practical return from the same token and subscription
 budget. Actual savings depend on workload, model choice and how the Factory is
 configured; this is an operating-efficiency goal, not a guaranteed quota result.
 
-**Version 1.0.0 is the first public release line of AI Software Factory OSS.**
-The repository is public, distributed under the [MIT License](LICENSE), and uses
-GitHub Private Vulnerability Reporting without publishing a personal email address.
-Completed engineering, fresh-Agent and privacy results remain pinned to their
-reviewed targets in Issue #1; later public-surface documentation changes use
-proportionate delta checks rather than pretending those acceptance steps reran.
-See [1.0.0 release notes](docs/releases/1.0.0.md) and [security reporting](SECURITY.md).
+**Version 1.4.0 is the current delivery line of AI Software Factory OSS.** It
+consolidates the Project cockpit and skills, executable derived views and drift
+checks, work-item checkpoints and bounded long-thread recovery, and the Fresh
+Factory Audit pattern. Creating the `v1.4.0` tag and GitHub Release is a separate
+Human-gated publication action. The historical `v1.0.0` release and its exact
+fresh-Agent/privacy evidence remain pinned to their original reviewed targets and
+are not presented as having rerun on later bytes.
+See [1.4.0 release notes](docs/releases/1.4.0.md),
+[1.0.0 historical release notes](docs/releases/1.0.0.md) and
+[security reporting](SECURITY.md).
 
 ## Start with the useful path
 
@@ -120,7 +123,10 @@ Configurable Human/executive/role bundles; offices and project rooms; current an
 pending records; Issue meetings and exact-candidate PRs; optional one-body mail,
 Reply-All and visibility-only CC; Console/open-loop records; Work result receipts;
 first appointment, same-incumbent recovery and authorized true-succession examples;
-repeatable software checks; and a nine-variant package for eight cold-start cases.
+repeatable software checks; a nine-variant cold-start package; Project cockpit and
+skills; executable cockpit/Project-view generation and drift checks; work-item
+checkpoints for bounded long-thread recovery; and a reusable Fresh Factory Audit
+pattern with synthetic governance-drift examples.
 
 This is not an autonomous scheduler, authorization service, production deployment
 system or authenticated mail transport. Its helpers check declared consistency;
