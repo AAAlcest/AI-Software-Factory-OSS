@@ -8,14 +8,17 @@
 
 通过让 ChatGPT 负责规划、治理、任务路由与评审协调，并把 Codex 尽量留给真正需要实现能力的开发工作，这套 Factory 的目标是显著减少不必要的 Codex token 消耗。再结合可复用的 skills 与角色化工作流，可以提高整套 AI 工具链的利用率，并让相同的 token 与订阅预算产生更高的实际回报。具体节省幅度取决于任务类型、模型选择与 Factory 配置方式；这是一个运营效率目标，不是固定额度承诺。
 
-**1.4.0 是 AI Software Factory OSS 当前的交付版本线。** 它把 Project cockpit 与 skills、可执行的派生视图与 drift 检查、work-item checkpoint 与有边界的长线程恢复，以及 Fresh Factory Audit 机制整合到同一个版本边界。创建 `v1.4.0` tag 与 GitHub Release 仍是单独的 Human-gated 发布动作。历史 `v1.0.0` 以及它对应的 fresh-Agent／隐私验收证据继续只对原先的精确目标负责，不会被表述成在后续字节上重新执行过。
+**1.4.0 是 AI Software Factory OSS 当前已正式发布的版本线。** 它把 Project cockpit 与 skills、可执行的派生视图与 drift 检查、work-item checkpoint 与有边界的长线程恢复，以及 Fresh Factory Audit 机制整合到同一个版本边界。不可移动的 `v1.4.0` tag 已指向 Issue #19 记录的精确发布 commit；后续不要移动这个 tag。历史 `v1.0.0` 以及它对应的 fresh-Agent／隐私验收证据继续只对原先的精确目标负责，不会被表述成在后续字节上重新执行过。
 
 发布说明见 [1.4.0 Release Notes](docs/releases/1.4.0.md) 与 [1.0.0 历史 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
 
-## 快速开始
+## 从这里开始
 
-Human 用户可先看：[快速开始](docs/QUICKSTART.md)、[中文上手说明](docs/QUICKSTART_ZH.md) 和 [推荐的 ChatGPT + Codex 角色配置](docs/RECOMMENDED_ROLE_SETUP.md)。
-AI Agent 应先读 [AGENTS.md](AGENTS.md)，再读 [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md)。
+**第一次使用的 Human：**先看 [快速开始](docs/QUICKSTART_ZH.md)，再看 [推荐的 ChatGPT + Codex 角色配置](docs/RECOMMENDED_ROLE_SETUP.md)。如果暂时不想运行脚本，可先浏览 [合成 Factory 实例](examples/factory-instance/README.md) 看整体结构。
+
+**AI Agent：**先读 [AGENTS.md](AGENTS.md)，再读 [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md)。如果当前已经有明确的项目、角色和低风险小任务，应使用其中的 minimal safe boot，而不是每次都重读全部机制文档。
+
+**要审计一个运行中的 Factory：**使用 [Fresh Factory Audit](docs/FRESH_FACTORY_AUDIT.md)，也可以直接从 GitHub **New issue** 里选择 Fresh Factory Audit 模板。
 
 推荐配置：**ChatGPT 负责 Factory 管理与职能岗位；Codex 负责项目开发、Development Lead 与 Console。** 副厂长可以兼任记录、厂务维护与基础设施规划等兼容职责。独立验收应与作者分离；Work 应谨慎使用，不应用于普通状态同步或 ACK 循环。这是一种可配置的协作建议，不是厂商权限规则。
 
@@ -25,7 +28,7 @@ AI Agent 应先读 [AGENTS.md](AGENTS.md)，再读 [AI_ENTRYPOINT.md](AI_ENTRYPO
 
 [Skill contracts](skills/README.md) 统一 overview、recovery、handoff、health 与 task-packaging 的输入输出规则；[Token 效率设计](docs/TOKEN_EFFICIENCY.md) 给出可重复的对比方法，不承诺固定节省比例。
 
-可直接浏览虚构实现：[`examples/factory-instance/project-cockpit`](examples/factory-instance/project-cockpit/PROJECT_INSTRUCTIONS.md)。
+仓库里直接可浏览的 cockpit 是**静态教学快照**。它自己的 [Project instructions](examples/factory-instance/project-cockpit/PROJECT_INSTRUCTIONS.md) 会说明：如果要看当前 schema-2 的最新输出，应运行当前 generator 生成新的 cockpit，而不是把旧静态快照当成最新完整输出。
 
 ## Fresh Factory Audit
 
@@ -41,7 +44,7 @@ AI Agent 应先读 [AGENTS.md](AGENTS.md)，再读 [AI_ENTRYPOINT.md](AI_ENTRYPO
 
 ## 试用集成式虚构 Factory
 
-需要 Python 3.10+；这些本地演练不需要第三方 Python 依赖、模型 API Key 或云部署。
+需要 Python 3.10+；这些本地演练不需要第三方 Python 依赖、模型 API Key 或云部署。[中文上手说明](docs/QUICKSTART_ZH.md) 已加入无 Git 的 Source ZIP、Git 精确 tag checkout，以及 Windows `py -3` 的第一条命令路径。
 
 ```sh
 python -B scripts/create_demo.py --destination ../example-factory --case first

@@ -1,6 +1,6 @@
 # V1 public baseline
 
-Version: see [VERSION](../VERSION). The current delivery line is **1.4.0**.
+Version: see [VERSION](../VERSION). The current published release line is **1.4.0**.
 The repository is public, distributed under MIT, and uses GitHub Private
 Vulnerability Reporting. Exact Git targets, executed checks, review evidence and
 release readbacks remain on the corresponding repository Issues/PRs rather than
@@ -72,12 +72,17 @@ Later feature evidence remains scoped to the corresponding work surfaces:
 - V1.3: Issue #15 and PR #16; CI run `35021376274`; fresh-context recovery
   acceptance comment `5687990205`;
 - V1.4: Issue #17 and PR #18; CI run `35026380398` on Ubuntu/Windows ×
-  Python 3.10/3.13.
+  Python 3.10/3.13;
+- v1.4.0 release consolidation/publication: Issue #19 and PR #20; RC CI run
+  `35058489632`; final tag/release readback on the exact published target.
 
 The V1.3 fresh-context result demonstrates bounded recovery for that accepted
-synthetic work-item/checkpoint path. It is not described as a full new privacy
-review or a blanket fresh-agent certification of every later V1.4 documentation
-byte.
+synthetic work-item/checkpoint path. The post-release v1.4.0 Fresh product
+acceptance recorded `PASS_WITH_FINDINGS`: cold recovery, bounded Codex handoff and
+Fresh Factory Audit usability passed without whole-history replay or authority
+confusion, while discoverability/onboarding findings were retained for later
+productization. Neither result is described as a blanket privacy certification of
+all future `main` bytes.
 
 ## Current release line
 
@@ -89,17 +94,18 @@ Current release decisions and boundaries:
   email is published. See [SECURITY.md](../SECURITY.md).
 - Repository visibility: **Public**.
 - Historical release tag: `v1.0.0`, immutable and never to be moved.
-- `v1.4.0` tag / GitHub Release: separate Human-gated publication actions; when
-  published, the tag must point to the exact final release commit prepared by the
-  release-candidate flow.
+- Current published tag: `v1.4.0` ->
+  `15f5c4c6b4a8b325385c3b7a0d4c10ccd790858f`; it must not be moved after
+  publication.
+- GitHub Release: `AI Software Factory OSS 1.4.0`, published as the latest release.
 - Release notes: [1.4.0](releases/1.4.0.md) and historical
   [1.0.0](releases/1.0.0.md).
 
-The release-candidate coordination surface is Issue #19. Its exact candidate SHA,
-current automated CI and final Human publication disposition are the canonical
-release evidence for 1.4.0.
+Issue #19 is the canonical release-consolidation/publication evidence surface for
+1.4.0. Its RC SHA, automated CI, explicit Human publication authorization, exact
+tag target and final readback are historical release evidence.
 
 Earlier slice-specific reviews remain historical scoped evidence, not blanket
-approval of later bytes. Release consolidation reuses accepted evidence only where
-its target and scope still apply, while requiring current CI and proportionate
-public-surface checks for the exact candidate.
+approval of later bytes. Later `main` documentation/productization changes must use
+current proportionate validation and must not move the immutable published tag or
+pretend historical fresh-Agent/privacy evidence reran.
