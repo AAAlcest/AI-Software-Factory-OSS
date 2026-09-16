@@ -16,14 +16,15 @@ toolchain and improve the practical return from the same token and subscription
 budget. Actual savings depend on workload, model choice and how the Factory is
 configured; this is an operating-efficiency goal, not a guaranteed quota result.
 
-**Version 1.4.0 is the current published release line of AI Software Factory OSS.**
-It consolidates the Project cockpit and skills, executable derived views and drift
-checks, work-item checkpoints and bounded long-thread recovery, and the Fresh
-Factory Audit pattern. The immutable `v1.4.0` tag points to the exact published
-release commit recorded in Issue #19; do not move it. Historical `v1.0.0` evidence
-remains pinned to its original reviewed targets and is not presented as having
-rerun on later bytes.
-See [1.4.0 release notes](docs/releases/1.4.0.md),
+**Version 1.5.0 is the current repository delivery line of AI Software Factory OSS.**
+It keeps the v1.4 bounded-recovery/audit model and adds first-use productization:
+clearer Human/AI/audit routing, exact-release local acquisition, Windows-friendly
+first-run guidance, a minimal safe AI boot, explicit static-cockpit labeling and a
+native Fresh Factory Audit Issue entry. Published-release status is authoritative
+on GitHub Releases and the release coordination Issue; historical tags are never
+moved to follow later `main` changes.
+See [1.5.0 release notes](docs/releases/1.5.0.md),
+[1.4.0 historical release notes](docs/releases/1.4.0.md),
 [1.0.0 historical release notes](docs/releases/1.0.0.md) and
 [security reporting](SECURITY.md).
 
@@ -137,8 +138,9 @@ Reply-All and visibility-only CC; Console/open-loop records; Work result receipt
 first appointment, same-incumbent recovery and authorized true-succession examples;
 repeatable software checks; a nine-variant cold-start package; Project cockpit and
 skills; executable cockpit/Project-view generation and drift checks; work-item
-checkpoints for bounded long-thread recovery; and a reusable Fresh Factory Audit
-pattern with synthetic governance-drift examples.
+checkpoints for bounded long-thread recovery; a reusable Fresh Factory Audit
+pattern with synthetic governance-drift examples; and the V1.5 first-use routing,
+release-acquisition, minimal-safe-boot and native-audit-entry improvements.
 
 This is not an autonomous scheduler, authorization service, production deployment
 system or authenticated mail transport. Its helpers check declared consistency;
