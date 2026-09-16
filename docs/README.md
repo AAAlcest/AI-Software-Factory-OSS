@@ -27,5 +27,6 @@
 
 - [Cold-takeover procedure](COLD_TAKEOVER_EXERCISE.md).
 - [V1 scope and status](V1_BASELINE_STATUS.md).
+- [1.4.0 release notes](releases/1.4.0.md) and historical [1.0.0 release notes](releases/1.0.0.md).
 - [Privacy standard](PUBLIC_PRIVACY_STANDARD.md).
 - [Publication checklist](PUBLICATION_CHECKLIST.md).
