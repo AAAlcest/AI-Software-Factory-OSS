@@ -16,22 +16,30 @@ toolchain and improve the practical return from the same token and subscription
 budget. Actual savings depend on workload, model choice and how the Factory is
 configured; this is an operating-efficiency goal, not a guaranteed quota result.
 
-**Version 1.4.0 is the current delivery line of AI Software Factory OSS.** It
-consolidates the Project cockpit and skills, executable derived views and drift
+**Version 1.4.0 is the current published release line of AI Software Factory OSS.**
+It consolidates the Project cockpit and skills, executable derived views and drift
 checks, work-item checkpoints and bounded long-thread recovery, and the Fresh
-Factory Audit pattern. Creating the `v1.4.0` tag and GitHub Release is a separate
-Human-gated publication action. The historical `v1.0.0` release and its exact
-fresh-Agent/privacy evidence remain pinned to their original reviewed targets and
-are not presented as having rerun on later bytes.
+Factory Audit pattern. The immutable `v1.4.0` tag points to the exact published
+release commit recorded in Issue #19; do not move it. Historical `v1.0.0` evidence
+remains pinned to its original reviewed targets and is not presented as having
+rerun on later bytes.
 See [1.4.0 release notes](docs/releases/1.4.0.md),
 [1.0.0 historical release notes](docs/releases/1.0.0.md) and
 [security reporting](SECURITY.md).
 
-## Start with the useful path
+## Start here
 
-Humans: [quickstart](docs/QUICKSTART.md), [中文上手说明](docs/QUICKSTART_ZH.md),
-and [recommended ChatGPT + Codex roles](docs/RECOMMENDED_ROLE_SETUP.md).
-AI agents: [AGENTS.md](AGENTS.md), then [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md).
+**New Human user:** open the [Quickstart](docs/QUICKSTART.md), then the
+[recommended ChatGPT + Codex role setup](docs/RECOMMENDED_ROLE_SETUP.md). If you
+want to understand the shape before running anything, browse the
+[synthetic Factory instance](examples/factory-instance/README.md).
+
+**AI Agent:** read [AGENTS.md](AGENTS.md), then [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md).
+For an already-selected, low-risk bounded task, use the minimal safe boot described
+there instead of rereading the entire mechanism set.
+
+**Want to audit an operating Factory:** use [Fresh Factory Audit](docs/FRESH_FACTORY_AUDIT.md)
+or choose the Fresh Factory Audit template from GitHub **New issue**.
 
 Recommended setup: **ChatGPT for Factory staff and management; Codex for project
 development, Development Lead and Console.** The deputy may combine records,
@@ -49,8 +57,10 @@ The [skill contracts](skills/README.md) standardize overview, recovery, handoff,
 health and task packaging; the [token-efficiency design](docs/TOKEN_EFFICIENCY.md)
 explains how to measure the benefit without promising a fixed saving percentage.
 
-Browse the fictional implementation under
-[`examples/factory-instance/project-cockpit`](examples/factory-instance/project-cockpit/PROJECT_INSTRUCTIONS.md).
+The checked-in fictional cockpit is a **static teaching snapshot**. Its own
+[Project instructions](examples/factory-instance/project-cockpit/PROJECT_INSTRUCTIONS.md)
+explain that current schema-2 output should be generated when you want the latest
+work-item/checkpoint package shape.
 
 ## Fresh Factory Audit
 
@@ -81,7 +91,9 @@ deterministic disposable fixtures for validation.
 ## Try the integrated fictional Factory
 
 Python 3.10+; no third-party Python dependencies, model API key or cloud deployment
-is required for these local exercises. From this repository:
+is required for these local exercises. The [Quickstart](docs/QUICKSTART.md) shows
+how to get an exact release locally with or without Git, including Windows-friendly
+commands. From a checkout of this repository:
 
 ```sh
 python -B scripts/create_demo.py --destination ../example-factory --case first
