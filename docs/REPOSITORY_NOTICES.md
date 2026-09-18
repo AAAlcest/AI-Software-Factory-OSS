@@ -1,9 +1,11 @@
 # Repository notices and documentation-change journals
 
-Status: CURRENT design contract. Executable journal: NOT_IMPLEMENTED by this document.
-Owner: OSS Project Manager for the contract; Development Lead for implementation;
+Status: CURRENT design contract. See the [recorder guide](DOCUMENTATION_JOURNAL.md)
+for implemented behavior, limits and the separate live-activation evidence requirement.
+Owner: OSS Project Primary for this contract and its journal implementation;
 each document's logical owner for its content and declared change rationale.
-Work surface: [Issue #25](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/25).
+Automatic journal work: [Issue #28](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28).
+Product-documentation maintenance: [Issue #25](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/25).
 Live OSS notice: [Issue #26](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26).
 
 ## One repository, one notice
@@ -65,11 +67,12 @@ current replacements; do not manufacture missing history.
 ## Shared maintenance and public access
 
 All authorized document owners participate. The PM maintains scope/navigation and
-acceptance; Development Lead owns technical execution; Console tracks visibility
-and routes bounded work. Engineering, data and infrastructure roles update the
-manuals coupled to their changes. Reviewers add scoped findings without becoming
-the content owner. Large inventory/backfill work should be delegated, not repeatedly
-reconstructed in one management chat. No attendance, ACK or no-change replies.
+acceptance; technical execution follows the owner of the actual Issue, not an
+implicit delegation. Console tracks visibility and routes explicitly assigned work.
+Engineering, data and infrastructure roles update the manuals coupled to their changes.
+Reviewers add scoped findings without becoming the content owner. Large inventory/
+backfill work should be delegated where appropriate, not repeatedly reconstructed in
+one management chat. No attendance, ACK or no-change replies.
 
 For public repositories, a locked notice can keep ordinary discussion elsewhere.
 GitHub allows owners/collaborators and people with write access to comment on a
@@ -84,7 +87,7 @@ vulnerabilities use the repository's private security-reporting route.
 
 Human reminders are a fallback, not the durable event detector. Implement this as
 repository-owned GitHub Actions, not a chat that must remain online. This document
-specifies the required behavior; it does not claim such a workflow already runs.
+specifies the required behavior; a real activation still needs the evidence below.
 
 ### Observation boundary and triggers
 
@@ -117,18 +120,21 @@ Unknown test or review state stays UNKNOWN/NOT_RUN; a commit event is not a PASS
 Escape untrusted titles/paths and avoid unwanted mentions. Log links/metadata, not
 document bodies, diffs, emails, secrets or private cross-repository content.
 
-Use stable keys such as repository + MERGED + commit SHA, or repository + CANDIDATE
-+ PR number + head SHA. Repeated runs must not duplicate entries. Confirm the
-origin of bot-owned markers; an arbitrary comment must not forge the cursor.
-Batch long file lists with exact evidence links and explicit coverage counts, not
-silent truncation. Humans may append rationale/corrections without duplicating the
-bot's mechanical inventory.
+Use repository + integrated commit SHA for integrated revisions. Candidate keys
+include the normalized snapshot and previous confirmed event, not head SHA alone:
+observed A-to-B-to-A, same-head declaration/target corrections and cleared document
+diffs must remain distinguishable. Base-tip motion alone is not a posting reason.
+Repeated runs must not duplicate entries. Confirm the origin of bot-owned markers;
+an arbitrary comment must not forge the cursor. Batch long file lists with exact
+evidence links and explicit coverage counts, not silent truncation. Humans may
+append rationale/corrections without duplicating the bot's mechanical inventory.
 
 ### Reliability and security
 
-Serialize writes and paginate API reads. Advance the cursor only after required
-records have been successfully posted and read back. A failed post must fail the
-run visibly and leave recoverable work, not silently skip to the newest commit.
+Serialize writes and paginate API reads. Advance covered progress only after
+required records have been posted and read back. Keep exact pending observations
+for replay. A failure in one lane must remain visible without blocking independent
+new records; observed/scanned progress is not the same as complete coverage.
 Reconciliation must survive coalesced events, retries, partial batches and a docs
 change followed by a revert. Compare individual revisions, not only the final net
 diff. An absent/rewritten baseline fails closed with a coverage warning.
@@ -139,11 +145,13 @@ explicitly, including root Markdown/entrypoints, docs, templates and doc assets;
 retain both old and new paths when a rename crosses the watched boundary.
 
 Use repository-scoped GITHUB_TOKEN with contents/pull-requests read and issues write
-only as needed; no PAT, production secret or cross-repository token. The privileged
-writer runs trusted default-branch code only. If using pull_request_target, never
-check out the PR head, execute PR text or consume fork artifacts as instructions.
-Use no issue-comment trigger for the writer itself. Keep third-party actions pinned
-and do not have the journal approve, merge, release or deploy.
+only as needed; actions read is used for workflow provenance. No PAT, production
+secret or cross-repository token. The privileged writer runs trusted default-branch
+code only. The selected implementation separates an unprivileged PR signal from
+that writer; it does not use pull_request_target. Do not execute PR text or consume
+fork artifacts/caches as instructions. Use no issue-comment trigger for the writer
+itself. Keep third-party actions pinned; the journal cannot approve, merge, release
+or deploy.
 
 GitHub event delivery/scheduling is not an infallible queue: schedules can be delayed
 or dropped and public-repository schedules can be disabled after inactivity.
@@ -174,6 +182,6 @@ Issue because only the notice or design document exists.
 
 每仓一面公告墙：正文放导航，评论记变更。目录不等于手册，已提交不等于已合并，
 已合并不等于已部署，自动记录不等于验收通过。自动化采用“事件触发 + 定期补漏 +
-可手动重放 + 去重”，不依赖维护者记得回复。程序未实现并真实跑通前，必须标明
-NOT_ACTIVATED；本地未提交的编辑不能算已记录。具体执行仍由 #25 的 Development Lead
-负责，本页不宣称自动程序已经上线。
+可手动重放 + 去重”，不依赖维护者记得回复。程序未真实跑通前，必须标明
+NOT_ACTIVATED；本地未提交的编辑不能算已记录。自动记录由 OSS 在 #28 负责，
+#25 只保留产品文档整理与维护规范，不再向 Console 并行派发自动化任务。
