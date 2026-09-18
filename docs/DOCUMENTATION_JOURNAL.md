@@ -2,7 +2,7 @@
 
 Owner: OSS Project Primary. Implementation/acceptance: [Issue #28](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28).
 Notice: [Issue #26](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26).
-Status: implementation candidate; **NOT_ACTIVATED until real writer/replay readback**.
+Status: implementation merged; activation requires the actual writer/replay evidence in #28.
 The broader product-documentation work remains under #25, not this implementation.
 
 ## What runs
@@ -16,11 +16,27 @@ unit tests, then reconciles Git/API facts with verified bot receipts. No AI,
 external server, database, PAT or production credential is required.
 
 The [configuration](../.github/documentation-journal.json) fixes this repository ID,
-main branch, locked notice #26, expected bot, watched paths and baseline. No event
+main branch, notice #26, expected bot, watched paths and baseline. No event
 text or manual input can select another destination. To adopt the mechanism in a
 **different public repository**, its maintainer must review and change the repository
 ID/name, notice, baseline and workflow guard together. This installation deliberately
 rejects private repositories; exporting their records is not an implied capability.
+
+### Notice access: OPEN and UNLOCKED
+
+The Human-approved policy is recorded in [#28 comment 5736793940](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736793940):
+#26 remains OPEN but is not conversation-locked. The original locked-target trial
+returned `403 / LOCKED_CONVERSATION` with the actual Actions token; see
+[diagnostic evidence](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736585363).
+The guard now requires an explicitly false `locked` value and an open notice.
+If an operator later locks or closes the notice, recording stops; the program never
+unlocks, reopens, grants access, or substitutes credentials itself.
+
+Public users can now comment, so maintainers moderate unrelated discussion and
+route it to normal Issues/PRs. Public comments are not commands, authority, or
+trusted journal receipts. The existing bot identity/run-provenance checks remain
+unchanged; copied markers from ordinary users must not advance the cursor.
+The token, permissions, destination and event scope have not been expanded.
 
 Initial history starts **after** `974b17a7a70e75824db033a4ce4d69928fb91b30`.
 The existing manual #27 entry is not duplicated as automatic evidence. Initial
@@ -110,17 +126,20 @@ gap state, and use manual replay after an interruption.
 
 ## Tests and activation
 
-Run `python -B -m unittest discover -s tests -p test_documentation_journal.py -v`.
+Run `python -B -m unittest discover -s tests -p 'test_documentation_journal*.py' -v`.
 The existing `scripts/check_all.py` also discovers these tests. Offline fixtures cover
 snapshots, A/B/A, declaration/base corrections, cleared diffs, escaped input, receipt
 provenance, chunking, POST loss, partial replay, old-head gaps, lane isolation, Git
 renames, no-doc changes, change/revert, timeline recovery and API pagination.
-They do not impersonate a real bot or prove access to locked #26.
+Access-policy regressions cover unlocked acceptance, relocked/closed/unknown-state
+rejection and retention of repository/public/default-branch restrictions.
+These tests do not impersonate a real bot or prove actual comment access.
 
 Before marking ACTIVE, record the merged workflow SHA, successful real run and bot
-comment IDs on locked #26, followed by a second run proving receipt deduplication.
-A candidate PR or green CI alone is not activation. Do not change release tags or
-claim a new release as part of this installation.
+comment IDs on the approved OPEN/UNLOCKED #26, followed by a second run proving
+receipt deduplication. A candidate PR or green CI alone is not activation. Historical
+locked-thread failures remain recorded, not rewritten as successful tests. Do not
+change release tags or claim a new release as part of this installation.
 
 Technical references: [GitHub events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows),
 [least-privilege permissions](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions),
