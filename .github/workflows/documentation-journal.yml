@@ -1,0 +1,51 @@
+name: Documentation journal
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: [Documentation journal signal]
+    types: [completed]
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Observe without writing comments
+        type: boolean
+        default: true
+permissions: {}
+concurrency:
+  group: documentation-journal-${{ github.repository_id }}-26
+  cancel-in-progress: false
+jobs:
+  record:
+    if: github.repository_id == '1358307744' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: read
+      issues: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: refs/heads/main
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13'
+      - name: Verify recorder before every write
+        run: python -B -m unittest discover -s tests -p test_documentation_journal.py -v
+      - name: Reconcile exact Git objects and verified receipts
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        shell: bash
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            python -B scripts/documentation_journal.py
+          else
+            python -B scripts/documentation_journal.py --apply
+          fi

@@ -1,0 +1,20 @@
+{
+  "repository": "AAAlcest/AI-Software-Factory-OSS",
+  "repository_id": 1358307744,
+  "default_branch": "main",
+  "notice_issue": 26,
+  "writer_login": "github-actions[bot]",
+  "baseline_sha": "974b17a7a70e75824db033a4ce4d69928fb91b30",
+  "since": "2026-09-18T19:33:42Z",
+  "paths": [
+    "*.md",
+    "docs/*",
+    "templates/*",
+    "skills/*",
+    "examples/*",
+    "schemas/*",
+    "profiles/*",
+    "factory.yaml",
+    ".github/ISSUE_TEMPLATE/*"
+  ]
+}
