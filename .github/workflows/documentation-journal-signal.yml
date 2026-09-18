@@ -1,0 +1,12 @@
+name: Documentation journal signal
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited, closed, ready_for_review, converted_to_draft]
+permissions: {}
+jobs:
+  signal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Signal only; no checkout, token use, artifact or cache
+        run: echo "Documentation journal reconciliation requested. This is not validation."
