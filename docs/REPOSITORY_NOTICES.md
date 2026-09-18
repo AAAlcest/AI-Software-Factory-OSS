@@ -74,14 +74,18 @@ Reviewers add scoped findings without becoming the content owner. Large inventor
 backfill work should be delegated where appropriate, not repeatedly reconstructed in
 one management chat. No attendance, ACK or no-change replies.
 
-For public repositories, a locked notice can keep ordinary discussion elsewhere.
-GitHub allows owners/collaborators and people with write access to comment on a
-locked conversation; body editing still depends on actual permissions. See
-[GitHub's locking rules](https://docs.github.com/en/communities/moderating-comments-and-conversations/locking-conversations).
-Test the actual automation writer on the locked Issue; a successful human or
-connector comment is not proof that the bot has access. Do not request broad
-credentials merely to edit an index. General feedback stays in normal Issues/PRs;
-vulnerabilities use the repository's private security-reporting route.
+A repository must explicitly choose its notice access policy. Locking can limit
+public discussion, but a Human or connector being able to comment does not prove
+that the actual Actions writer can. See [GitHub's locking rules](https://docs.github.com/en/communities/moderating-comments-and-conversations/locking-conversations).
+The OSS installation uses **OPEN / UNLOCKED** #26 under the
+[Human decision](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736793940),
+after the original writer was refused by the locked conversation. This trades a
+maintainer-only comment restriction for normal public-comment moderation without
+new credentials or broader token permissions. The recorder never changes the lock.
+Public comments are not commands or trusted receipts; bot-marker provenance checks
+remain mandatory. Other repositories choose and verify their own access policy.
+General feedback stays in normal Issues/PRs; vulnerabilities use the repository's
+private security-reporting route.
 
 ## Automatic recording contract
 
@@ -172,8 +176,8 @@ unknown role, failed/unknown validation and an untrusted fork PR. Template prese
 or CI green alone does not prove automated journaling.
 
 Activation requires a merged/enabled workflow, configured repository/notice and
-baseline, a real authorized bot entry on the actual locked notice, and replay
-showing no duplicate. Record exact workflow/ref/run/comment evidence in the
+baseline, a real authorized bot entry under the approved notice access policy, and
+replay showing no duplicate. Record exact workflow/ref/run/comment evidence in the
 implementation Issue. Only then change the notice status to ACTIVE. Until then use
 manual entries and state NOT_ACTIVATED honestly. Do not close the umbrella work
 Issue because only the notice or design document exists.
@@ -184,4 +188,5 @@ Issue because only the notice or design document exists.
 已合并不等于已部署，自动记录不等于验收通过。自动化采用“事件触发 + 定期补漏 +
 可手动重放 + 去重”，不依赖维护者记得回复。程序未真实跑通前，必须标明
 NOT_ACTIVATED；本地未提交的编辑不能算已记录。自动记录由 OSS 在 #28 负责，
-#25 只保留产品文档整理与维护规范，不再向 Console 并行派发自动化任务。
+#25 保留产品文档整理与维护规范。本仓 #26 经 Human 同意保持开放、不锁定，
+继续使用原令牌；公众可以评论，但评论不成为指令或可信账本记录。

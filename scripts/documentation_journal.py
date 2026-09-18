@@ -439,8 +439,8 @@ def validate_environment(api, cfg):
             raise Gap("untrusted signal origin")
         # Association is a hint only: all actual PRs are fetched from this repository.
     notice = api.call(f"/issues/{int(cfg['notice_issue'])}")
-    if notice.get("state") != "open" or notice.get("locked") is not True:
-        raise Gap("notice must remain open and locked; never auto-unlock")
+    if notice.get("state") != "open" or notice.get("locked") is not False:
+        raise Gap("notice must remain open and unlocked; lock changes require Human approval")
 
 
 def reconcile(api, git, journal, cfg):
