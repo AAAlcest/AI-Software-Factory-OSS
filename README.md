@@ -30,6 +30,10 @@ See [1.5.0 release notes](docs/releases/1.5.0.md),
 
 ## Start here
 
+**Documentation notice:** [repository index and change journal](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26).
+The opening body routes readers to canonical docs; comments record changes. See the
+[notice/journal contract](docs/REPOSITORY_NOTICES.md). Automatic recording is not yet activated.
+
 **New Human user:** open the [Quickstart](docs/QUICKSTART.md), then the
 [recommended ChatGPT + Codex role setup](docs/RECOMMENDED_ROLE_SETUP.md). If you
 want to understand the shape before running anything, browse the

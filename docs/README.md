@@ -1,5 +1,8 @@
 # Documentation index
 
+[Repository notice / 文档公告墙](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26)
+provides navigation and the documentation-change journal. Canonical documents remain here.
+
 ## Start and configure
 
 - [Quickstart](QUICKSTART.md) and [中文上手](QUICKSTART_ZH.md).
@@ -7,6 +10,7 @@
 - [Thirty-second mental model](AI_FACTORY_IN_30_SECONDS.md).
 - [Roles and authority](ROLES_AND_AUTHORITY.md).
 - [Instance boot protocol](INSTANCE_BOOT_PROTOCOL.md).
+- [Repository notice and automatic-journal contract](REPOSITORY_NOTICES.md), with a [notice starter](../templates/REPOSITORY_NOTICE.md). The contract is not an activated workflow.
 
 ## Operate and develop
 
