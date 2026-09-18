@@ -14,6 +14,8 @@
 
 ## 从这里开始
 
+**文档公告墙：**[仓库文档索引与变更记录](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26)。正文导航，评论记变更；规则见 [公告与自动记账契约](docs/REPOSITORY_NOTICES.md)。自动记录程序目前尚未启用。
+
 **第一次使用的 Human：**先看 [快速开始](docs/QUICKSTART_ZH.md)，再看 [推荐的 ChatGPT + Codex 角色配置](docs/RECOMMENDED_ROLE_SETUP.md)。如果暂时不想运行脚本，可先浏览 [合成 Factory 实例](examples/factory-instance/README.md) 看整体结构。
 
 **AI Agent：**先读 [AGENTS.md](AGENTS.md)，再读 [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md)。如果当前已经有明确的项目、角色和低风险小任务，应使用其中的 minimal safe boot，而不是每次都重读全部机制文档。
