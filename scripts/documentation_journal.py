@@ -64,6 +64,62 @@ def safe(value):
     return html.escape(value, quote=True).replace("@", "&#64;").replace("`", "&#96;").replace("[", "&#91;").replace("]", "&#93;").replace("*", "&#42;").replace("_", "&#95;").replace("|", "&#124;")
 
 
+def endpoint_category(path):
+    routes = (
+        (r"\A/issues/\d+/comments\Z", "ISSUE_COMMENTS"),
+        (r"\A/issues/comments/\d+\Z", "ISSUE_COMMENT"),
+        (r"\A/issues/\d+/timeline\Z", "ISSUE_TIMELINE"),
+        (r"\A/actions/runs/\d+\Z", "ACTIONS_RUN"),
+        (r"\A/actions/workflows/[A-Za-z0-9._-]+\Z", "ACTIONS_WORKFLOW"),
+        (r"\A/git/ref/heads/[A-Za-z0-9._/-]+\Z", "GIT_REF"),
+        (r"\A/commits/[0-9a-f]{40}(?:/pulls)?\Z", "COMMIT"),
+        (r"\A/pulls(?:/\d+)?(?:\?.*)?\Z", "PULL_REQUESTS"),
+        (r"\A\Z", "REPOSITORY"),
+    )
+    return next((name for pattern, name in routes if re.fullmatch(pattern, path)), "UNKNOWN")
+
+
+def http_diagnostic(exc, path):
+    try:
+        raw = exc.read(16_385)
+        body = json.loads(raw) if len(raw) <= 16_384 else {}
+    except (OSError, ValueError, UnicodeError):
+        body = {}
+    finally:
+        exc.close()
+    message = body.get("message", "") if isinstance(body, dict) else ""
+    message = message.casefold() if isinstance(message, str) and len(message) <= 512 else ""
+    remaining = exc.headers.get("X-RateLimit-Remaining") if exc.headers else None
+    if exc.code == 429 or remaining == "0" or "rate limit" in message:
+        classification = "RATE_LIMITED"
+    elif exc.code == 401:
+        classification = "AUTHENTICATION_REJECTED"
+    elif exc.code == 403 and (message == "locked" or
+                              re.search(r"\b(?:issue|discussion|conversation) is locked\b", message)):
+        classification = "LOCKED_CONVERSATION"
+    elif exc.code == 403 and message == "resource not accessible by integration":
+        classification = "PERMISSION_DENIED"
+    elif exc.code == 403:
+        classification = "FORBIDDEN"
+    elif exc.code == 404:
+        classification = "NOT_FOUND"
+    else:
+        classification = "UNKNOWN"
+    fields = [f"endpoint={endpoint_category(path)}", f"classification={classification}"]
+    specs = (
+        ("X-GitHub-Request-Id", "request_id", r"[A-Za-z0-9:-]{1,128}"),
+        ("X-Accepted-GitHub-Permissions", "accepted_permissions", r"[a-z_]+=(?:read|write)(?:; [a-z_]+=(?:read|write))*"),
+        ("X-RateLimit-Remaining", "rate_limit_remaining", r"[0-9]{1,20}"),
+        ("X-RateLimit-Reset", "rate_limit_reset", r"[0-9]{1,20}"),
+        ("Retry-After", "retry_after", r"[0-9]{1,10}"),
+    )
+    for header, name, pattern in specs:
+        value = exc.headers.get(header) if exc.headers else None
+        if isinstance(value, str) and len(value) <= 256 and re.fullmatch(pattern, value):
+            fields.append(f"{name}={value}")
+    return " ".join(fields)
+
+
 def pack(data):
     text = base64.urlsafe_b64encode(canonical(data).encode()).decode().rstrip("=")
     return f"<!-- documentation-journal:v1 {text} -->\n"
@@ -104,7 +160,7 @@ class API:
                     raise Gap("API response exceeds safe read budget")
                 return json.loads(raw)
         except urllib.error.HTTPError as exc:
-            raise Gap(f"API {method} HTTP {exc.code}") from None
+            raise Gap(f"API {method} HTTP {exc.code} {http_diagnostic(exc, path)}") from None
         except (OSError, ValueError) as exc:
             raise Gap(f"API {method} transport/decoding failure") from None
 

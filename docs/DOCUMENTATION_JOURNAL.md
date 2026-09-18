@@ -95,6 +95,13 @@ request a broader token, or silently advance state. Current explicit safety limi
 failure rather than silently truncating coverage; large installations need a reviewed
 state-sharding/batch design. Documentation file lists are split into 40-file parts.
 
+HTTP failures expose only a fixed endpoint category, allowlisted error class and
+strictly validated bounded diagnostic headers when present: GitHub request ID,
+accepted-permissions requirement, rate-limit remaining/reset and numeric Retry-After.
+Accepted permissions describe the endpoint requirement, not the token's actual
+grant. Tokens, request bodies, complete headers and raw response bodies are never
+printed; malformed or unrecognized responses remain `UNKNOWN`.
+
 For recovery: **Actions → Documentation journal → Run workflow**, keep `main`.
 `dry_run=true` checks without writing; set `false` for an authorized replay. All
 triggers share a non-cancelling writer concurrency group. GitHub can coalesce queued

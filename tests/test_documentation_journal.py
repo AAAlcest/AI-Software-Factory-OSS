@@ -1,5 +1,6 @@
 """Synthetic offline tests. No token, network, or real Issue write is performed."""
 import copy
+import io
 import importlib.util
 import json
 import os
@@ -7,6 +8,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+import urllib.error
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -113,6 +115,64 @@ class FakeGit:
         return A
     def timestamp(self, ref):
         return "2026-01-02T00:00:00+00:00"
+
+
+class APIDiagnosticTests(unittest.TestCase):
+    def failure(self, code, body, headers=None, path="/issues/26/comments", method="POST"):
+        api = m.API("example/factory", "secret-token")
+        error = urllib.error.HTTPError(
+            "https://api.github.com/repos/example/factory" + path,
+            code,
+            "failure",
+            headers or {},
+            io.BytesIO(json.dumps(body).encode()),
+        )
+        with patch.object(api.opener, "open", side_effect=error):
+            with self.assertRaises(m.Gap) as caught:
+                api.call(path, method, {"body": "private request"})
+        return str(caught.exception)
+
+    def test_locked_permission_diagnostic_is_bounded_and_safe(self):
+        text = self.failure(403, {"message": "Locked", "secret": "do-not-print"}, {
+            "X-GitHub-Request-Id": "ABCD:1234:EF56",
+            "X-Accepted-GitHub-Permissions": "issues=write; pull_requests=read",
+        })
+        self.assertEqual(text, "API POST HTTP 403 endpoint=ISSUE_COMMENTS classification=LOCKED_CONVERSATION request_id=ABCD:1234:EF56 accepted_permissions=issues=write; pull_requests=read")
+        self.assertNotIn("secret-token", text)
+        self.assertNotIn("do-not-print", text)
+        self.assertNotIn("private request", text)
+
+    def test_rate_limit_diagnostic_uses_only_validated_headers(self):
+        text = self.failure(403, {"message": "You have exceeded a secondary rate limit."}, {
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": "1780000000",
+            "Retry-After": "60",
+        })
+        self.assertEqual(text, "API POST HTTP 403 endpoint=ISSUE_COMMENTS classification=RATE_LIMITED rate_limit_remaining=0 rate_limit_reset=1780000000 retry_after=60")
+
+    def test_unknown_malicious_response_is_not_reflected(self):
+        text = self.failure(418, {"message": "token ghp_private@example.com\n@all"}, {
+            "X-GitHub-Request-Id": "ok\ninjected",
+            "X-Accepted-GitHub-Permissions": "issues=write; token=private",
+            "Retry-After": "1\nmalicious",
+        })
+        self.assertEqual(text, "API POST HTTP 418 endpoint=ISSUE_COMMENTS classification=UNKNOWN")
+        self.assertNotIn("ghp_", text)
+        self.assertNotIn("example.com", text)
+        self.assertNotIn("injected", text)
+
+    def test_missing_and_overlong_headers_are_omitted(self):
+        text = self.failure(403, {"message": "Resource not accessible by integration"}, {
+            "X-GitHub-Request-Id": "A" * 129,
+            "X-Accepted-GitHub-Permissions": "; ".join(["issues=write"] * 30),
+            "X-RateLimit-Remaining": "9" * 30,
+        })
+        self.assertEqual(text, "API POST HTTP 403 endpoint=ISSUE_COMMENTS classification=PERMISSION_DENIED")
+
+    def test_endpoint_category_never_echoes_arbitrary_path(self):
+        text = self.failure(404, {"message": "Not Found"}, path="/unknown/private@example.com", method="GET")
+        self.assertEqual(text, "API GET HTTP 404 endpoint=UNKNOWN classification=NOT_FOUND")
+        self.assertNotIn("example.com", text)
 
 
 def event(key="k"):
