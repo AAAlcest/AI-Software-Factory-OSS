@@ -14,6 +14,7 @@ provides navigation and the documentation-change journal. Canonical documents re
 
 ## Operate and develop
 
+- [Automatic documentation journal: implementation, limits and replay](DOCUMENTATION_JOURNAL.md).
 - [Facilities and surfaces](FACILITIES_AND_SURFACES.md).
 - [ChatGPT Project cockpit](CHATGPT_PROJECT_COCKPIT.md).
 - [Workstream recovery and supersession-aware cockpit](WORKSTREAM_RECOVERY.md).
