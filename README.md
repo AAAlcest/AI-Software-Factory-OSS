@@ -16,12 +16,18 @@ toolchain and improve the practical return from the same token and subscription
 budget. Actual savings depend on workload, model choice and how the Factory is
 configured; this is an operating-efficiency goal, not a guaranteed quota result.
 
-**Version 1.5.0 is the current repository delivery line of AI Software Factory OSS.**
+**Version 1.5.0 is the latest published release of AI Software Factory OSS.**
 It keeps the v1.4 bounded-recovery/audit model and adds first-use productization:
 clearer Human/AI/audit routing, exact-release local acquisition, Windows-friendly
 first-run guidance, a minimal safe AI boot, explicit static-cockpit labeling and a
-native Fresh Factory Audit Issue entry. Published-release status is authoritative
-on GitHub Releases and the release coordination Issue; historical tags are never
+native Fresh Factory Audit Issue entry.
+
+Current `main` also contains **post-v1.5, unreleased maintenance improvements**:
+a durable repository documentation notice, an active GitHub-native documentation
+change journal, and an opt-in self-setup path for public direct forks. These
+main-only improvements are not part of the immutable `v1.5.0` tag unless and until
+a later release publishes them. Published-release status is authoritative on
+GitHub Releases and the release coordination Issue; historical tags are never
 moved to follow later `main` changes.
 See [1.5.0 release notes](docs/releases/1.5.0.md),
 [1.4.0 historical release notes](docs/releases/1.4.0.md),
@@ -38,6 +44,13 @@ The opening body routes readers to canonical docs; comments record changes. See 
 [recommended ChatGPT + Codex role setup](docs/RECOMMENDED_ROLE_SETUP.md). If you
 want to understand the shape before running anything, browse the
 [synthetic Factory instance](examples/factory-instance/README.md).
+
+**Forking this repository:** a fork receives the files, but not this repository's
+notice Issue or active journal state. For a public direct GitHub.com fork whose
+default branch is `main`, use the [fork self-setup](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup)
+to create the fork's own notice and prepare its writer configuration. Activation
+remains explicit: the fork owner reviews the generated changes, enables Actions,
+opts in, and verifies a real bot write/readback plus a no-duplicate replay.
 
 **AI Agent:** read [AGENTS.md](AGENTS.md), then [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md).
 For an already-selected, low-risk bounded task, use the minimal safe boot described
@@ -143,8 +156,10 @@ first appointment, same-incumbent recovery and authorized true-succession exampl
 repeatable software checks; a nine-variant cold-start package; Project cockpit and
 skills; executable cockpit/Project-view generation and drift checks; work-item
 checkpoints for bounded long-thread recovery; a reusable Fresh Factory Audit
-pattern with synthetic governance-drift examples; and the V1.5 first-use routing,
-release-acquisition, minimal-safe-boot and native-audit-entry improvements.
+pattern with synthetic governance-drift examples; the V1.5 first-use routing,
+release-acquisition, minimal-safe-boot and native-audit-entry improvements; and,
+on current post-v1.5 `main`, the repository documentation notice, active
+documentation journal and opt-in public-fork journal bootstrap.
 
 This is not an autonomous scheduler, authorization service, production deployment
 system or authenticated mail transport. Its helpers check declared consistency;
