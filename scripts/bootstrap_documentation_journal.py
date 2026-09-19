@@ -48,28 +48,48 @@ def api(repo, method="GET", path="", payload=None):
     return json.loads(command(*args, input_text=json.dumps(payload) if payload is not None else None))
 
 
+def origin_repository(url):
+    """Accept a direct GitHub origin only; gh's implicit default is not authority."""
+    prefixes = ("https://github.com/", "git@github.com:", "ssh://git@github.com/")
+    prefix = next((p for p in prefixes if url.startswith(p)), None)
+    if prefix is None:
+        raise BootstrapError("origin must be a direct github.com repository remote.")
+    path = url[len(prefix):].rstrip("/")
+    if path.endswith(".git"):
+        path = path[:-4]
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", path):
+        raise BootstrapError("Cannot identify a unique repository from origin.")
+    return path
+
+
 def preflight():
     if command("git", "status", "--porcelain"):
         raise BootstrapError("Use a clean fork checkout; preserve existing edits.")
-    repo = command("gh", "repo", "view", "--json", "nameWithOwner", "--jq", ".nameWithOwner")
-    if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo):
-        raise BootstrapError("Cannot identify the fork repository.")
+    repo = origin_repository(command("git", "remote", "get-url", "origin"))
     info = api(repo)
-    if (not info.get("fork") or (info.get("parent") or {}).get("full_name") != UPSTREAM
+    if (info.get("full_name", "").casefold() != repo.casefold()
+            or not info.get("fork") or (info.get("parent") or {}).get("full_name") != UPSTREAM
             or info.get("id") == UPSTREAM_ID or info.get("private") is not False):
         raise BootstrapError("This initializer accepts only a public fork of the exact OSS upstream.")
     if not info.get("has_issues") or not (info.get("permissions") or {}).get("push"):
         raise BootstrapError("Fork Issues and authenticated push access are required.")
     branch = info.get("default_branch")
-    if not branch or command("git", "branch", "--show-current") != branch:
+    if branch != "main":
+        raise BootstrapError("This version supports only forks whose default branch is main.")
+    if command("git", "branch", "--show-current") != branch:
         raise BootstrapError("Check out the fork's default branch before initialization.")
     head = command("git", "rev-parse", "HEAD")
-    if command("git", "ls-remote", "origin", f"refs/heads/{branch}").split()[0] != head:
-        raise BootstrapError("Local HEAD must equal the fork's remote default-branch tip.")
+    remote = command("git", "ls-remote", "origin", f"refs/heads/{branch}").split()
+    api_ref = api(repo, path=f"/git/ref/heads/{branch}")
+    if not remote or remote[0] != head or (api_ref.get("object") or {}).get("sha") != head:
+        raise BootstrapError("Local HEAD, origin tip and API default-branch tip must match.")
+    viewer = json.loads(command("gh", "api", "user"))
+    if not isinstance(viewer.get("id"), int):
+        raise BootstrapError("Cannot verify the authenticated fork maintainer.")
     cfg = json.loads((ROOT / CONFIG).read_text(encoding="utf-8"))
     if cfg.get("repository") != UPSTREAM or cfg.get("repository_id") != UPSTREAM_ID:
         raise BootstrapError("Journal configuration is not the untouched upstream template.")
-    return info, head
+    return info, head, viewer["id"]
 
 
 def notice_body(repo, head):
@@ -95,6 +115,8 @@ def candidate_files(info, head, issue_number, now):
     repo = info["full_name"]
     repo_id = info["id"]
     branch = info["default_branch"]
+    if branch != "main":
+        raise BootstrapError("This version supports only forks whose default branch is main.")
     cfg = json.loads((ROOT / CONFIG).read_text(encoding="utf-8"))
     cfg.update(repository=repo, repository_id=repo_id, default_branch=branch,
                notice_issue=issue_number, baseline_sha=head,
@@ -134,13 +156,15 @@ def candidate_files(info, head, issue_number, now):
     }
 
 
-def existing_notice(repo):
+def existing_notice(repo, actor_id):
     pages = json.loads(command("gh", "api", "--paginate", "--slurp",
                                f"repos/{repo}/issues?state=all&per_page=100"))
     matches = [item for page in pages for item in page
                if not item.get("pull_request") and MARKER in (item.get("body") or "")]
     if len(matches) > 1:
         raise BootstrapError("More than one bootstrap notice exists; resolve manually.")
+    if matches and (matches[0].get("user") or {}).get("id") != actor_id:
+        raise BootstrapError("Existing marked Issue was not created by this authenticated maintainer; choose it explicitly outside this initializer.")
     if matches and (matches[0]["state"] != "open" or matches[0].get("locked")):
         raise BootstrapError("Existing bootstrap notice must be open and unlocked.")
     return matches[0] if matches else None
@@ -150,9 +174,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--apply", action="store_true", help="Create/reuse fork notice and edit local files only")
     args = parser.parse_args()
-    info, head = preflight()
+    info, head, actor_id = preflight()
     repo = info["full_name"]
-    notice = existing_notice(repo)
+    notice = existing_notice(repo, actor_id)
     # Validate all local source patterns before creating any remote Issue.
     candidate_files(info, head, (notice or {}).get("number", 1), datetime.now(timezone.utc))
     if not args.apply:

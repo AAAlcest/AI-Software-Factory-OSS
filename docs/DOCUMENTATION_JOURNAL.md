@@ -29,10 +29,14 @@ Actions in a fork require the fork owner's own enablement. The copied writer has
 the **upstream repository ID** in its guard and will not write to a fork unchanged.
 Do not point a fork at upstream #26 or reuse the upstream baseline/state.
 
-For a **public fork of this exact repository**, a maintainer with push and Issue
-access can use the bounded initializer from a clean local checkout of the fork's
-default branch. It requires authenticated `gh` and Git. No token is printed or
-stored in the repository. First run it without `--apply` to inspect the plan:
+For a **public, direct fork of this exact repository whose default branch is
+`main`**, a maintainer with push and Issue access can use the bounded initializer
+from a clean local checkout of that branch. The tool binds the verified
+`origin` GitHub repository, its API identity/default-branch tip, and local HEAD;
+it never uses `gh`'s implicit default repository as a write target. Other
+remote forms or default branches stop before creating an Issue. It requires
+authenticated `gh` and Git. No token is printed or stored in the repository.
+First run it without `--apply` to inspect the plan:
 
 ```sh
 python -B scripts/bootstrap_documentation_journal.py
@@ -47,7 +51,10 @@ enable Actions, set the writer variable, or claim activation. Review the diff,
 run `python -B scripts/check_all.py`, then commit/push deliberately. If fork
 Issues are disabled, enable them in fork settings first. If the upstream source
 patterns have changed, the initializer stops for manual review rather than
-guessing a replacement.
+guessing a replacement. Reuse requires the marked Issue to have been created
+by the currently authenticated fork maintainer; an ordinary user's copy of
+the marker cannot be adopted automatically. A different maintainer must
+resolve that situation explicitly rather than silently selecting a destination.
 
 Next, the fork owner enables Actions, runs `Documentation journal` manually on
 its default branch with `dry_run=true`, and checks the output/gaps. The fork
