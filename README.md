@@ -76,8 +76,28 @@ the fork owner reviews the generated changes, enables Actions, opts in, and veri
 a real bot write/readback plus a no-duplicate replay.
 
 **AI Agent:** read [AGENTS.md](AGENTS.md), then [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md).
-For an already-selected, low-risk bounded task, use the minimal safe boot described
-there instead of rereading the entire mechanism set.
+A fresh Agent must first decide whether it is doing OSS/framework work, public-safe
+evaluation, or real private Factory operation. If the Human wants real private work
+and no private Factory exists yet, the recommended path is:
+
+```text
+public OSS distribution
+→ read-only Create Private Factory preview
+→ explain the plan/privacy boundary
+→ explicit Human authorization
+→ create NEW independent private repository
+→ verify private/non-fork binding
+→ continue real operating work inside that private Factory
+```
+
+Do not put real private assignments, project state, customer/company records or
+private history into this public OSS repository. If a private Factory already
+exists, enter that instance instead of creating another one. The Agent may route to
+and perform the read-only preview, but `--apply` creates remote GitHub state and
+requires explicit Human authorization. Detailed first-contact routing lives in
+[AI_ENTRYPOINT.md](AI_ENTRYPOINT.md). For an already-selected, low-risk bounded
+task, use the minimal safe boot described there instead of rereading the entire
+mechanism set.
 
 **Want to audit an operating Factory:** use [Fresh Factory Audit](docs/FRESH_FACTORY_AUDIT.md)
 or choose the Fresh Factory Audit template from GitHub **New issue**.
