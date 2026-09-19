@@ -2,7 +2,7 @@
 
 Owner: OSS Project Primary. Implementation/acceptance: [Issue #28](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28).
 Notice: [Issue #26](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26).
-Status: implementation merged; activation requires the actual writer/replay evidence in #28.
+Status: ACTIVE in this OSS repository only, as evidenced by the [actual writer/readback/replay](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736870432). Forks are separate installations.
 The broader product-documentation work remains under #25, not this implementation.
 
 ## What runs
@@ -21,6 +21,51 @@ text or manual input can select another destination. To adopt the mechanism in a
 **different public repository**, its maintainer must review and change the repository
 ID/name, notice, baseline and workflow guard together. This installation deliberately
 rejects private repositories; exporting their records is not an implied capability.
+
+## Fork self-setup
+
+A GitHub fork copies files, not the upstream #26 Issue or its bot records. GitHub
+Actions in a fork require the fork owner's own enablement. The copied writer has
+the **upstream repository ID** in its guard and will not write to a fork unchanged.
+Do not point a fork at upstream #26 or reuse the upstream baseline/state.
+
+For a **public, direct fork of this exact repository whose default branch is
+`main`**, a maintainer with push and Issue access can use the bounded initializer
+from a clean local checkout of that branch. The tool binds the verified
+`origin` GitHub repository, its API identity/default-branch tip, and local HEAD;
+it never uses `gh`'s implicit default repository as a write target. Other
+remote forms or default branches stop before creating an Issue. It requires
+authenticated `gh` and Git. No token is printed or stored in the repository.
+First run it without `--apply` to inspect the plan:
+
+```sh
+python -B scripts/bootstrap_documentation_journal.py
+python -B scripts/bootstrap_documentation_journal.py --apply
+```
+
+`--apply` creates or reuses one OPEN/UNLOCKED notice in **that fork** and edits
+only its local journal config, writer guard/concurrency key, and English/Chinese
+README notice links. It records the fork's exact current default-branch HEAD as
+its baseline and a fresh observation start time. It does **not** commit, push,
+enable Actions, set the writer variable, or claim activation. Review the diff,
+run `python -B scripts/check_all.py`, then commit/push deliberately. If fork
+Issues are disabled, enable them in fork settings first. If the upstream source
+patterns have changed, the initializer stops for manual review rather than
+guessing a replacement. Reuse requires the marked Issue to have been created
+by the currently authenticated fork maintainer; an ordinary user's copy of
+the marker cannot be adopted automatically. A different maintainer must
+resolve that situation explicitly rather than silently selecting a destination.
+
+Next, the fork owner enables Actions, runs `Documentation journal` manually on
+its default branch with `dry_run=true`, and checks the output/gaps. The fork
+workflow remains write-disabled while repository variable
+`DOCUMENTATION_JOURNAL_ENABLED` is absent or not `true`; a manual dry run is the
+only permitted job before that gate. Only after reviewing scope and the dry run
+should the owner set that variable to `true`. A subsequent authorized writer run
+must be checked for a real bot comment, readback and a repeated run without a
+duplicate receipt before that fork may call its journal ACTIVE. The OSS upstream's
+ACTIVE result does not transfer to it. A private repository requires a separately
+reviewed visibility/authentication adaptation; this initializer refuses it.
 
 ### Notice access: OPEN and UNLOCKED
 
