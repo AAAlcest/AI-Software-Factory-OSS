@@ -30,7 +30,7 @@ rejects private repositories; exporting their records is not an implied capabili
 > Factory history into a public fork. Real private instances belong in a separate
 > authorized private operating repository; the public fork may remain an
 > upstream/update/contribution copy. See
-> [Quickstart §6](QUICKSTART.md#6-instantiate-your-own-factory-separately).
+> [Quickstart §2](QUICKSTART.md#2-create-your-private-factory).
 
 A GitHub fork copies files, not the upstream #26 Issue or its bot records. GitHub
 Actions in a fork require the fork owner's own enablement. The copied writer has
@@ -78,6 +78,29 @@ must be checked for a real bot comment, readback and a repeated run without a
 duplicate receipt before that fork may call its journal ACTIVE. The OSS upstream's
 ACTIVE result does not transfer to it. A private repository requires a separately
 reviewed visibility/authentication adaptation; this initializer refuses it.
+
+### Independent private Factory path
+
+For normal private use, do **not** fork this public repository. The bounded
+[Create Private Factory](QUICKSTART.md#2-create-your-private-factory) command
+creates a new independent private repository and BLOCKED starter from an exact
+public OSS `main` commit. It preserves MIT/source provenance and reuses this
+recorder, not a second journal. The generated configuration explicitly sets
+`visibility: private` and fixes its own repository ID/name, `main`, notice,
+baseline and watched paths. The writer workflow is gated by that repository's
+`DOCUMENTATION_JOURNAL_ENABLED` variable; a manual `dry_run=true` is allowed
+before opt-in, but automatic writes are not. This OSS installation keeps its
+existing public-only default and its own #26 state.
+
+Private missing-object fetch uses only the **same repository's** Actions token
+through a Git askpass process. The token is not put in a URL, argv, persistent
+Git config, committed file or diagnostic. The private notice must be OPEN,
+UNLOCKED and read back as belonging to the configured repository. Its owner
+must review a manual dry run, explicitly opt in, then inspect real bot
+write/readback and a no-duplicate replay before calling the journal ACTIVE.
+Authentication failure is a gap, not permission to substitute another token
+or public destination. Private names, paths, SHAs and run evidence stay in
+that private repository; do not post them to public OSS Issues.
 
 ### Notice access: OPEN and UNLOCKED
 

@@ -24,8 +24,10 @@ native Fresh Factory Audit Issue entry.
 
 Current `main` also contains **post-v1.5, unreleased maintenance improvements**:
 a durable repository documentation notice, an active GitHub-native documentation
-change journal, and an opt-in self-setup path for public direct forks. These
-main-only improvements are not part of the immutable `v1.5.0` tag unless and until
+change journal, an opt-in self-setup path for public direct forks, and a
+**Create Private Factory** path that creates a new independent private operating
+repository without requiring Fork. These main-only improvements are not part of
+the immutable `v1.5.0` tag unless and until
 a later release publishes them. Published-release status is authoritative on
 GitHub Releases and the release coordination Issue; historical tags are never
 moved to follow later `main` changes.
@@ -40,12 +42,19 @@ See [1.5.0 release notes](docs/releases/1.5.0.md),
 The opening body routes readers to canonical docs; comments record changes. See the
 [notice/journal contract](docs/REPOSITORY_NOTICES.md). The [journal is active in this repository](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736870432): configured documentation changes on `main` and observed PR candidates are recorded asynchronously, not on each local save. A fork does **not** inherit the notice or active writer; see [fork setup](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup).
 
+**Create your private Factory (normal use):** clone this public OSS source and
+run the [read-only private-bootstrap preview](docs/QUICKSTART.md#2-create-your-private-factory)
+before explicitly applying it. This creates a **new independent private repository**;
+normal private use does **not** require Fork. The operating starter remains
+BLOCKED/unconfigured and its journal writer remains off until separately accepted.
+This post-v1.5 `main` feature is not in the immutable `v1.5.0` release.
+
 **New Human user:** open the [Quickstart](docs/QUICKSTART.md), then the
 [recommended ChatGPT + Codex role setup](docs/RECOMMENDED_ROLE_SETUP.md). If you
 want to understand the shape before running anything, browse the
 [synthetic Factory instance](examples/factory-instance/README.md).
 
-**Forking this repository:** a GitHub fork is **public OSS/distribution space, not
+**Fork this repository (contributors/public-safe evaluation):** a GitHub fork is **public OSS/distribution space, not
 the default home for a private operating Factory**. A fork receives the files, but
 not this repository's notice Issue or active journal state. Use the public-fork
 [journal self-setup](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup) only for
@@ -53,11 +62,11 @@ public-safe evaluation, framework maintenance/contribution, or an intentionally
 public Factory. **Do not put private projects, assignments, customer/company data,
 or private Factory history into a public fork.**
 
-For real private work, instantiate a **separate private operating repository** from
-the framework/starters and keep the private Factory state there; project source
+For real private work, use the private-bootstrap command above to create a
+**separate private operating repository** from the framework/starters. Project source
 repositories may remain separate private repositories referenced by that Factory.
 The public fork can remain only as an upstream/update/contribution copy. See
-[Instantiate your own Factory separately](docs/QUICKSTART.md#6-instantiate-your-own-factory-separately).
+[private instance guidance](docs/QUICKSTART.md#8-instance-and-source-remain-separate).
 
 For a public direct GitHub.com fork whose default branch is `main`, the journal
 self-setup can create that fork's own notice and prepare its writer configuration.
@@ -173,7 +182,8 @@ checkpoints for bounded long-thread recovery; a reusable Fresh Factory Audit
 pattern with synthetic governance-drift examples; the V1.5 first-use routing,
 release-acquisition, minimal-safe-boot and native-audit-entry improvements; and,
 on current post-v1.5 `main`, the repository documentation notice, active
-documentation journal and opt-in public-fork journal bootstrap.
+documentation journal, opt-in public-fork journal bootstrap, and independent
+private-Factory bootstrap for normal private use.
 
 This is not an autonomous scheduler, authorization service, production deployment
 system or authenticated mail transport. Its helpers check declared consistency;

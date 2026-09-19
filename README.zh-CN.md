@@ -10,7 +10,7 @@
 
 **1.5.0 是 AI Software Factory OSS 当前最新的正式发布版本。** 它保留 v1.4 的有边界恢复与审计模型，并加入首次使用产品化改进：更清晰的 Human／AI／审计入口、精确 release 本地获取、Windows 友好的第一次运行说明、minimal safe AI boot、静态 cockpit 教学快照标识，以及 GitHub 原生 Fresh Factory Audit Issue 入口。
 
-当前 `main` 还包含一组 **v1.5 之后、尚未单独发布的新维护能力**：长期仓库文档公告墙、已经实际启用的 GitHub 原生文档变更自动日志，以及面向公开直接 fork 的可选自助初始化流程。这些 main-only 改进在未来发布之前**不属于不可移动的 `v1.5.0` tag**。实际已发布版本状态以 GitHub Releases 与对应 release coordination Issue 为准；历史 tag 不会为了追随未来 `main` 而移动。
+当前 `main` 还包含一组 **v1.5 之后、尚未单独发布的新维护能力**：长期仓库文档公告墙、已经实际启用的 GitHub 原生文档变更自动日志、面向公开直接 fork 的可选自助初始化流程，以及普通私人使用所需的 **Create Private Factory**：无需 Fork，直接创建全新独立的 private operating repository。这些 main-only 改进在未来发布之前**不属于不可移动的 `v1.5.0` tag**。实际已发布版本状态以 GitHub Releases 与对应 release coordination Issue 为准；历史 tag 不会为了追随未来 `main` 而移动。
 
 发布说明见 [1.5.0 Release Notes](docs/releases/1.5.0.md)、[1.4.0 历史 Release Notes](docs/releases/1.4.0.md) 与 [1.0.0 历史 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
 
@@ -18,11 +18,13 @@
 
 **文档公告墙：**[仓库文档索引与变更记录](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26)。正文导航，评论记变更；规则见 [公告与自动记账契约](docs/REPOSITORY_NOTICES.md)。[本仓自动日志已启用](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736870432)：配置范围内进入 `main` 的文档改动和已观察到的 PR 候选会异步记入，不是每次本地保存即刻记账。fork 不会继承公告或已启用的 writer；请看 [fork 自助初始化](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup)。
 
+**创建你的私人 Factory（普通使用入口）：**从公开 OSS 仓库取得当前 `main` 源码，先运行[只读的私有仓初始化预览](docs/QUICKSTART_ZH.md#先创建你的私人-factory)，确认后再显式执行。它创建一个**全新、独立、非 fork 的私有仓库**；正常私人使用**不需要 Fork**。新实例仍是 BLOCKED／未配置，日志 writer 也尚未启用。此功能目前只在 post-v1.5 的 `main`，不属于不可移动的 `v1.5.0` tag。
+
 **第一次使用的 Human：**先看 [快速开始](docs/QUICKSTART_ZH.md)，再看 [推荐的 ChatGPT + Codex 角色配置](docs/RECOMMENDED_ROLE_SETUP.md)。如果暂时不想运行脚本，可先浏览 [合成 Factory 实例](examples/factory-instance/README.md) 看整体结构。
 
-**要 fork 本仓库：****公开 fork 是 OSS 分发／更新／贡献副本，不应默认当作私人 Factory 的真实运行仓库。** fork 会复制文件，但不会继承本仓的公告 Issue 或已经激活的日志状态。公开 fork 的 [自助初始化](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup) 只适合公开安全的试用、框架维护／贡献，或你明确愿意公开的 Factory；**不要把私人项目、真实任命、客户／公司资料或私有 Factory 历史放进公开 fork。**
+**Fork 本仓库（贡献／公开安全试用）：**公开 fork 是 OSS 分发／更新／贡献副本，**不是私人 Factory 的默认运行仓库**。fork 会复制文件，但不会继承本仓的公告 Issue 或已经激活的日志状态。公开 fork 的 [自助初始化](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup) 只适合公开安全的试用、框架维护／贡献，或你明确愿意公开的 Factory；**不要把私人项目、真实任命、客户／公司资料或私有 Factory 历史放进公开 fork。**
 
-真正运行私人 Factory 时，应从本框架／starters **另建一个 private operating repository**，把真实 Factory 状态放在那里；各项目源码仍可以分别留在自己的 private project repository，由 Factory 只记录受控引用与状态。公开 fork 可以继续只承担上游同步、更新和贡献。英文详细说明见 [Instantiate your own Factory separately](docs/QUICKSTART.md#6-instantiate-your-own-factory-separately)。
+真正运行私人 Factory 时，使用上述私有仓初始化命令从本框架／starters **另建一个 private operating repository**，把真实 Factory 状态放在那里；各项目源码仍可以分别留在自己的 private project repository，由 Factory 只记录受控引用与状态。公开 fork 可以继续只承担上游同步、更新和贡献。
 
 如果你确实要运行一个公开 Factory，那么对于 GitHub.com 上默认分支为 `main` 的公开直接 fork，可以使用 fork 自助初始化创建公告墙并准备 writer 配置。如果该 fork 尚未开启 Issues，`--apply` 会在核对仓库身份与管理员权限后直接为**这个 fork**开启；默认检查仍保持只读。是否真正启用仍由 fork 仓主明确决定：检查生成改动、开启 Actions、主动 opt-in，并用真实机器人写入／读回与无重复重跑完成本仓验收。
 
@@ -80,7 +82,7 @@ FlowThread 是产品案例和作者自己的工作流工具，不是框架依赖
 
 ## V1 包含什么
 
-V1 包含：可配置的 Human / executive / role 组合；Staff Offices 与 Project Rooms；current 与 pending 状态；Issue 会议与精确候选 PR；可选的一体化正文邮件、Reply-All 与仅用于可见性的 CC；Console / open-loop 记录；Work result receipts；首次任命、同一 incumbent 恢复与经授权的真实 succession 示例；可重复的软件检查；覆盖 8 类冷启动场景的 9 个 fixture 变体；Project cockpit 与 skills；可执行的 cockpit / Project-view 生成与 drift 检查；用于有边界长线程恢复的 work-item checkpoint；带合成 governance-drift 示例的 Fresh Factory Audit 模式；V1.5 的首次使用入口、精确版本获取、minimal safe boot 与原生审计入口改进；以及当前 post-v1.5 `main` 中的仓库文档公告墙、已启用的文档自动日志和公开 fork 自助初始化能力。
+V1 包含：可配置的 Human / executive / role 组合；Staff Offices 与 Project Rooms；current 与 pending 状态；Issue 会议与精确候选 PR；可选的一体化正文邮件、Reply-All 与仅用于可见性的 CC；Console / open-loop 记录；Work result receipts；首次任命、同一 incumbent 恢复与经授权的真实 succession 示例；可重复的软件检查；覆盖 8 类冷启动场景的 9 个 fixture 变体；Project cockpit 与 skills；可执行的 cockpit / Project-view 生成与 drift 检查；用于有边界长线程恢复的 work-item checkpoint；带合成 governance-drift 示例的 Fresh Factory Audit 模式；V1.5 的首次使用入口、精确版本获取、minimal safe boot 与原生审计入口改进；以及当前 post-v1.5 `main` 中的仓库文档公告墙、已启用的文档自动日志、公开 fork 自助初始化能力和面向普通私人使用的独立 private Factory 初始化能力。
 
 它**不是**自主调度器、权限服务、生产部署系统或经过认证的邮件传输系统。其 helper 只检查声明的一致性；详细边界见 [V1 状态说明](docs/V1_BASELINE_STATUS.md)。
 
