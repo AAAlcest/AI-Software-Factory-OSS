@@ -21,7 +21,7 @@ FORK = {
     "full_name": "synthetic-user/AI-Software-Factory-OSS", "id": 42,
     "default_branch": "main", "fork": True, "private": False,
     "parent": {"full_name": subject.UPSTREAM}, "has_issues": True,
-    "permissions": {"push": True},
+    "permissions": {"push": True, "admin": True},
 }
 HEAD = "a" * 40
 ACTOR_ID = 7
@@ -158,7 +158,7 @@ class BootstrapTests(unittest.TestCase):
         }
         with patch.object(subject, "command", side_effect=lambda *a: replies[a]):
             for change in ({"fork": False}, {"private": True},
-                           {"has_issues": False}, {"permissions": {"push": False}},
+                           {"permissions": {"push": False, "admin": True}},
                            {"parent": {"full_name": "other/repo"}},
                            {"default_branch": "trunk"}):
                 with self.subTest(change=change), patch.object(subject, "api", return_value={**FORK, **change}):
@@ -167,6 +167,69 @@ class BootstrapTests(unittest.TestCase):
         with self.assertRaises(subject.BootstrapError):
             subject.candidate_files({**FORK, "default_branch": "trunk"}, HEAD, 17,
                                     datetime.now(timezone.utc))
+
+    def test_preflight_allows_disabled_issues_for_admin(self):
+        replies = {
+            ("git", "status", "--porcelain"): "",
+            ("git", "remote", "get-url", "origin"):
+                "https://github.com/synthetic-user/AI-Software-Factory-OSS.git",
+            ("git", "branch", "--show-current"): "main",
+            ("git", "rev-parse", "HEAD"): HEAD,
+            ("git", "ls-remote", "origin", "refs/heads/main"):
+                f"{HEAD}\trefs/heads/main",
+            ("gh", "api", "user"): json.dumps({"id": ACTOR_ID, "login": "synthetic-user"}),
+        }
+        disabled = {**FORK, "has_issues": False,
+                    "permissions": {"push": True, "admin": True}}
+        def fake_api(repo, method="GET", path="", payload=None):
+            return {"object": {"sha": HEAD}} if path else disabled
+        with patch.object(subject, "command", side_effect=lambda *a: replies[a]), \
+             patch.object(subject, "api", side_effect=fake_api):
+            self.assertEqual(subject.preflight()[0]["has_issues"], False)
+
+    def test_preflight_rejects_disabled_issues_without_admin(self):
+        replies = {
+            ("git", "status", "--porcelain"): "",
+            ("git", "remote", "get-url", "origin"):
+                "https://github.com/synthetic-user/AI-Software-Factory-OSS.git",
+        }
+        disabled = {**FORK, "has_issues": False,
+                    "permissions": {"push": True, "admin": False}}
+        with patch.object(subject, "command", side_effect=lambda *a: replies[a]), \
+             patch.object(subject, "api", return_value=disabled):
+            with self.assertRaisesRegex(subject.BootstrapError, "admin access"):
+                subject.preflight()
+
+    def test_enable_issues_is_scoped_and_read_back(self):
+        disabled = {**FORK, "has_issues": False,
+                    "permissions": {"push": True, "admin": True}}
+        enabled = {**disabled, "has_issues": True}
+        calls = []
+        def fake_api(repo, method="GET", path="", payload=None):
+            calls.append((repo, method, path, payload))
+            if method == "PATCH":
+                return enabled
+            return enabled
+        with patch.object(subject, "api", side_effect=fake_api):
+            result = subject.enable_issues(FORK["full_name"], disabled)
+        self.assertTrue(result["has_issues"])
+        self.assertEqual(calls[0], (FORK["full_name"], "PATCH", "", {"has_issues": True}))
+        self.assertEqual(calls[1][:3], (FORK["full_name"], "GET", ""))
+
+    def test_disabled_issues_dry_run_does_not_mutate(self):
+        disabled = {**FORK, "has_issues": False,
+                    "permissions": {"push": True, "admin": True}}
+        with patch.object(subject, "preflight", return_value=(disabled, HEAD, ACTOR_ID)), \
+             patch.object(subject, "existing_notice") as existing, \
+             patch.object(subject, "candidate_files", return_value={}) as candidate, \
+             patch.object(subject, "enable_issues") as enable, \
+             patch.object(subject, "api") as api, \
+             patch.object(sys, "argv", ["bootstrap_documentation_journal.py"]):
+            subject.main()
+            existing.assert_not_called()
+            candidate.assert_called_once()
+            enable.assert_not_called()
+            api.assert_not_called()
 
     def test_notice_is_explicitly_inactive_and_local(self):
         body = subject.notice_body(FORK["full_name"], HEAD)
