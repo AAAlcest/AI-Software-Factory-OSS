@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Prepare this public OSS fork's own documentation journal, without enabling it.
 
-The default invocation is read-only. --apply creates/reuses one open notice in
-the authenticated fork and edits local files; it never commits, pushes, enables
-Actions, sets the writer variable, or runs the writer.
+The default invocation is read-only. --apply can enable Issues on the authenticated
+fork when needed, creates/reuses one open notice, and edits local files; it never
+commits, pushes, enables Actions, sets the writer variable, or runs the writer.
 """
 
 import argparse
@@ -71,8 +71,11 @@ def preflight():
             or not info.get("fork") or (info.get("parent") or {}).get("full_name") != UPSTREAM
             or info.get("id") == UPSTREAM_ID or info.get("private") is not False):
         raise BootstrapError("This initializer accepts only a public fork of the exact OSS upstream.")
-    if not info.get("has_issues") or not (info.get("permissions") or {}).get("push"):
-        raise BootstrapError("Fork Issues and authenticated push access are required.")
+    permissions = info.get("permissions") or {}
+    if not permissions.get("push"):
+        raise BootstrapError("Authenticated push access is required.")
+    if not info.get("has_issues") and not permissions.get("admin"):
+        raise BootstrapError("Fork Issues are disabled and authenticated admin access is required to enable them.")
     branch = info.get("default_branch")
     if branch != "main":
         raise BootstrapError("This version supports only forks whose default branch is main.")
@@ -90,6 +93,25 @@ def preflight():
     if cfg.get("repository") != UPSTREAM or cfg.get("repository_id") != UPSTREAM_ID:
         raise BootstrapError("Journal configuration is not the untouched upstream template.")
     return info, head, viewer["id"]
+
+
+def enable_issues(repo, info):
+    """Enable Issues only on the already-verified fork, then read it back."""
+    if info.get("has_issues"):
+        return info
+    if not (info.get("permissions") or {}).get("admin"):
+        raise BootstrapError("Fork Issues are disabled and authenticated admin access is required to enable them.")
+    updated = api(repo, "PATCH", "", {"has_issues": True})
+    if (updated.get("id") != info.get("id")
+            or updated.get("full_name", "").casefold() != info.get("full_name", "").casefold()
+            or updated.get("has_issues") is not True):
+        raise BootstrapError("GitHub did not confirm Issue enablement on the verified fork.")
+    readback = api(repo)
+    if (readback.get("id") != info.get("id")
+            or readback.get("full_name", "").casefold() != info.get("full_name", "").casefold()
+            or readback.get("has_issues") is not True):
+        raise BootstrapError("Fork Issue enablement readback failed.")
+    return readback
 
 
 def notice_body(repo, head):
@@ -176,14 +198,19 @@ def main():
     args = parser.parse_args()
     info, head, actor_id = preflight()
     repo = info["full_name"]
-    notice = existing_notice(repo, actor_id)
-    # Validate all local source patterns before creating any remote Issue.
+    notice = existing_notice(repo, actor_id) if info.get("has_issues") else None
+    # Validate all local source patterns before any remote mutation.
     candidate_files(info, head, (notice or {}).get("number", 1), datetime.now(timezone.utc))
     if not args.apply:
-        print(f"DRY RUN: {repo} at {head}; notice: "
-              f"{'reuse #' + str(notice['number']) if notice else 'create one'}; "
+        issue_plan = ("reuse #" + str(notice["number"]) if notice else
+                      "enable Issues, then create/reuse the fork notice" if not info.get("has_issues")
+                      else "create one")
+        print(f"DRY RUN: {repo} at {head}; notice: {issue_plan}; "
               "then adapt local config/workflow/READMEs. No write performed.")
         return
+    if not info.get("has_issues"):
+        info = enable_issues(repo, info)
+        notice = existing_notice(repo, actor_id)
     if notice is None:
         notice = api(repo, "POST", "/issues", {
             "title": "Documentation index & engineering change journal",
