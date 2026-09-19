@@ -36,6 +36,11 @@ from a clean local checkout of that branch. The tool binds the verified
 it never uses `gh`'s implicit default repository as a write target. Other
 remote forms or default branches stop before creating an Issue. It requires
 authenticated `gh` and Git. No token is printed or stored in the repository.
+If the fork's **Issues** feature is disabled, the read-only check reports that;
+`--apply` enables Issues on that same verified fork when the authenticated
+maintainer has admin access, verifies the setting, and only then creates/reuses
+the notice. There is no separate Settings prerequisite for a normal fork owner.
+Without admin access it stops instead of changing another surface.
 First run it without `--apply` to inspect the plan:
 
 ```sh
@@ -48,8 +53,7 @@ only its local journal config, writer guard/concurrency key, and English/Chinese
 README notice links. It records the fork's exact current default-branch HEAD as
 its baseline and a fresh observation start time. It does **not** commit, push,
 enable Actions, set the writer variable, or claim activation. Review the diff,
-run `python -B scripts/check_all.py`, then commit/push deliberately. If fork
-Issues are disabled, enable them in fork settings first. If the upstream source
+run `python -B scripts/check_all.py`, then commit/push deliberately. If the upstream source
 patterns have changed, the initializer stops for manual review rather than
 guessing a replacement. Reuse requires the marked Issue to have been created
 by the currently authenticated fork maintainer; an ordinary user's copy of
