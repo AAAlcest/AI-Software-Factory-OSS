@@ -16,22 +16,18 @@ toolchain and improve the practical return from the same token and subscription
 budget. Actual savings depend on workload, model choice and how the Factory is
 configured; this is an operating-efficiency goal, not a guaranteed quota result.
 
-**Version 1.5.0 is the latest published release of AI Software Factory OSS.**
-It keeps the v1.4 bounded-recovery/audit model and adds first-use productization:
-clearer Human/AI/audit routing, exact-release local acquisition, Windows-friendly
-first-run guidance, a minimal safe AI boot, explicit static-cockpit labeling and a
-native Fresh Factory Audit Issue entry.
+**Version 1.6.0 is the current release line of AI Software Factory OSS.**
+It packages the post-v1.5 repository-governance and private-Factory work into a
+reproducible normal-use flow: a GitHub-native documentation notice/journal,
+public-fork self-setup, independent **Create Private Factory** bootstrap without
+Fork, private writer safety, live private-bootstrap acceptance, and explicit
+fresh-Agent routing from the public distribution into the correct operating
+context.
 
-Current `main` also contains **post-v1.5, unreleased maintenance improvements**:
-a durable repository documentation notice, an active GitHub-native documentation
-change journal, an opt-in self-setup path for public direct forks, and a
-**Create Private Factory** path that creates a new independent private operating
-repository without requiring Fork. These main-only improvements are not part of
-the immutable `v1.5.0` tag unless and until
-a later release publishes them. Published-release status is authoritative on
-GitHub Releases and the release coordination Issue; historical tags are never
-moved to follow later `main` changes.
-See [1.5.0 release notes](docs/releases/1.5.0.md),
+Published-release status is authoritative on GitHub Releases and the release
+coordination Issue; historical tags are never moved to follow later `main`
+changes. See [1.6.0 release notes](docs/releases/1.6.0.md),
+[1.5.0 historical release notes](docs/releases/1.5.0.md),
 [1.4.0 historical release notes](docs/releases/1.4.0.md),
 [1.0.0 historical release notes](docs/releases/1.0.0.md) and
 [security reporting](SECURITY.md).
@@ -47,7 +43,8 @@ run the [read-only private-bootstrap preview](docs/QUICKSTART.md#2-create-your-p
 before explicitly applying it. This creates a **new independent private repository**;
 normal private use does **not** require Fork. The operating starter remains
 BLOCKED/unconfigured and its journal writer remains off until separately accepted.
-This post-v1.5 `main` feature is not in the immutable `v1.5.0` release.
+In the v1.6.0 release line, the bootstrap also accepts the exact official
+`v1.6.0` tag so normal users do not have to follow a moving `main`.
 
 **New Human user:** open the [Quickstart](docs/QUICKSTART.md), then the
 [recommended ChatGPT + Codex role setup](docs/RECOMMENDED_ROLE_SETUP.md). If you
@@ -200,10 +197,10 @@ repeatable software checks; a nine-variant cold-start package; Project cockpit a
 skills; executable cockpit/Project-view generation and drift checks; work-item
 checkpoints for bounded long-thread recovery; a reusable Fresh Factory Audit
 pattern with synthetic governance-drift examples; the V1.5 first-use routing,
-release-acquisition, minimal-safe-boot and native-audit-entry improvements; and,
-on current post-v1.5 `main`, the repository documentation notice, active
-documentation journal, opt-in public-fork journal bootstrap, and independent
-private-Factory bootstrap for normal private use.
+release-acquisition, minimal-safe-boot and native-audit-entry improvements; and the
+V1.6 repository documentation notice, active documentation journal, opt-in
+public-fork bootstrap, independent private-Factory bootstrap, release-tag source
+provenance and fresh-Agent private-Factory routing.
 
 This is not an autonomous scheduler, authorization service, production deployment
 system or authenticated mail transport. Its helpers check declared consistency;
