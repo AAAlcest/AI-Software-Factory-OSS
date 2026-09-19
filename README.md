@@ -48,8 +48,10 @@ want to understand the shape before running anything, browse the
 **Forking this repository:** a fork receives the files, but not this repository's
 notice Issue or active journal state. For a public direct GitHub.com fork whose
 default branch is `main`, use the [fork self-setup](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup)
-to create the fork's own notice and prepare its writer configuration. Activation
-remains explicit: the fork owner reviews the generated changes, enables Actions,
+to create the fork's own notice and prepare its writer configuration. If Issues
+are disabled on that fork, `--apply` enables them there after repository/admin
+verification; the default check remains read-only. Activation remains explicit:
+the fork owner reviews the generated changes, enables Actions,
 opts in, and verifies a real bot write/readback plus a no-duplicate replay.
 
 **AI Agent:** read [AGENTS.md](AGENTS.md), then [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md).
