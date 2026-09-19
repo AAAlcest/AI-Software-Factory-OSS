@@ -40,12 +40,19 @@ See [1.5.0 release notes](docs/releases/1.5.0.md),
 The opening body routes readers to canonical docs; comments record changes. See the
 [notice/journal contract](docs/REPOSITORY_NOTICES.md). The [journal is active in this repository](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736870432): configured documentation changes on `main` and observed PR candidates are recorded asynchronously, not on each local save. A fork does **not** inherit the notice or active writer; see [fork setup](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup).
 
+**Create your private Factory (normal use):** clone this public OSS source and
+run the [read-only private-bootstrap preview](docs/QUICKSTART.md#2-create-your-private-factory)
+before explicitly applying it. This creates a **new independent private repository**;
+normal private use does **not** require Fork. The operating starter remains
+BLOCKED/unconfigured and its journal writer remains off until separately accepted.
+This post-v1.5 `main` feature is not in the immutable `v1.5.0` release.
+
 **New Human user:** open the [Quickstart](docs/QUICKSTART.md), then the
 [recommended ChatGPT + Codex role setup](docs/RECOMMENDED_ROLE_SETUP.md). If you
 want to understand the shape before running anything, browse the
 [synthetic Factory instance](examples/factory-instance/README.md).
 
-**Forking this repository:** a GitHub fork is **public OSS/distribution space, not
+**Fork this repository (contributors/public-safe evaluation):** a GitHub fork is **public OSS/distribution space, not
 the default home for a private operating Factory**. A fork receives the files, but
 not this repository's notice Issue or active journal state. Use the public-fork
 [journal self-setup](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup) only for
@@ -53,11 +60,11 @@ public-safe evaluation, framework maintenance/contribution, or an intentionally
 public Factory. **Do not put private projects, assignments, customer/company data,
 or private Factory history into a public fork.**
 
-For real private work, instantiate a **separate private operating repository** from
-the framework/starters and keep the private Factory state there; project source
+For real private work, use the private-bootstrap command above to create a
+**separate private operating repository** from the framework/starters. Project source
 repositories may remain separate private repositories referenced by that Factory.
 The public fork can remain only as an upstream/update/contribution copy. See
-[Instantiate your own Factory separately](docs/QUICKSTART.md#6-instantiate-your-own-factory-separately).
+[private instance guidance](docs/QUICKSTART.md#8-instance-and-source-remain-separate).
 
 For a public direct GitHub.com fork whose default branch is `main`, the journal
 self-setup can create that fork's own notice and prepare its writer configuration.

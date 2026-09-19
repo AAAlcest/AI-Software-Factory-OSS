@@ -2,6 +2,7 @@
 import importlib.util
 import os
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -70,9 +71,47 @@ class NoticeAccessTests(unittest.TestCase):
 
     def test_private_repository_is_still_rejected(self):
         self.repo["private"] = True
-        with self.assertRaisesRegex(m.Gap, "public boundary"):
+        with self.assertRaisesRegex(m.Gap, "visibility mismatch"):
             self.validate()
         self.assertEqual(self.calls, [("", "GET")])
+
+    def test_explicit_private_visibility_and_exact_notice_target(self):
+        self.cfg["visibility"] = "private"
+        self.repo["private"] = True
+        self.notice["repository_url"] = "https://api.github.com/repos/example/factory"
+        self.validate()
+        self.notice["repository_url"] = "https://api.github.com/repos/other/factory"
+        with self.assertRaisesRegex(m.Gap, "private notice target mismatch"):
+            self.validate()
+        self.repo["private"] = False
+        with self.assertRaisesRegex(m.Gap, "visibility mismatch"):
+            self.validate()
+
+    def test_unknown_visibility_fails_closed(self):
+        self.cfg["visibility"] = "unknown"
+        with self.assertRaisesRegex(m.Gap, "unsupported configured visibility"):
+            self.validate()
+
+    def test_private_git_fetch_uses_same_repo_askpass_and_sanitizes_failure(self):
+        seen = []
+        def fake_run(args, **kwargs):
+            seen.append((args, kwargs))
+            raise subprocess.CalledProcessError(1, args, stderr=b"SECRET_CANARY")
+        with patch("subprocess.run", side_effect=fake_run):
+            git = m.Git(ROOT, "example/factory", ["*.md"], "private", "SECRET_CANARY")
+            with self.assertRaisesRegex(m.Gap, "Git object unavailable") as failure:
+                git.run("fetch", "https://github.com/example/factory.git", "a" * 40)
+        self.assertNotIn("SECRET_CANARY", str(failure.exception))
+        args, kwargs = seen[0]
+        self.assertNotIn("SECRET_CANARY", " ".join(args))
+        self.assertIn("https://github.com/example/factory.git", args)
+        self.assertEqual(kwargs["env"]["GITHUB_TOKEN"], "SECRET_CANARY")
+        self.assertEqual(kwargs["env"]["GIT_CONFIG_GLOBAL"], os.devnull)
+
+    def test_private_git_without_repository_token_stops(self):
+        git = m.Git(ROOT, "example/factory", ["*.md"], "private", "")
+        with self.assertRaisesRegex(m.Gap, "authentication unavailable"):
+            git.run("fetch", "https://github.com/example/factory.git", "a" * 40)
 
     def test_wrong_repository_is_still_rejected(self):
         self.repo["id"] = 456

@@ -18,11 +18,13 @@
 
 **文档公告墙：**[仓库文档索引与变更记录](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26)。正文导航，评论记变更；规则见 [公告与自动记账契约](docs/REPOSITORY_NOTICES.md)。[本仓自动日志已启用](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736870432)：配置范围内进入 `main` 的文档改动和已观察到的 PR 候选会异步记入，不是每次本地保存即刻记账。fork 不会继承公告或已启用的 writer；请看 [fork 自助初始化](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup)。
 
+**创建你的私人 Factory（普通使用入口）：**从公开 OSS 仓库取得当前 `main` 源码，先运行[只读的私有仓初始化预览](docs/QUICKSTART_ZH.md#先创建你的私人-factory)，确认后再显式执行。它创建一个**全新、独立、非 fork 的私有仓库**；正常私人使用**不需要 Fork**。新实例仍是 BLOCKED／未配置，日志 writer 也尚未启用。此功能目前只在 post-v1.5 的 `main`，不属于不可移动的 `v1.5.0` tag。
+
 **第一次使用的 Human：**先看 [快速开始](docs/QUICKSTART_ZH.md)，再看 [推荐的 ChatGPT + Codex 角色配置](docs/RECOMMENDED_ROLE_SETUP.md)。如果暂时不想运行脚本，可先浏览 [合成 Factory 实例](examples/factory-instance/README.md) 看整体结构。
 
-**要 fork 本仓库：****公开 fork 是 OSS 分发／更新／贡献副本，不应默认当作私人 Factory 的真实运行仓库。** fork 会复制文件，但不会继承本仓的公告 Issue 或已经激活的日志状态。公开 fork 的 [自助初始化](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup) 只适合公开安全的试用、框架维护／贡献，或你明确愿意公开的 Factory；**不要把私人项目、真实任命、客户／公司资料或私有 Factory 历史放进公开 fork。**
+**Fork 本仓库（贡献／公开安全试用）：**公开 fork 是 OSS 分发／更新／贡献副本，**不是私人 Factory 的默认运行仓库**。fork 会复制文件，但不会继承本仓的公告 Issue 或已经激活的日志状态。公开 fork 的 [自助初始化](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup) 只适合公开安全的试用、框架维护／贡献，或你明确愿意公开的 Factory；**不要把私人项目、真实任命、客户／公司资料或私有 Factory 历史放进公开 fork。**
 
-真正运行私人 Factory 时，应从本框架／starters **另建一个 private operating repository**，把真实 Factory 状态放在那里；各项目源码仍可以分别留在自己的 private project repository，由 Factory 只记录受控引用与状态。公开 fork 可以继续只承担上游同步、更新和贡献。英文详细说明见 [Instantiate your own Factory separately](docs/QUICKSTART.md#6-instantiate-your-own-factory-separately)。
+真正运行私人 Factory 时，使用上述私有仓初始化命令从本框架／starters **另建一个 private operating repository**，把真实 Factory 状态放在那里；各项目源码仍可以分别留在自己的 private project repository，由 Factory 只记录受控引用与状态。公开 fork 可以继续只承担上游同步、更新和贡献。
 
 如果你确实要运行一个公开 Factory，那么对于 GitHub.com 上默认分支为 `main` 的公开直接 fork，可以使用 fork 自助初始化创建公告墙并准备 writer 配置。如果该 fork 尚未开启 Issues，`--apply` 会在核对仓库身份与管理员权限后直接为**这个 fork**开启；默认检查仍保持只读。是否真正启用仍由 fork 仓主明确决定：检查生成改动、开启 Actions、主动 opt-in，并用真实机器人写入／读回与无重复重跑完成本仓验收。
 

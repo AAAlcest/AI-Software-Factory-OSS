@@ -1,5 +1,22 @@
 # 中文上手说明
 
+## 先创建你的私人 Factory
+
+这是当前 post-v1.5 `main` 的功能，**不在**不可移动的 `v1.5.0` tag 中。准备 Git、Python 3.10+ 和 GitHub CLI (`gh`)，先运行 `gh auth login`，再取得公开 OSS 源码；**不需要 Fork**：
+
+```powershell
+git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
+cd AI-Software-Factory-OSS
+py -3 -B scripts/create_private_factory.py --repository My-AI-Factory
+py -3 -B scripts/create_private_factory.py --repository My-AI-Factory --apply
+```
+
+macOS/Linux 可把 `py -3` 换成 `python3`。先运行不带 `--apply` 的只读预览；它核对登录身份、公开源码当前 `main` 的本地／远端／API 精确提交以及目标是否不存在，并列出计划，不创建仓库或文件。显式 `--apply` 才创建**全新、独立、非 fork 的私有仓库**、全新 Git 历史、保留 MIT 和精确来源的 BLOCKED／未配置实例、私有 OPEN／UNLOCKED 公告，以及默认关闭的日志 writer。V1 只支持登录者自己的账号与公开 OSS `main`；目标已存在则拒绝，部分失败不会自动删除或偷偷续跑。
+
+公开 OSS checkout 是分发／更新来源，**新私有仓库**才是运行实例。项目源码可以继续放在各自私有项目仓库中。Human 必须另行写明真实岗位、项目与权限；脚本不会虚构任命或导入旧项目。创建后先在私有仓核对并手动执行 `dry_run=true`，再明确设置本仓变量 `DOCUMENTATION_JOURNAL_ENABLED=true`；必须有真实机器人写入、读回和重跑无重复证据，才能称日志已启用。不要把私有仓信息或验收证据贴到公开 OSS Issue。
+
+公开 Fork 只用于贡献、公开安全试用或你明确希望公开的 Factory，不是普通私人使用的前置步骤。
+
 ## 先配置人和角色，不要先复制组织图
 
 建议：**ChatGPT 负责厂内管理与职务；Codex 负责开发执行、开发组组长和 Console。**

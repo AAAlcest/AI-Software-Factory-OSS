@@ -177,12 +177,18 @@ class API:
 
 
 class Git:
-    def __init__(self, root, repo, patterns):
+    def __init__(self, root, repo, patterns, visibility="public", token=""):
         self.root, self.repo, self.patterns = root, repo, patterns
+        self.visibility, self.token = visibility, token
 
     def run(self, *args):
         env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_") and k != "GITHUB_TOKEN"}
         env.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull, GIT_TERMINAL_PROMPT="0")
+        if self.visibility == "private":
+            if not self.token:
+                raise Gap("private Git object authentication unavailable")
+            env["GITHUB_TOKEN"] = self.token
+            env["GIT_ASKPASS"] = str(self.root / "scripts/documentation_journal_askpass.sh")
         try:
             result = subprocess.run(["git", "-c", f"core.hooksPath={os.devnull}",
                 "-c", "protocol.allow=never", "-c", "protocol.https.allow=always",
@@ -419,9 +425,13 @@ class Journal:
 
 def validate_environment(api, cfg):
     repo = api.call("")
+    visibility = cfg.get("visibility", "public")
+    if visibility not in {"public", "private"}:
+        raise Gap("unsupported configured visibility")
     if (repo["id"] != cfg["repository_id"] or repo["full_name"] != cfg["repository"]
-        or repo["default_branch"] != cfg["default_branch"] or repo.get("private") is not False):
-        raise Gap("repository identity/default branch/public boundary mismatch")
+        or repo["default_branch"] != cfg["default_branch"]
+        or repo.get("private") is not (visibility == "private")):
+        raise Gap("repository identity/default branch/visibility mismatch")
     if os.environ.get("GITHUB_REPOSITORY") != cfg["repository"]:
         raise Gap("wrong workflow repository")
     expected = f"{cfg['repository']}/{WRITER}@refs/heads/{cfg['default_branch']}"
@@ -441,6 +451,8 @@ def validate_environment(api, cfg):
     notice = api.call(f"/issues/{int(cfg['notice_issue'])}")
     if notice.get("state") != "open" or notice.get("locked") is not False:
         raise Gap("notice must remain open and unlocked; lock changes require Human approval")
+    if visibility == "private" and notice.get("repository_url") != f"https://api.github.com/repos/{cfg['repository']}":
+        raise Gap("private notice target mismatch")
 
 
 def reconcile(api, git, journal, cfg):
@@ -613,7 +625,8 @@ def main():
     api = API(cfg["repository"], os.environ.get("GITHUB_TOKEN", ""))
     try:
         validate_environment(api, cfg)
-        git = Git(root, cfg["repository"], cfg["paths"])
+        git = Git(root, cfg["repository"], cfg["paths"], cfg.get("visibility", "public"),
+                  os.environ.get("GITHUB_TOKEN", ""))
         source_sha = sha(git.run("rev-parse", "HEAD").decode().strip())
         journal = Journal(api, cfg, int(os.environ["GITHUB_RUN_ID"]), args.apply, source_sha)
         state = reconcile(api, git, journal, cfg)
