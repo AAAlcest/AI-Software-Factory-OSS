@@ -2,16 +2,20 @@
 
 ## 先创建你的私人 Factory
 
-这是当前 post-v1.5 `main` 的功能，**不在**不可移动的 `v1.5.0` tag 中。准备 Git、Python 3.10+ 和 GitHub CLI (`gh`)，先运行 `gh auth login`，再取得公开 OSS 源码；**不需要 Fork**：
+v1.6.0 已把私人建厂能力收进精确 release。准备 Git、Python 3.10+ 和 GitHub CLI (`gh`)，从官方公开 OSS 取得精确 `v1.6.0`；**不需要 Fork**：
 
 ```powershell
 git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
 cd AI-Software-Factory-OSS
+git checkout v1.6.0
+gh auth login
 py -3 -B scripts/create_private_factory.py --repository My-AI-Factory
 py -3 -B scripts/create_private_factory.py --repository My-AI-Factory --apply
 ```
 
-macOS/Linux 可把 `py -3` 换成 `python3`。先运行不带 `--apply` 的只读预览；它核对登录身份、公开源码当前 `main` 的本地／远端／API 精确提交以及目标是否不存在，并列出计划，不创建仓库或文件。显式 `--apply` 才创建**全新、独立、非 fork 的私有仓库**、全新 Git 历史、保留 MIT 和精确来源的 BLOCKED／未配置实例、私有 OPEN／UNLOCKED 公告，以及默认关闭的日志 writer。V1 只支持登录者自己的账号与公开 OSS `main`；目标已存在则拒绝，部分失败不会自动删除或偷偷续跑。
+macOS/Linux 可把 `py -3` 换成 `python3`。先运行不带 `--apply` 的只读预览；它核对登录身份、官方源码 ref／本地 HEAD／origin／GitHub API 以及目标是否不存在，并列出计划，不创建仓库或文件。显式 `--apply` 才创建**全新、独立、非 fork 的私有仓库**、全新 Git 历史、保留 MIT 和精确来源 ref/SHA 的 BLOCKED／未配置实例、私有 OPEN／UNLOCKED 公告，以及默认关闭的日志 writer。V1.6 支持登录者自己的账号，并接受官方精确当前 `main` 或官方精确 `v1.6.0` tag；普通用户建议优先使用 release tag。目标已存在则拒绝，部分失败不会自动删除或偷偷续跑。
+
+Source ZIP 仍可用于后面的虚构／离线演练，但 Create Private Factory 需要 Git 元数据，因此私人建厂请使用 Git checkout。
 
 公开 OSS checkout 是分发／更新来源，**新私有仓库**才是运行实例。项目源码可以继续放在各自私有项目仓库中。Human 必须另行写明真实岗位、项目与权限；脚本不会虚构任命或导入旧项目。创建后先在私有仓核对并手动执行 `dry_run=true`，再明确设置本仓变量 `DOCUMENTATION_JOURNAL_ENABLED=true`；必须有真实机器人写入、读回和重跑无重复证据，才能称日志已启用。不要把私有仓信息或验收证据贴到公开 OSS Issue。
 
@@ -32,12 +36,12 @@ macOS/Linux 可把 `py -3` 换成 `python3`。先运行不带 `--apply` 的只�
 
 ## 先把精确版本拿到本地
 
-`1.5.0` 版本线应使用精确 `v1.5.0` tag；如果你希望结果可复现，不要直接假定
+`1.6.0` 版本线应使用精确 `v1.6.0` tag；如果你希望结果可复现，不要直接假定
 未来某个 `main` 仍然等于这个版本。
 
 ### 不用 Git：Source ZIP
 
-打开 [v1.5.0 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.5.0)，
+打开 [v1.6.0 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.6.0)，
 下载 **Source code (zip)**，解压后在该目录打开终端。
 
 ### 使用 Git
@@ -45,7 +49,7 @@ macOS/Linux 可把 `py -3` 换成 `python3`。先运行不带 `--apply` 的只�
 ```sh
 git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
 cd AI-Software-Factory-OSS
-git checkout v1.5.0
+git checkout v1.6.0
 ```
 
 先确认版本：
@@ -60,7 +64,7 @@ Windows PowerShell：
 Get-Content VERSION
 ```
 
-应看到 `1.5.0`。
+应看到 `1.6.0`。
 
 ## 运行一套完全虚构的工厂
 
