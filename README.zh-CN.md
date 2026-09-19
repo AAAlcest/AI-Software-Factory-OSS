@@ -14,7 +14,7 @@
 
 ## 从这里开始
 
-**文档公告墙：**[仓库文档索引与变更记录](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26)。正文导航，评论记变更；规则见 [公告与自动记账契约](docs/REPOSITORY_NOTICES.md)。自动记录程序目前尚未启用。
+**文档公告墙：**[仓库文档索引与变更记录](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26)。正文导航，评论记变更；规则见 [公告与自动记账契约](docs/REPOSITORY_NOTICES.md)。[本仓自动日志已启用](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736870432)：配置范围内进入 `main` 的文档改动和已观察到的 PR 候选会异步记入，不是每次本地保存即刻记账。fork 不会继承公告或已启用的 writer；请看 [fork 自助初始化](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup)。
 
 **第一次使用的 Human：**先看 [快速开始](docs/QUICKSTART_ZH.md)，再看 [推荐的 ChatGPT + Codex 角色配置](docs/RECOMMENDED_ROLE_SETUP.md)。如果暂时不想运行脚本，可先浏览 [合成 Factory 实例](examples/factory-instance/README.md) 看整体结构。
 

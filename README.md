@@ -32,7 +32,7 @@ See [1.5.0 release notes](docs/releases/1.5.0.md),
 
 **Documentation notice:** [repository index and change journal](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26).
 The opening body routes readers to canonical docs; comments record changes. See the
-[notice/journal contract](docs/REPOSITORY_NOTICES.md). Automatic recording is not yet activated.
+[notice/journal contract](docs/REPOSITORY_NOTICES.md). The [journal is active in this repository](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736870432): configured documentation changes on `main` and observed PR candidates are recorded asynchronously, not on each local save. A fork does **not** inherit the notice or active writer; see [fork setup](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup).
 
 **New Human user:** open the [Quickstart](docs/QUICKSTART.md), then the
 [recommended ChatGPT + Codex role setup](docs/RECOMMENDED_ROLE_SETUP.md). If you
