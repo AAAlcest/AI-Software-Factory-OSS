@@ -10,7 +10,7 @@
 
 **1.5.0 是 AI Software Factory OSS 当前最新的正式发布版本。** 它保留 v1.4 的有边界恢复与审计模型，并加入首次使用产品化改进：更清晰的 Human／AI／审计入口、精确 release 本地获取、Windows 友好的第一次运行说明、minimal safe AI boot、静态 cockpit 教学快照标识，以及 GitHub 原生 Fresh Factory Audit Issue 入口。
 
-当前 `main` 还包含一组 **v1.5 之后、尚未单独发布的新维护能力**：长期仓库文档公告墙、已经实际启用的 GitHub 原生文档变更自动日志，以及面向公开直接 fork 的可选自助初始化流程。这些 main-only 改进在未来发布之前**不属于不可移动的 `v1.5.0` tag**。实际已发布版本状态以 GitHub Releases 与对应 release coordination Issue 为准；历史 tag 不会为了追随未来 `main` 而移动。
+当前 `main` 还包含一组 **v1.5 之后、尚未单独发布的新维护能力**：长期仓库文档公告墙、已经实际启用的 GitHub 原生文档变更自动日志、面向公开直接 fork 的可选自助初始化流程，以及普通私人使用所需的 **Create Private Factory**：无需 Fork，直接创建全新独立的 private operating repository。这些 main-only 改进在未来发布之前**不属于不可移动的 `v1.5.0` tag**。实际已发布版本状态以 GitHub Releases 与对应 release coordination Issue 为准；历史 tag 不会为了追随未来 `main` 而移动。
 
 发布说明见 [1.5.0 Release Notes](docs/releases/1.5.0.md)、[1.4.0 历史 Release Notes](docs/releases/1.4.0.md) 与 [1.0.0 历史 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
 
@@ -82,7 +82,7 @@ FlowThread 是产品案例和作者自己的工作流工具，不是框架依赖
 
 ## V1 包含什么
 
-V1 包含：可配置的 Human / executive / role 组合；Staff Offices 与 Project Rooms；current 与 pending 状态；Issue 会议与精确候选 PR；可选的一体化正文邮件、Reply-All 与仅用于可见性的 CC；Console / open-loop 记录；Work result receipts；首次任命、同一 incumbent 恢复与经授权的真实 succession 示例；可重复的软件检查；覆盖 8 类冷启动场景的 9 个 fixture 变体；Project cockpit 与 skills；可执行的 cockpit / Project-view 生成与 drift 检查；用于有边界长线程恢复的 work-item checkpoint；带合成 governance-drift 示例的 Fresh Factory Audit 模式；V1.5 的首次使用入口、精确版本获取、minimal safe boot 与原生审计入口改进；以及当前 post-v1.5 `main` 中的仓库文档公告墙、已启用的文档自动日志和公开 fork 自助初始化能力。
+V1 包含：可配置的 Human / executive / role 组合；Staff Offices 与 Project Rooms；current 与 pending 状态；Issue 会议与精确候选 PR；可选的一体化正文邮件、Reply-All 与仅用于可见性的 CC；Console / open-loop 记录；Work result receipts；首次任命、同一 incumbent 恢复与经授权的真实 succession 示例；可重复的软件检查；覆盖 8 类冷启动场景的 9 个 fixture 变体；Project cockpit 与 skills；可执行的 cockpit / Project-view 生成与 drift 检查；用于有边界长线程恢复的 work-item checkpoint；带合成 governance-drift 示例的 Fresh Factory Audit 模式；V1.5 的首次使用入口、精确版本获取、minimal safe boot 与原生审计入口改进；以及当前 post-v1.5 `main` 中的仓库文档公告墙、已启用的文档自动日志、公开 fork 自助初始化能力和面向普通私人使用的独立 private Factory 初始化能力。
 
 它**不是**自主调度器、权限服务、生产部署系统或经过认证的邮件传输系统。其 helper 只检查声明的一致性；详细边界见 [V1 状态说明](docs/V1_BASELINE_STATUS.md)。
 
