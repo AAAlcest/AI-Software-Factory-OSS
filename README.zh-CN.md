@@ -28,7 +28,19 @@
 
 如果你确实要运行一个公开 Factory，那么对于 GitHub.com 上默认分支为 `main` 的公开直接 fork，可以使用 fork 自助初始化创建公告墙并准备 writer 配置。如果该 fork 尚未开启 Issues，`--apply` 会在核对仓库身份与管理员权限后直接为**这个 fork**开启；默认检查仍保持只读。是否真正启用仍由 fork 仓主明确决定：检查生成改动、开启 Actions、主动 opt-in，并用真实机器人写入／读回与无重复重跑完成本仓验收。
 
-**AI Agent：**先读 [AGENTS.md](AGENTS.md)，再读 [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md)。如果当前已经有明确的项目、角色和低风险小任务，应使用其中的 minimal safe boot，而不是每次都重读全部机制文档。
+**AI Agent：**先读 [AGENTS.md](AGENTS.md)，再读 [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md)。Fresh Agent 第一次进入本公开 OSS 时，必须先判断自己是在做 **OSS／框架维护**、**公开安全试用**，还是要开始 **真实私人 Factory 运行**。如果 Human 要开始真实私人工作、但还没有 private Factory，最建议的建厂路径是：
+
+```text
+公开 OSS（只作为 distribution source）
+→ Create Private Factory 只读 preview
+→ 向 Human 说明计划与隐私边界
+→ Human 明确授权
+→ 创建全新 independent private repository
+→ 核验 private / non-fork
+→ 把真实运行上下文切入这个 private Factory
+```
+
+不要把真实任命、项目状态、客户／公司资料或私有历史写进本公开 OSS；如果已经存在 private Factory，就应直接进入那个实例，而不是重复建厂。Agent 可以自行完成路由判断和只读 preview，但 `--apply` 会创建真实 GitHub 远程状态，必须有 Human 明确授权。完整的 first-contact routing 见 [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md)。如果当前已经有明确的项目、角色和低风险小任务，应使用其中的 minimal safe boot，而不是每次都重读全部机制文档。
 
 **要审计一个运行中的 Factory：**使用 [Fresh Factory Audit](docs/FRESH_FACTORY_AUDIT.md)，也可以直接从 GitHub **New issue** 里选择 Fresh Factory Audit 模板。
 
