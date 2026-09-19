@@ -22,7 +22,7 @@ class PrivateFactoryTests(unittest.TestCase):
     def test_default_cli_is_read_only(self):
         with patch("sys.argv", ["create_private_factory.py", "--repository", "Private-Factory"]), \
              patch.object(subject, "process", return_value="secret-in-memory") as command, \
-             patch.object(subject, "source_and_target", return_value=(VIEWER, HEAD, DEST)), \
+             patch.object(subject, "source_and_target", return_value=(VIEWER, HEAD, "refs/heads/main", DEST)), \
              patch.object(subject, "apply") as apply, \
              patch("builtins.print") as output:
             subject.main()
@@ -31,15 +31,18 @@ class PrivateFactoryTests(unittest.TestCase):
         self.assertIn("No writes performed", output.call_args.args[0])
 
     def source(self, origin=f"https://github.com/{subject.UPSTREAM}.git", branch="main",
-               remote=HEAD, existing=None):
+               remote=HEAD, existing=None, tag_points=None):
+        source_ref = "refs/heads/main" if branch == "main" else f"refs/tags/{subject.RELEASE_TAG}"
         replies = {
             ("git", "status", "--porcelain"): "",
             ("git", "rev-parse", "--show-toplevel"): str(ROOT),
             ("git", "remote", "get-url", "origin"): origin,
             ("git", "rev-parse", "HEAD"): HEAD,
             ("git", "branch", "--show-current"): branch,
-            ("git", "ls-remote", "origin", "refs/heads/main"): f"{remote}\trefs/heads/main",
+            ("git", "ls-remote", "origin", source_ref): f"{remote}\t{source_ref}",
         }
+        if branch == "":
+            replies[("git", "tag", "--points-at", "HEAD")] = tag_points if tag_points is not None else subject.RELEASE_TAG
         calls = []
         def command(args, **_):
             calls.append(("local", tuple(args)))
@@ -50,7 +53,9 @@ class PrivateFactoryTests(unittest.TestCase):
                 return {"id": subject.UPSTREAM_ID, "full_name": subject.UPSTREAM,
                         "private": False, "default_branch": "main"}
             if path.endswith("/git/ref/heads/main"):
-                return {"object": {"sha": HEAD}}
+                return {"object": {"sha": HEAD, "type": "commit"}}
+            if path.endswith(f"/git/ref/tags/{subject.RELEASE_TAG}"):
+                return {"object": {"sha": HEAD, "type": "commit"}}
             if path == "/user":
                 return VIEWER
             if path == f"/repos/{DEST}":
@@ -61,16 +66,26 @@ class PrivateFactoryTests(unittest.TestCase):
 
     def test_exact_upstream_and_absent_destination(self):
         result, calls = self.source()
-        self.assertEqual(result, (VIEWER, HEAD, DEST))
+        self.assertEqual(result, (VIEWER, HEAD, "refs/heads/main", DEST))
         self.assertEqual(calls[-1], ("remote", f"/repos/{DEST}"))
         with self.assertRaisesRegex(subject.BootstrapError, "exists"):
             self.source(existing={"id": 99})
         with self.assertRaisesRegex(subject.BootstrapError, "origin"):
             self.source(origin="https://github.com/other/repo.git")
-        with self.assertRaisesRegex(subject.BootstrapError, "exact OSS main"):
+        with self.assertRaisesRegex(subject.BootstrapError, "main or current release-tag"):
             self.source(branch="candidate")
         with self.assertRaisesRegex(subject.BootstrapError, "tips differ"):
             self.source(remote="b" * 40)
+
+
+    def test_exact_release_tag_checkout_is_supported_and_provenanced(self):
+        result, calls = self.source(branch="")
+        self.assertEqual(result, (VIEWER, HEAD, f"refs/tags/{subject.RELEASE_TAG}", DEST))
+        self.assertIn(("remote", f"/repos/{subject.UPSTREAM}/git/ref/tags/{subject.RELEASE_TAG}"), calls)
+        with self.assertRaisesRegex(subject.BootstrapError, "exact current release tag"):
+            self.source(branch="", tag_points="v0.0.0")
+        with self.assertRaisesRegex(subject.BootstrapError, "release-tag targets differ"):
+            self.source(branch="", remote="b" * 40)
 
     def test_destination_readback_rejects_public_fork_or_wrong_identity(self):
         row = {"id": 42, "full_name": DEST, "owner": VIEWER, "private": True,
@@ -84,14 +99,16 @@ class PrivateFactoryTests(unittest.TestCase):
     def test_generated_starter_is_lean_blocked_and_provenanced(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            subject.staged_source(root, HEAD)
+            subject.staged_source(root, HEAD, f"refs/tags/{subject.RELEASE_TAG}")
             names = {p.relative_to(root).as_posix() for p in root.rglob("*") if p.is_file()}
             self.assertIn("LICENSE", names)
             self.assertIn("instance.json", names)
             self.assertIn("scripts/documentation_journal.py", names)
             self.assertFalse(any(n.startswith("examples/") for n in names))
             self.assertFalse(any(n.startswith("tests/") and n != "tests/test_documentation_journal.py" for n in names))
-            self.assertEqual(json.loads((root / "SOURCE_PROVENANCE.json").read_text())["source_sha"], HEAD)
+            provenance = json.loads((root / "SOURCE_PROVENANCE.json").read_text())
+            self.assertEqual(provenance["source_sha"], HEAD)
+            self.assertEqual(provenance["source_ref"], f"refs/tags/{subject.RELEASE_TAG}")
             self.assertEqual(json.loads((root / "authority.json").read_text())["status"], "UNKNOWN")
             result = subprocess.run(["python", "-B", "scripts/validate_instance.py", "--root", str(root)],
                                     cwd=root, text=True, capture_output=True)
@@ -198,7 +215,7 @@ class PrivateFactoryTests(unittest.TestCase):
                      patch.object(subject, "git", side_effect=fake_git), \
                      patch.object(subject, "api", side_effect=fake_api), \
                      patch("builtins.print"):
-                    subject.apply("SECRET", VIEWER, HEAD, DEST)
+                    subject.apply("SECRET", VIEWER, HEAD, "refs/heads/main", DEST)
             finally:
                 subject.tempfile.TemporaryDirectory = original_staging
             create = next(item for item in writes if item[0] == "create")[1]

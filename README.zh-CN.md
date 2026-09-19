@@ -8,17 +8,17 @@
 
 通过让 ChatGPT 负责规划、治理、任务路由与评审协调，并把 Codex 尽量留给真正需要实现能力的开发工作，这套 Factory 的目标是显著减少不必要的 Codex token 消耗。再结合可复用的 skills 与角色化工作流，可以提高整套 AI 工具链的利用率，并让相同的 token 与订阅预算产生更高的实际回报。具体节省幅度取决于任务类型、模型选择与 Factory 配置方式；这是一个运营效率目标，不是固定额度承诺。
 
-**1.5.0 是 AI Software Factory OSS 当前最新的正式发布版本。** 它保留 v1.4 的有边界恢复与审计模型，并加入首次使用产品化改进：更清晰的 Human／AI／审计入口、精确 release 本地获取、Windows 友好的第一次运行说明、minimal safe AI boot、静态 cockpit 教学快照标识，以及 GitHub 原生 Fresh Factory Audit Issue 入口。
+**1.6.0 是 AI Software Factory OSS 当前的 release line。** 它把 v1.5 之后的仓库治理和私人建厂能力收成一条可复现的普通使用路径：GitHub 原生文档公告墙／自动日志、公开 fork 自助初始化、无需 Fork 的独立 **Create Private Factory**、private writer 安全边界、真实 private bootstrap 验收，以及 Fresh Agent 从公开 distribution 自动路由到正确 operating context 的规则。
 
-当前 `main` 还包含一组 **v1.5 之后、尚未单独发布的新维护能力**：长期仓库文档公告墙、已经实际启用的 GitHub 原生文档变更自动日志、面向公开直接 fork 的可选自助初始化流程，以及普通私人使用所需的 **Create Private Factory**：无需 Fork，直接创建全新独立的 private operating repository。这些 main-only 改进在未来发布之前**不属于不可移动的 `v1.5.0` tag**。实际已发布版本状态以 GitHub Releases 与对应 release coordination Issue 为准；历史 tag 不会为了追随未来 `main` 而移动。
+实际已发布版本状态以 GitHub Releases 与对应 release coordination Issue 为准；历史 tag 不会为了追随未来 `main` 而移动。
 
-发布说明见 [1.5.0 Release Notes](docs/releases/1.5.0.md)、[1.4.0 历史 Release Notes](docs/releases/1.4.0.md) 与 [1.0.0 历史 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
+发布说明见 [1.6.0 Release Notes](docs/releases/1.6.0.md)、[1.5.0 历史 Release Notes](docs/releases/1.5.0.md)、[1.4.0 历史 Release Notes](docs/releases/1.4.0.md) 与 [1.0.0 历史 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
 
 ## 从这里开始
 
 **文档公告墙：**[仓库文档索引与变更记录](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26)。正文导航，评论记变更；规则见 [公告与自动记账契约](docs/REPOSITORY_NOTICES.md)。[本仓自动日志已启用](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736870432)：配置范围内进入 `main` 的文档改动和已观察到的 PR 候选会异步记入，不是每次本地保存即刻记账。fork 不会继承公告或已启用的 writer；请看 [fork 自助初始化](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup)。
 
-**创建你的私人 Factory（普通使用入口）：**从公开 OSS 仓库取得当前 `main` 源码，先运行[只读的私有仓初始化预览](docs/QUICKSTART_ZH.md#先创建你的私人-factory)，确认后再显式执行。它创建一个**全新、独立、非 fork 的私有仓库**；正常私人使用**不需要 Fork**。新实例仍是 BLOCKED／未配置，日志 writer 也尚未启用。此功能目前只在 post-v1.5 的 `main`，不属于不可移动的 `v1.5.0` tag。
+**创建你的私人 Factory（普通使用入口）：**从公开 OSS 仓库取得当前 `main` 源码，先运行[只读的私有仓初始化预览](docs/QUICKSTART_ZH.md#先创建你的私人-factory)，确认后再显式执行。它创建一个**全新、独立、非 fork 的私有仓库**；正常私人使用**不需要 Fork**。新实例仍是 BLOCKED／未配置，日志 writer 也尚未启用。在 v1.6.0 release line 中，bootstrap 也接受官方精确 `v1.6.0` tag，因此普通用户不需要追随不断移动的 `main`。
 
 **第一次使用的 Human：**先看 [快速开始](docs/QUICKSTART_ZH.md)，再看 [推荐的 ChatGPT + Codex 角色配置](docs/RECOMMENDED_ROLE_SETUP.md)。如果暂时不想运行脚本，可先浏览 [合成 Factory 实例](examples/factory-instance/README.md) 看整体结构。
 
@@ -94,7 +94,7 @@ FlowThread 是产品案例和作者自己的工作流工具，不是框架依赖
 
 ## V1 包含什么
 
-V1 包含：可配置的 Human / executive / role 组合；Staff Offices 与 Project Rooms；current 与 pending 状态；Issue 会议与精确候选 PR；可选的一体化正文邮件、Reply-All 与仅用于可见性的 CC；Console / open-loop 记录；Work result receipts；首次任命、同一 incumbent 恢复与经授权的真实 succession 示例；可重复的软件检查；覆盖 8 类冷启动场景的 9 个 fixture 变体；Project cockpit 与 skills；可执行的 cockpit / Project-view 生成与 drift 检查；用于有边界长线程恢复的 work-item checkpoint；带合成 governance-drift 示例的 Fresh Factory Audit 模式；V1.5 的首次使用入口、精确版本获取、minimal safe boot 与原生审计入口改进；以及当前 post-v1.5 `main` 中的仓库文档公告墙、已启用的文档自动日志、公开 fork 自助初始化能力和面向普通私人使用的独立 private Factory 初始化能力。
+V1 包含：可配置的 Human / executive / role 组合；Staff Offices 与 Project Rooms；current 与 pending 状态；Issue 会议与精确候选 PR；可选的一体化正文邮件、Reply-All 与仅用于可见性的 CC；Console / open-loop 记录；Work result receipts；首次任命、同一 incumbent 恢复与经授权的真实 succession 示例；可重复的软件检查；覆盖 8 类冷启动场景的 9 个 fixture 变体；Project cockpit 与 skills；可执行的 cockpit / Project-view 生成与 drift 检查；用于有边界长线程恢复的 work-item checkpoint；带合成 governance-drift 示例的 Fresh Factory Audit 模式；V1.5 的首次使用入口、精确版本获取、minimal safe boot 与原生审计入口改进；以及 V1.6 的仓库文档公告墙、已启用的文档自动日志、公开 fork 自助初始化、面向普通私人使用的独立 private Factory 初始化、release-tag 来源记录与 Fresh Agent 私人建厂路由。
 
 它**不是**自主调度器、权限服务、生产部署系统或经过认证的邮件传输系统。其 helper 只检查声明的一致性；详细边界见 [V1 状态说明](docs/V1_BASELINE_STATUS.md)。
 

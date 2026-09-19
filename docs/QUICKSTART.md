@@ -2,17 +2,25 @@
 
 ## 1. Get the public OSS source
 
-Create Private Factory is currently on post-v1.5 `main`, not the immutable
-`v1.5.0` release. Install Git, Python 3.10+ and GitHub CLI (`gh`), authenticate
-with `gh auth login`, then clone the public source without forking:
+For normal reproducible private-Factory creation, use the exact `v1.6.0` release
+tag. Install Git, Python 3.10+ and GitHub CLI (`gh`), then clone the official
+public source without forking:
 
 ```sh
 git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
 cd AI-Software-Factory-OSS
+git checkout v1.6.0
+gh auth login
 ```
 
-Keep this checkout clean and on the exact current `main`; the command checks
-the local HEAD against the upstream Git remote and GitHub API before any write.
+Keep the checkout clean. The private-bootstrap command accepts either this exact
+official `v1.6.0` tag or the clean exact current official `main`, and verifies
+the local HEAD against the corresponding origin ref and GitHub API before any
+write. Normal users should prefer the release tag; current `main` is primarily
+for framework development/evaluation.
+
+GitHub Source ZIP is still fine for the fictional/offline exercises below, but the
+private-bootstrap command requires Git metadata and therefore uses a Git checkout.
 
 ## 2. Create your private Factory
 
@@ -30,8 +38,9 @@ Git history, an unconfigured/BLOCKED Factory starter, exact OSS source provenanc
 and MIT license, and an OPEN/UNLOCKED private documentation notice. It configures
 the existing journal for that private repository, with writer disabled. No real
 role/project appointment, existing private project import, or production authority
-is inferred. V1 supports the authenticated user's own account and upstream `main`
-only; a pre-existing destination fails closed. A partially failed apply is not
+is inferred. V1.6 supports the authenticated user's own account and either the
+exact official current `main` or exact official `v1.6.0` tag; a pre-existing
+destination fails closed. A partially failed apply is not
 auto-deleted or automatically resumed; inspect it privately before retrying.
 
 The source checkout remains a distribution/update surface; the **new private
@@ -54,12 +63,12 @@ no example appoints its reader. Unconfigured values remain unknown.
 
 ## 4. Get an exact release locally for the fictional exercise
 
-For the `1.5.0` release line, use the exact `v1.5.0` tag rather than an arbitrary
+For the `1.6.0` release line, use the exact `v1.6.0` tag rather than an arbitrary
 future `main` when you want reproducible results.
 
 ### No Git: GitHub Source ZIP
 
-Open the [v1.5.0 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.5.0),
+Open the [v1.6.0 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.6.0),
 download **Source code (zip)**, extract it, and open a terminal in the extracted
 repository directory.
 
@@ -68,7 +77,7 @@ repository directory.
 ```sh
 git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
 cd AI-Software-Factory-OSS
-git checkout v1.5.0
+git checkout v1.6.0
 ```
 
 Confirm the version before continuing:
@@ -83,7 +92,7 @@ On Windows PowerShell:
 Get-Content VERSION
 ```
 
-It should print `1.5.0` for this release.
+It should print `1.6.0` for this release.
 
 ## 5. Run the fictional exercise locally
 

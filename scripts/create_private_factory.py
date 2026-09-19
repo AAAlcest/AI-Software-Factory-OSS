@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Create a new, independent private Factory; default invocation is read-only.
 
-V1 deliberately supports only a clean, exact upstream main checkout and the
-authenticated user's own account. A failed --apply leaves a private, BLOCKED
+V1 deliberately supports a clean, exact official upstream main checkout or the
+exact official release tag matching VERSION, plus the authenticated user's own
+account. A failed --apply leaves a private, BLOCKED
 partial repository for manual inspection; it never deletes or silently resumes.
 """
 from __future__ import annotations
@@ -24,6 +25,7 @@ import urllib.request
 ROOT = Path(__file__).resolve().parents[1]
 UPSTREAM = "AAAlcest/AI-Software-Factory-OSS"
 UPSTREAM_ID = 1358307744
+RELEASE_TAG = "v" + (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 NAME = re.compile(r"[A-Za-z0-9_.-]{1,100}\Z")
 SHA = re.compile(r"[0-9a-f]{40}\Z")
 COPY = (
@@ -101,12 +103,27 @@ def source_and_target(token, name):
             or upstream.get("private") is not False or upstream.get("default_branch") != "main"):
         raise BootstrapError("OSS source identity or visibility mismatch.")
     head = process(["git", "rev-parse", "HEAD"])
-    if not SHA.fullmatch(head) or process(["git", "branch", "--show-current"]) != "main":
-        raise BootstrapError("Use a clean exact OSS main checkout.")
-    ref = api(token, f"/repos/{UPSTREAM}/git/ref/heads/main")
-    remote = process(["git", "ls-remote", "origin", "refs/heads/main"]).split()
-    if (ref.get("object") or {}).get("sha") != head or not remote or remote[0] != head:
-        raise BootstrapError("Local, remote and API OSS main tips differ.")
+    if not SHA.fullmatch(head):
+        raise BootstrapError("Invalid OSS source commit.")
+    branch = process(["git", "branch", "--show-current"])
+    if branch == "main":
+        source_ref = "refs/heads/main"
+        ref = api(token, f"/repos/{UPSTREAM}/git/ref/heads/main")
+        remote = process(["git", "ls-remote", "origin", source_ref]).split()
+        if ((ref.get("object") or {}).get("sha") != head or not remote or remote[0] != head):
+            raise BootstrapError("Local, remote and API OSS main tips differ.")
+    elif branch == "":
+        source_ref = f"refs/tags/{RELEASE_TAG}"
+        local_tags = process(["git", "tag", "--points-at", "HEAD"]).splitlines()
+        if RELEASE_TAG not in local_tags:
+            raise BootstrapError("Detached checkout is not the exact current release tag.")
+        ref = api(token, f"/repos/{UPSTREAM}/git/ref/tags/{RELEASE_TAG}")
+        remote = process(["git", "ls-remote", "origin", source_ref]).split()
+        obj = ref.get("object") or {}
+        if (obj.get("type") != "commit" or obj.get("sha") != head or not remote or remote[0] != head):
+            raise BootstrapError("Local, remote and API OSS release-tag targets differ.")
+    else:
+        raise BootstrapError("Use a clean exact OSS main or current release-tag checkout.")
     viewer = api(token, "/user")
     owner = viewer.get("login")
     if not isinstance(viewer.get("id"), int) or not isinstance(owner, str) or not NAME.fullmatch(owner):
@@ -114,7 +131,7 @@ def source_and_target(token, name):
     dest = f"{owner}/{name}"
     if api(token, f"/repos/{dest}", missing_ok=True) is not None:
         raise BootstrapError("Destination already exists; no automatic resume or overwrite.")
-    return viewer, head, dest
+    return viewer, head, source_ref, dest
 
 
 def put(root, name, text):
@@ -123,7 +140,7 @@ def put(root, name, text):
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
-def staged_source(root, source_sha):
+def staged_source(root, source_sha, source_ref="refs/heads/main"):
     for name in COPY:
         dest = root / name
         dest.parent.mkdir(parents=True, exist_ok=True)
@@ -135,7 +152,7 @@ def staged_source(root, source_sha):
     shutil.rmtree(root / "templates/instance")
     put(root, "SOURCE_PROVENANCE.json", json.dumps({
         "upstream": UPSTREAM, "upstream_repository_id": UPSTREAM_ID,
-        "source_ref": "refs/heads/main", "source_sha": source_sha,
+        "source_ref": source_ref, "source_sha": source_sha,
         "license": "MIT", "status": "COPIED_FRAMEWORK_NOT_OPERATING_AUTHORITY",
     }, indent=2) + "\n")
     put(root, "README.md", "# Private Factory — BLOCKED starter\n\n"
@@ -233,11 +250,11 @@ def commit(root, viewer, message):
     return git(root, "rev-parse", "HEAD")
 
 
-def apply(token, viewer, source_sha, dest):
+def apply(token, viewer, source_sha, source_ref, dest):
     # Build and validate all source-dependent files before first remote mutation.
     with tempfile.TemporaryDirectory(prefix="private-factory-bootstrap-") as directory:
         root = Path(directory)
-        staged_source(root, source_sha)
+        staged_source(root, source_sha, source_ref)
         # A placeholder destination/notice checks source workflow shape before POST.
         journal_files(root, dest, 1, 1, "0" * 40)
         (root / CONFIG).unlink()
@@ -292,13 +309,13 @@ def main():
     token = process(["gh", "auth", "token"])
     if not token:
         raise BootstrapError("Authenticated GitHub token unavailable.")
-    viewer, source_sha, dest = source_and_target(token, args.repository)
+    viewer, source_sha, source_ref, dest = source_and_target(token, args.repository)
     if not args.apply:
-        print(f"DRY RUN: source={UPSTREAM}@{source_sha}; destination={dest} "
+        print(f"DRY RUN: source={UPSTREAM}@{source_ref}:{source_sha}; destination={dest} "
               "NEW private independent repository; plan=create BLOCKED starter, initial commit, "
               "OPEN/UNLOCKED private notice, disabled same-repository journal. No writes performed.")
         return
-    apply(token, viewer, source_sha, dest)
+    apply(token, viewer, source_sha, source_ref, dest)
 
 
 if __name__ == "__main__":

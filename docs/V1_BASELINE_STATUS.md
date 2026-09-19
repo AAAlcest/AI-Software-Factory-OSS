@@ -1,6 +1,6 @@
 # V1 public baseline
 
-Version: see [VERSION](../VERSION). The current repository delivery line is **1.5.0**.
+Version: see [VERSION](../VERSION). The current repository delivery line is **1.6.0**.
 The repository is public, distributed under MIT, and uses GitHub Private
 Vulnerability Reporting. Exact Git targets, executed checks, review evidence and
 release readbacks remain on the corresponding repository Issues/PRs rather than
@@ -32,7 +32,16 @@ cold-start fixtures, plus the later bounded-management and first-use layers:
 - minimal safe AI boot for already-selected bounded tasks;
 - explicit static/legacy cockpit teaching-snapshot labeling and current schema-2
   generation guidance;
-- native GitHub New Issue Fresh Factory Audit entry.
+- native GitHub New Issue Fresh Factory Audit entry;
+- durable repository documentation notice and GitHub-native documentation journal;
+- opt-in public-fork documentation-journal bootstrap with scoped Issues enablement;
+- independent Create Private Factory bootstrap for a NEW private/non-fork operating
+  repository with fresh history, BLOCKED starter and exact source provenance;
+- private journal visibility/notice binding, writer-off dry run and same-repository
+  Git authentication;
+- exact official `v1.6.0` release-tag support for reproducible private bootstrap;
+- fresh-Agent first-contact routing for OSS maintenance, public-safe evaluation and
+  real private Factory operation.
 
 A checked-in [browseable synthetic Factory instance](../examples/factory-instance/README.md)
 shows Staff Offices, Project Rooms, Factory state, registers, checkpoints, derived
@@ -87,7 +96,12 @@ Later feature and release evidence remains scoped to the corresponding work surf
   Ubuntu/Windows x Python 3.10/3.13; Fresh remediation verification comment
   `5704269830`, final result `PASS` with all five targeted findings resolved and no
   new first-use regression;
-- v1.5.0 release consolidation: Issue #23 and its exact RC/CI/publication evidence.
+- v1.5.0 release consolidation: Issue #23 and its exact RC/CI/publication evidence;
+- V1.6 repository journal/private-Factory productization: Issue #28 / PRs #29–#31,
+  PRs #32/#34/#36, Issue #37 / PR #38, public-safe live private-bootstrap PASS
+  comment `5744321155`, and PRs #40/#41;
+- v1.6.0 release consolidation/publication: Issue #42 and its exact RC/CI/tag/Release
+  readback.
 
 The V1.3 fresh-context result demonstrates bounded recovery for that accepted
 synthetic work-item/checkpoint path. The post-release v1.4.0 Fresh product acceptance
@@ -97,23 +111,25 @@ result is described as a blanket privacy certification of all future bytes.
 
 ## Release integrity
 
-Repository version line: **1.5.0**.
+Repository version line: **1.6.0**.
 
 Historical published tags remain immutable:
 
 - `v1.0.0` -> `e9b9a61648746ffa64c32043a076af28d445bd30`;
-- `v1.4.0` -> `15f5c4c6b4a8b325385c3b7a0d4c10ccd790858f`.
+- `v1.4.0` -> `15f5c4c6b4a8b325385c3b7a0d4c10ccd790858f`;
+- `v1.5.0` -> `854db04ab1b3f48eb47e95e5059ff0562ac9c2ec`.
 
-The `v1.4.0` GitHub Release and its Issue #19 publication evidence remain historical
-truth even after later `main` changes. They must not be rewritten to follow 1.5.0.
+Historical GitHub Releases and their coordination evidence remain historical truth
+after later `main` changes and must not be rewritten to follow 1.6.0.
 
-For `v1.5.0`, Issue #23 is the release-coordination surface. If publication is
-Human-authorized, the `v1.5.0` tag must point to the exact final release commit from
-that flow and must not later be moved. Before publication, the same Issue records the
-candidate and Human gate; after publication, it records final tag/Release readback.
+For `v1.6.0`, Issue #42 is the release-coordination surface. Human has authorized
+publication in the recorded release flow; the final `v1.6.0` tag must point to the
+exact accepted release commit and must never later move. The same Issue records the
+candidate, current CI and final tag/Release readback.
 
-Release notes: [1.5.0](releases/1.5.0.md), historical
-[1.4.0](releases/1.4.0.md) and [1.0.0](releases/1.0.0.md).
+Release notes: [1.6.0](releases/1.6.0.md), historical
+[1.5.0](releases/1.5.0.md), [1.4.0](releases/1.4.0.md) and
+[1.0.0](releases/1.0.0.md).
 
 Earlier slice-specific reviews remain historical scoped evidence, not blanket
 approval of later bytes. Release consolidation reuses accepted evidence only where
