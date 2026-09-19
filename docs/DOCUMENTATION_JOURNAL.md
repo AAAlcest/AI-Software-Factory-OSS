@@ -24,6 +24,14 @@ rejects private repositories; exporting their records is not an implied capabili
 
 ## Fork self-setup
 
+> **Privacy boundary:** this section configures the journal for a **public fork**.
+> It is not the recommended bootstrap for a private operating Factory. Do not put
+> private project metadata, assignments, company/customer information or private
+> Factory history into a public fork. Real private instances belong in a separate
+> authorized private operating repository; the public fork may remain an
+> upstream/update/contribution copy. See
+> [Quickstart §6](QUICKSTART.md#6-instantiate-your-own-factory-separately).
+
 A GitHub fork copies files, not the upstream #26 Issue or its bot records. GitHub
 Actions in a fork require the fork owner's own enablement. The copied writer has
 the **upstream repository ID** in its guard and will not write to a fork unchanged.

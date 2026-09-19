@@ -45,14 +45,26 @@ The opening body routes readers to canonical docs; comments record changes. See 
 want to understand the shape before running anything, browse the
 [synthetic Factory instance](examples/factory-instance/README.md).
 
-**Forking this repository:** a fork receives the files, but not this repository's
-notice Issue or active journal state. For a public direct GitHub.com fork whose
-default branch is `main`, use the [fork self-setup](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup)
-to create the fork's own notice and prepare its writer configuration. If Issues
-are disabled on that fork, `--apply` enables them there after repository/admin
+**Forking this repository:** a GitHub fork is **public OSS/distribution space, not
+the default home for a private operating Factory**. A fork receives the files, but
+not this repository's notice Issue or active journal state. Use the public-fork
+[journal self-setup](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup) only for
+public-safe evaluation, framework maintenance/contribution, or an intentionally
+public Factory. **Do not put private projects, assignments, customer/company data,
+or private Factory history into a public fork.**
+
+For real private work, instantiate a **separate private operating repository** from
+the framework/starters and keep the private Factory state there; project source
+repositories may remain separate private repositories referenced by that Factory.
+The public fork can remain only as an upstream/update/contribution copy. See
+[Instantiate your own Factory separately](docs/QUICKSTART.md#6-instantiate-your-own-factory-separately).
+
+For a public direct GitHub.com fork whose default branch is `main`, the journal
+self-setup can create that fork's own notice and prepare its writer configuration.
+If Issues are disabled, `--apply` enables them there after repository/admin
 verification; the default check remains read-only. Activation remains explicit:
-the fork owner reviews the generated changes, enables Actions,
-opts in, and verifies a real bot write/readback plus a no-duplicate replay.
+the fork owner reviews the generated changes, enables Actions, opts in, and verifies
+a real bot write/readback plus a no-duplicate replay.
 
 **AI Agent:** read [AGENTS.md](AGENTS.md), then [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md).
 For an already-selected, low-risk bounded task, use the minimal safe boot described
