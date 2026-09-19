@@ -24,8 +24,10 @@ native Fresh Factory Audit Issue entry.
 
 Current `main` also contains **post-v1.5, unreleased maintenance improvements**:
 a durable repository documentation notice, an active GitHub-native documentation
-change journal, and an opt-in self-setup path for public direct forks. These
-main-only improvements are not part of the immutable `v1.5.0` tag unless and until
+change journal, an opt-in self-setup path for public direct forks, and a
+**Create Private Factory** path that creates a new independent private operating
+repository without requiring Fork. These main-only improvements are not part of
+the immutable `v1.5.0` tag unless and until
 a later release publishes them. Published-release status is authoritative on
 GitHub Releases and the release coordination Issue; historical tags are never
 moved to follow later `main` changes.
@@ -180,7 +182,8 @@ checkpoints for bounded long-thread recovery; a reusable Fresh Factory Audit
 pattern with synthetic governance-drift examples; the V1.5 first-use routing,
 release-acquisition, minimal-safe-boot and native-audit-entry improvements; and,
 on current post-v1.5 `main`, the repository documentation notice, active
-documentation journal and opt-in public-fork journal bootstrap.
+documentation journal, opt-in public-fork journal bootstrap, and independent
+private-Factory bootstrap for normal private use.
 
 This is not an autonomous scheduler, authorization service, production deployment
 system or authenticated mail transport. Its helpers check declared consistency;
