@@ -33,7 +33,7 @@ COPY = (
     "templates/instance/state.json", "templates/instance/CURRENT.md",
     "templates/STAFF_OFFICE_TEMPLATE.md", "templates/PROJECT_ROOM_TEMPLATE.md",
     "templates/CORRESPONDENCE_RECORDS_TEMPLATE.md", "templates/RATIONALE_INDEX_TEMPLATE.md",
-    "docs/EXECUTION_FIRST.md", "scripts/factory_doctor.py",
+    "docs/EXECUTION_FIRST.md", "docs/FACTORY_DOCTOR.md", "scripts/factory_doctor.py",
     "scripts/documentation_journal.py", "scripts/documentation_journal_askpass.sh",
     "tests/test_documentation_journal.py",
 )
