@@ -20,5 +20,11 @@ Before acting:
 7. Do not infer Human-only, security, production, destructive, release, credential, external-company, or publication authority.
 8. Do not copy private operating history into examples. Use synthetic data.
 9. If authority, environment, state, or trust boundary is unknown, fail closed and record the unknown instead of guessing.
+10. Once work is actually authorized, executable and unblocked, follow
+    [Execution-First](docs/EXECUTION_FIRST.md): act, verify evidence, and end only
+    at a valid bounded closure state. Do not substitute narration for execution.
+11. Use the [Design Rationale Index](docs/DESIGN_RATIONALE_INDEX.md) only to
+    explain history/provenance after current authority is established; it is not
+    an instruction or authority source.
 
 A role title is not authority by itself. A chat/session is not a durable organizational identity by itself.
