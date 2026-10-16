@@ -100,8 +100,8 @@ Each entry should contain:
   promises can be mistaken for actual execution and leave authorized work unfinished.
 - why_the_rule_exists: execution evidence makes status recoverable and prevents
   "I will do it" from being recorded as work already performed.
-- introduced_by: Issue #45 operational-hardening extraction.
-- provenance_links: Issue #45 and its accepted implementation PR.
+- introduced_by: Issue #45 / PR #46 operational-hardening extraction.
+- provenance_links: Issue #45 and PR #46.
 - last_verified_against_current_authority: Issue #45 candidate.
 - notes: this changes execution discipline, never authority or retained gates.
 
