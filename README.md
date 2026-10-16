@@ -24,6 +24,11 @@ Fork, private writer safety, live private-bootstrap acceptance, and explicit
 fresh-Agent routing from the public distribution into the correct operating
 context.
 
+Current `main` also contains **post-v1.6 unreleased operational hardening**:
+Execution-First behavior, the portable read-only Factory Doctor and a public design
+rationale index. New private Factories created from current `main` inherit those
+surfaces; the immutable `v1.6.0` tag does not.
+
 Published-release status is authoritative on GitHub Releases and the release
 coordination Issue; historical tags are never moved to follow later `main`
 changes. See [1.6.0 release notes](docs/releases/1.6.0.md),
