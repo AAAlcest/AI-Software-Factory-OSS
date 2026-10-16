@@ -90,7 +90,7 @@ class FactoryDoctorTests(unittest.TestCase):
                 "baseline_sha": A,
                 "paths": ["*.md"],
             }))
-            init_repo(root, "https://github.com/example/private-factory.git")
+            init_repo(root, "https://github.com/example/private-factory")
             commit_all(root)
             result = doctor.inspect(root)
             self.assertEqual(result["status"], "PASS")
