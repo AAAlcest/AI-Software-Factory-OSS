@@ -32,8 +32,10 @@ COPY = (
     "LICENSE", "templates/instance/instance.json", "templates/instance/authority.json",
     "templates/instance/state.json", "templates/instance/CURRENT.md",
     "templates/STAFF_OFFICE_TEMPLATE.md", "templates/PROJECT_ROOM_TEMPLATE.md",
-    "templates/CORRESPONDENCE_RECORDS_TEMPLATE.md", "scripts/documentation_journal.py",
-    "scripts/documentation_journal_askpass.sh", "tests/test_documentation_journal.py",
+    "templates/CORRESPONDENCE_RECORDS_TEMPLATE.md", "templates/RATIONALE_INDEX_TEMPLATE.md",
+    "docs/EXECUTION_FIRST.md", "scripts/factory_doctor.py",
+    "scripts/documentation_journal.py", "scripts/documentation_journal_askpass.sh",
+    "tests/test_documentation_journal.py",
 )
 CONFIG = Path(".github/documentation-journal.json")
 WRITER = Path(".github/workflows/documentation-journal.yml")
@@ -150,6 +152,7 @@ def staged_source(root, source_sha, source_ref="refs/heads/main"):
         source = root / "templates/instance" / name
         shutil.move(source, root / name)
     shutil.rmtree(root / "templates/instance")
+    shutil.move(root / "templates/RATIONALE_INDEX_TEMPLATE.md", root / "RATIONALE_INDEX.md")
     put(root, "SOURCE_PROVENANCE.json", json.dumps({
         "upstream": UPSTREAM, "upstream_repository_id": UPSTREAM_ID,
         "source_ref": source_ref, "source_sha": source_sha,
@@ -158,21 +161,31 @@ def staged_source(root, source_sha, source_ref="refs/heads/main"):
     put(root, "README.md", "# Private Factory — BLOCKED starter\n\n"
         "This repository is a new independent operating instance, not an OSS fork. "
         "No Human, role, project, environment or production authority has been assigned. "
-        "Read `AGENTS.md`, `AI_ENTRYPOINT.md`, the root instance contract and "
-        "`SOURCE_PROVENANCE.json`. Do not run work until real authority is recorded.\n\n"
+        "Read `AGENTS.md`, `AI_ENTRYPOINT.md`, `docs/EXECUTION_FIRST.md`, "
+        "the root instance contract, `RATIONALE_INDEX.md` and `SOURCE_PROVENANCE.json`. "
+        "Run `python -B scripts/factory_doctor.py --json` for a read-only health view; "
+        "Doctor PASS never grants authority. Do not run operating work until real "
+        "authority is recorded.\n\n"
         "The documentation journal is NOT_ACTIVATED. Its repository-local writer gate "
         f"`{VARIABLE}` remains unset.\n")
     put(root, "AGENTS.md", "# Private Factory entry\n\nRead `AI_ENTRYPOINT.md` first. "
         "This is an unconfigured private instance, not an appointment. "
-        "Do not infer authority from repository access or technical identity.\n")
+        "Do not infer authority from repository access or technical identity. "
+        "Once work is actually authorized, follow `docs/EXECUTION_FIRST.md`; "
+        "Doctor/validator results remain diagnostic only.\n")
     put(root, "AI_ENTRYPOINT.md", "# Private Factory — first entry\n\n"
-        "1. Read `AGENTS.md`, `SOURCE_PROVENANCE.json`, `instance.json`, "
-        "`authority.json`, `state.json` and `CURRENT.md`.\n"
-        "2. Resolve a real Human decision and role/project scope before editing "
-        "any operating record. `validate_instance.py` or a green test cannot appoint anyone.\n"
-        "3. Current status is BLOCKED/UNCONFIGURED. No predecessor, project, "
+        "1. Read `AGENTS.md`, `docs/EXECUTION_FIRST.md`, `SOURCE_PROVENANCE.json`, "
+        "`RATIONALE_INDEX.md`, `instance.json`, `authority.json`, `state.json` "
+        "and `CURRENT.md`. The rationale index explains history; it is not authority.\n"
+        "2. Run `python -B scripts/factory_doctor.py --json` when a read-only health "
+        "snapshot is useful. Doctor/validator PASS cannot appoint anyone or authorize work.\n"
+        "3. Resolve a real Human decision and role/project scope before editing any "
+        "operating record.\n"
+        "4. Current status is BLOCKED/UNCONFIGURED. No predecessor, project, "
         "correspondence or production authority is presumed.\n"
-        "4. The documentation notice is navigation, not authority; journal writing "
+        "5. Once authority exists, follow Execution-First: execute authorized/unblocked "
+        "work, verify evidence, and stop only at a valid bounded closure state.\n"
+        "6. The documentation notice is navigation, not authority; journal writing "
         "requires separate repository-local opt-in and observed bot evidence.\n")
     put(root, "projects/README.md", "# Private project references — unconfigured\n\n"
         "Projects may keep their source in separate private repositories. Add only "
