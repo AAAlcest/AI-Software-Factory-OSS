@@ -17,7 +17,9 @@ Read instance AGENTS/entrypoint, original authority, current state, applicable
 inbox since the last reliable checkpoint, then desk/CURRENT and pending work.
 Freshly verify repository/ref/HEAD and evidence. First appointment has no
 predecessor; recovery preserves the incumbent; true succession reads immutable
-history without replacing fresher state.
+history without replacing fresher state. Once authority exists, follow
+[Execution-First](../docs/EXECUTION_FIRST.md): perform authorized/unblocked work,
+verify evidence, and stop only at a valid bounded closure state.
 
 ## Durable endpoints
 
@@ -37,3 +39,9 @@ Keep task/Issue pointers, last reliable inbox checkpoint, unresolved work,
 observed ref/HEAD, blockers and next action. Record verification time/source,
 not a guessed timestamp. Current cursor and pending notes are navigation, never
 new authority. Completed items leave the active queue with durable provenance.
+
+## Rationale and health
+
+Use the instance rationale index only for historical explanation/navigation; it
+never replaces current authority. A portable read-only health snapshot is available
+through `scripts/factory_doctor.py`; Doctor PASS does not authorize execution.
