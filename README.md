@@ -98,7 +98,7 @@ mechanism set.
 
 **Operational discipline and health:** once work is actually authorized, use the
 [Execution-First contract](docs/EXECUTION_FIRST.md) so evidence-backed action replaces
-ACK-only narration. `python -B scripts/factory_doctor.py --json` provides a portable
+ACK-only narration. [`python -B scripts/factory_doctor.py --json`](docs/FACTORY_DOCTOR.md) provides a portable
 read-only Factory/repository health snapshot; Doctor PASS never grants authority.
 The [Design Rationale Index](docs/DESIGN_RATIONALE_INDEX.md) explains selected public
 rules and provenance without becoming a second authority source.
