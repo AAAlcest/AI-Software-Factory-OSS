@@ -24,6 +24,11 @@ Fork, private writer safety, live private-bootstrap acceptance, and explicit
 fresh-Agent routing from the public distribution into the correct operating
 context.
 
+Current `main` also contains **post-v1.6 unreleased operational hardening**:
+Execution-First behavior, the portable read-only Factory Doctor and a public design
+rationale index. New private Factories created from current `main` inherit those
+surfaces; the immutable `v1.6.0` tag does not.
+
 Published-release status is authoritative on GitHub Releases and the release
 coordination Issue; historical tags are never moved to follow later `main`
 changes. See [1.6.0 release notes](docs/releases/1.6.0.md),
@@ -95,6 +100,13 @@ requires explicit Human authorization. Detailed first-contact routing lives in
 [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md). For an already-selected, low-risk bounded
 task, use the minimal safe boot described there instead of rereading the entire
 mechanism set.
+
+**Operational discipline and health:** once work is actually authorized, use the
+[Execution-First contract](docs/EXECUTION_FIRST.md) so evidence-backed action replaces
+ACK-only narration. [`python -B scripts/factory_doctor.py --json`](docs/FACTORY_DOCTOR.md) provides a portable
+read-only Factory/repository health snapshot; Doctor PASS never grants authority.
+The [Design Rationale Index](docs/DESIGN_RATIONALE_INDEX.md) explains selected public
+rules and provenance without becoming a second authority source.
 
 **Want to audit an operating Factory:** use [Fresh Factory Audit](docs/FRESH_FACTORY_AUDIT.md)
 or choose the Fresh Factory Audit template from GitHub **New issue**.

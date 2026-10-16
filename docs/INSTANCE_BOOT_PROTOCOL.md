@@ -40,16 +40,33 @@ own authorized operating repository, never in this distributable history.
    true succession read the finalized predecessor handoff without editing it,
    then reconcile it against current evidence.
 6. Report the role, scope, exact checked ref/HEAD, unresolved facts, gates and
-   next safe action with source pointers. An optional structural preflight may
-   help detect mistakes, but cannot establish appointment or takeover by itself.
+   next safe action with source pointers. An optional structural preflight/Doctor
+   may help detect mistakes, but cannot establish appointment or takeover by itself.
+7. If an action is authorized, executable and unblocked, follow
+   [Execution-First](EXECUTION_FIRST.md): execute, verify evidence, and stop at a
+   valid bounded closure state. The contract never expands authority or bypasses
+   retained gates.
 
 A reference's existence proves neither its truth nor its freshness. Repository
 access, Git authorship, account permissions and a display title do not grant
 organizational authority. The declared state remains subject to fresh readback.
 
-## Read-only preflight
+## Read-only preflight and Doctor
 
-Use Python 3.10 or later, with no third-party packages, from the framework root:
+Use Python 3.10 or later, with no third-party packages. For a repository/Factory
+health snapshot, run:
+
+```sh
+python -B scripts/factory_doctor.py --json
+```
+
+The Doctor is local-only by default and read-only. Optional `--github` adds
+read-only GitHub CLI/auth/repository reachability checks. It distinguishes a public
+framework distribution from an operating instance, checks Git/worktree/origin,
+tracked secret-like filenames and supported instance/journal/provenance surfaces,
+and never grants execution authority.
+
+For the narrow instance contract preflight, from the framework root:
 
 ```sh
 python scripts/validate_instance.py --root examples/demo-factory/boot

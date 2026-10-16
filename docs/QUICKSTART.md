@@ -49,8 +49,19 @@ private repositories, referenced only from the private Factory. Normal private
 use does **not** require a GitHub Fork. A public fork is for OSS contribution,
 public-safe evaluation or intentionally public work.
 
-After creation, inspect the private repository and its notice, run the journal
-manually with `dry_run=true`, then explicitly opt in with repository variable
+After creation, inspect the private repository and its notice. **On current
+post-v1.6 `main`**, newly generated private starters also include
+`docs/EXECUTION_FIRST.md`, `RATIONALE_INDEX.md` and the portable read-only
+Doctor. The immutable `v1.6.0` tag predates those post-release hardening files.
+From a starter that contains Doctor:
+
+```sh
+python -B scripts/factory_doctor.py --json
+```
+
+Doctor PASS remains diagnostic only and never appoints a role or authorizes work.
+Then run the journal manually with `dry_run=true`, and explicitly opt in with
+repository variable
 `DOCUMENTATION_JOURNAL_ENABLED=true`. Only real bot write/readback and a repeat
 without duplicate receipts can establish ACTIVE. Do not expose the private
 repository identity or evidence in public OSS Issues.

@@ -10,6 +10,8 @@
 
 **1.6.0 是 AI Software Factory OSS 当前的 release line。** 它把 v1.5 之后的仓库治理和私人建厂能力收成一条可复现的普通使用路径：GitHub 原生文档公告墙／自动日志、公开 fork 自助初始化、无需 Fork 的独立 **Create Private Factory**、private writer 安全边界、真实 private bootstrap 验收，以及 Fresh Agent 从公开 distribution 自动路由到正确 operating context 的规则。
 
+当前 `main` 还包含一组 **post-v1.6、尚未单独发布的运行加固能力**：Execution-First、跨平台只读 Factory Doctor 和公开 Design Rationale Index。只有从当前 `main` 新建的 private Factory 才会继承这些新 surface；不可移动的 `v1.6.0` tag 不包含它们。
+
 实际已发布版本状态以 GitHub Releases 与对应 release coordination Issue 为准；历史 tag 不会为了追随未来 `main` 而移动。
 
 发布说明见 [1.6.0 Release Notes](docs/releases/1.6.0.md)、[1.5.0 历史 Release Notes](docs/releases/1.5.0.md)、[1.4.0 历史 Release Notes](docs/releases/1.4.0.md) 与 [1.0.0 历史 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
@@ -41,6 +43,8 @@
 ```
 
 不要把真实任命、项目状态、客户／公司资料或私有历史写进本公开 OSS；如果已经存在 private Factory，就应直接进入那个实例，而不是重复建厂。Agent 可以自行完成路由判断和只读 preview，但 `--apply` 会创建真实 GitHub 远程状态，必须有 Human 明确授权。完整的 first-contact routing 见 [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md)。如果当前已经有明确的项目、角色和低风险小任务，应使用其中的 minimal safe boot，而不是每次都重读全部机制文档。
+
+**执行纪律与健康检查：**真实工作一旦已经授权，就遵循 [Execution-First](docs/EXECUTION_FIRST.md)：用可观察执行与证据替代“收到／准备做／正在做”式叙述。[`python -B scripts/factory_doctor.py --json`](docs/FACTORY_DOCTOR.md) 提供跨平台、只读的 Factory／仓库健康快照；Doctor PASS 永远不授予权限。[Design Rationale Index](docs/DESIGN_RATIONALE_INDEX.md) 只解释公开规则为什么存在及其 provenance，不成为第二权威来源。
 
 **要审计一个运行中的 Factory：**使用 [Fresh Factory Audit](docs/FRESH_FACTORY_AUDIT.md)，也可以直接从 GitHub **New issue** 里选择 Fresh Factory Audit 模板。
 

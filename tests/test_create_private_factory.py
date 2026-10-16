@@ -104,6 +104,11 @@ class PrivateFactoryTests(unittest.TestCase):
             self.assertIn("LICENSE", names)
             self.assertIn("instance.json", names)
             self.assertIn("scripts/documentation_journal.py", names)
+            self.assertIn("scripts/factory_doctor.py", names)
+            self.assertIn("docs/EXECUTION_FIRST.md", names)
+            self.assertIn("docs/FACTORY_DOCTOR.md", names)
+            self.assertIn("RATIONALE_INDEX.md", names)
+            self.assertNotIn("templates/RATIONALE_INDEX_TEMPLATE.md", names)
             self.assertFalse(any(n.startswith("examples/") for n in names))
             self.assertFalse(any(n.startswith("tests/") and n != "tests/test_documentation_journal.py" for n in names))
             provenance = json.loads((root / "SOURCE_PROVENANCE.json").read_text())
@@ -114,6 +119,9 @@ class PrivateFactoryTests(unittest.TestCase):
                                     cwd=root, text=True, capture_output=True)
             self.assertEqual(result.returncode, 3, result.stdout + result.stderr)
             self.assertEqual(json.loads(result.stdout)["status"], "BLOCKED")
+            self.assertIn("factory_doctor.py", (root / "README.md").read_text())
+            self.assertIn("EXECUTION_FIRST.md", (root / "AI_ENTRYPOINT.md").read_text())
+            self.assertIn("HISTORICAL EXPLANATION", (root / "RATIONALE_INDEX.md").read_text())
 
     def test_private_journal_is_bound_and_disabled(self):
         with tempfile.TemporaryDirectory() as tmp:
