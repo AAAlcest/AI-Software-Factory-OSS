@@ -96,6 +96,13 @@ requires explicit Human authorization. Detailed first-contact routing lives in
 task, use the minimal safe boot described there instead of rereading the entire
 mechanism set.
 
+**Operational discipline and health:** once work is actually authorized, use the
+[Execution-First contract](docs/EXECUTION_FIRST.md) so evidence-backed action replaces
+ACK-only narration. `python -B scripts/factory_doctor.py --json` provides a portable
+read-only Factory/repository health snapshot; Doctor PASS never grants authority.
+The [Design Rationale Index](docs/DESIGN_RATIONALE_INDEX.md) explains selected public
+rules and provenance without becoming a second authority source.
+
 **Want to audit an operating Factory:** use [Fresh Factory Audit](docs/FRESH_FACTORY_AUDIT.md)
 or choose the Fresh Factory Audit template from GitHub **New issue**.
 
