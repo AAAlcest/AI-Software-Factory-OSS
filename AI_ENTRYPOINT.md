@@ -97,7 +97,8 @@ affected action fail-closed.
 ## 3. Full initial boot order
 
 1. Read [the short model](docs/AI_FACTORY_IN_30_SECONDS.md),
-   [roles](docs/ROLES_AND_AUTHORITY.md) and [role setup](docs/RECOMMENDED_ROLE_SETUP.md).
+   [roles](docs/ROLES_AND_AUTHORITY.md), [role setup](docs/RECOMMENDED_ROLE_SETUP.md)
+   and the [Execution-First contract](docs/EXECUTION_FIRST.md).
 2. Read [the instance boot protocol](docs/INSTANCE_BOOT_PROTOCOL.md), then resolve
    the original assignment and current authority/state for the selected instance.
 3. Read [facilities](docs/FACILITIES_AND_SURFACES.md),
@@ -116,6 +117,10 @@ affected action fail-closed.
 6. Identify current role, known scope, unresolved facts, retained gates, evidence
    and next safe action. A helper's VALID output does not complete this process.
 
+When explanation or provenance for a durable framework rule is needed, consult the
+[Design Rationale Index](docs/DESIGN_RATIONALE_INDEX.md) only after this
+current-authority skeleton. Rationale/history never overrides current authority.
+
 For a real successor, read the finalized predecessor record unchanged, then
 reconcile newer state. For same-incumbent recovery do not fabricate a new tenure.
 For a first incumbent do not fabricate a predecessor handoff.
@@ -132,7 +137,25 @@ The optional [Skills layer](docs/SKILLS_LAYER.md) can compress Factory/project/r
 context and build bounded Codex task packages. Skills reduce repeated context; they
 do not grant authority or replace freshness checks.
 
-## 5. Continue without re-onboarding every turn
+## 5. Execute authorized work and inspect health
+
+After authority is established, follow
+[Execution-First](docs/EXECUTION_FIRST.md): authorized, executable and unblocked
+work should be performed and verified rather than acknowledged only. Status claims
+need observable evidence. Stop at `DONE`, `BLOCKED`, `HUMAN_ACTION_REQUIRED`
+or `AUTHORIZED_BOUNDARY_REACHED`; none of these rules expands authority or
+bypasses retained gates.
+
+For a read-only local health snapshot, use:
+
+```sh
+python -B scripts/factory_doctor.py --json
+```
+
+Add `--github` only when read-only GitHub CLI/auth/repository checks are useful.
+Doctor PASS is diagnostic evidence only: `execution_authorized` remains false.
+
+## 6. Continue without re-onboarding every turn
 
 After initial boot, refresh new/unprocessed messages and changed relevant files.
 Do not repeat a full Factory audit, old handoffs or unrelated office records for
@@ -145,7 +168,7 @@ kickoff/received/ACK-to-ACK cycles and duplicate mail records. A short Human-fac
 wake-up may identify the next action role, repository and Issue/PR. A posted
 comment does not prove another chat or worker was dispatched.
 
-## 6. Boundaries and final acceptance
+## 7. Boundaries and final acceptance
 
 Issues coordinate decisions; PRs hold exact candidate changes and evidence.
 Review intensity is proportional to risk and explicit authority. A Human may
