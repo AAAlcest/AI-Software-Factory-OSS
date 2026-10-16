@@ -49,9 +49,11 @@ private repositories, referenced only from the private Factory. Normal private
 use does **not** require a GitHub Fork. A public fork is for OSS contribution,
 public-safe evaluation or intentionally public work.
 
-After creation, inspect the private repository and its notice. A new private
-starter also includes `docs/EXECUTION_FIRST.md`, `RATIONALE_INDEX.md` and the
-portable read-only Doctor. From that private repository:
+After creation, inspect the private repository and its notice. **On current
+post-v1.6 `main`**, newly generated private starters also include
+`docs/EXECUTION_FIRST.md`, `RATIONALE_INDEX.md` and the portable read-only
+Doctor. The immutable `v1.6.0` tag predates those post-release hardening files.
+From a starter that contains Doctor:
 
 ```sh
 python -B scripts/factory_doctor.py --json
