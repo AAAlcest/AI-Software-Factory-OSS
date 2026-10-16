@@ -14,6 +14,9 @@ an organization's own records. File existence is not proof of real authority.
 
 [STAFF_OFFICE_TEMPLATE.md](STAFF_OFFICE_TEMPLATE.md) and
 [PROJECT_ROOM_TEMPLATE.md](PROJECT_ROOM_TEMPLATE.md) define durable facilities.
+[RATIONALE_INDEX_TEMPLATE.md](RATIONALE_INDEX_TEMPLATE.md) is an optional local
+historical-explanation index for an operating Factory. It records why durable
+rules exist and their provenance, but never replaces current authority/state.
 [PROJECT_COCKPIT_TEMPLATE.md](PROJECT_COCKPIT_TEMPLATE.md) defines the optional
 derived ChatGPT Project/cockpit view used to summarize projects, roles, recovery,
 health and bounded Codex task packages without becoming a competing truth source.
