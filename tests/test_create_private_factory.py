@@ -106,6 +106,7 @@ class PrivateFactoryTests(unittest.TestCase):
             self.assertIn("scripts/documentation_journal.py", names)
             self.assertIn("scripts/factory_doctor.py", names)
             self.assertIn("docs/EXECUTION_FIRST.md", names)
+            self.assertIn("docs/FACTORY_DOCTOR.md", names)
             self.assertIn("RATIONALE_INDEX.md", names)
             self.assertNotIn("templates/RATIONALE_INDEX_TEMPLATE.md", names)
             self.assertFalse(any(n.startswith("examples/") for n in names))
