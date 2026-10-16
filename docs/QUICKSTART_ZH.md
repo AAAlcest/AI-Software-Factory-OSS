@@ -17,7 +17,7 @@ macOS/Linux 可把 `py -3` 换成 `python3`。先运行不带 `--apply` 的只�
 
 Source ZIP 仍可用于后面的虚构／离线演练，但 Create Private Factory 需要 Git 元数据，因此私人建厂请使用 Git checkout。
 
-公开 OSS checkout 是分发／更新来源，**新私有仓库**才是运行实例。项目源码可以继续放在各自私有项目仓库中。Human 必须另行写明真实岗位、项目与权限；脚本不会虚构任命或导入旧项目。创建后先在私有仓核对并手动执行 `dry_run=true`，再明确设置本仓变量 `DOCUMENTATION_JOURNAL_ENABLED=true`；必须有真实机器人写入、读回和重跑无重复证据，才能称日志已启用。不要把私有仓信息或验收证据贴到公开 OSS Issue。
+公开 OSS checkout 是分发／更新来源，**新私有仓库**才是运行实例。项目源码可以继续放在各自私有项目仓库中。Human 必须另行写明真实岗位、项目与权限；脚本不会虚构任命或导入旧项目。新私厂会带上 `docs/EXECUTION_FIRST.md`、`RATIONALE_INDEX.md` 和跨平台只读 Doctor，可先运行 `python -B scripts/factory_doctor.py --json` 查看健康状态；Doctor PASS 仍不授予权限。之后再手动执行 journal `dry_run=true`，并明确设置本仓变量 `DOCUMENTATION_JOURNAL_ENABLED=true`；必须有真实机器人写入、读回和重跑无重复证据，才能称日志已启用。不要把私有仓信息或验收证据贴到公开 OSS Issue。
 
 公开 Fork 只用于贡献、公开安全试用或你明确希望公开的 Factory，不是普通私人使用的前置步骤。
 
