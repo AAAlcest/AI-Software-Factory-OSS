@@ -179,8 +179,9 @@ def journal_check(root, checks, origin):
     detail = (f"{value['repository']} visibility={visibility} "
               f"notice=#{value['notice_issue']}")
     if origin:
-        expected = value["repository"] + ".git"
-        if expected not in origin:
+        normalized = origin.rstrip("/").removesuffix(".git")
+        repo = value["repository"]
+        if not (normalized.endswith("/" + repo) or normalized.endswith(":" + repo)):
             add(checks, "documentation-journal-config", "WARN",
                 detail + "; origin does not visibly match configured repository")
             return
