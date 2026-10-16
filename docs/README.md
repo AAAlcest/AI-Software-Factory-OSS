@@ -11,6 +11,7 @@ provides navigation and the documentation-change journal. Canonical documents re
 - [Roles and authority](ROLES_AND_AUTHORITY.md).
 - [Instance boot protocol](INSTANCE_BOOT_PROTOCOL.md).
 - [Execution-First operating contract](EXECUTION_FIRST.md).
+- [Portable Factory Doctor](FACTORY_DOCTOR.md).
 - [Design Rationale Index](DESIGN_RATIONALE_INDEX.md).
 - [Repository notice and automatic-journal contract](REPOSITORY_NOTICES.md), with a [notice starter](../templates/REPOSITORY_NOTICE.md). The contract is not an activated workflow.
 
