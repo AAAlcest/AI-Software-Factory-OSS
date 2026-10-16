@@ -42,6 +42,8 @@
 
 不要把真实任命、项目状态、客户／公司资料或私有历史写进本公开 OSS；如果已经存在 private Factory，就应直接进入那个实例，而不是重复建厂。Agent 可以自行完成路由判断和只读 preview，但 `--apply` 会创建真实 GitHub 远程状态，必须有 Human 明确授权。完整的 first-contact routing 见 [AI_ENTRYPOINT.md](AI_ENTRYPOINT.md)。如果当前已经有明确的项目、角色和低风险小任务，应使用其中的 minimal safe boot，而不是每次都重读全部机制文档。
 
+**执行纪律与健康检查：**真实工作一旦已经授权，就遵循 [Execution-First](docs/EXECUTION_FIRST.md)：用可观察执行与证据替代“收到／准备做／正在做”式叙述。`python -B scripts/factory_doctor.py --json` 提供跨平台、只读的 Factory／仓库健康快照；Doctor PASS 永远不授予权限。[Design Rationale Index](docs/DESIGN_RATIONALE_INDEX.md) 只解释公开规则为什么存在及其 provenance，不成为第二权威来源。
+
 **要审计一个运行中的 Factory：**使用 [Fresh Factory Audit](docs/FRESH_FACTORY_AUDIT.md)，也可以直接从 GitHub **New issue** 里选择 Fresh Factory Audit 模板。
 
 推荐配置：**ChatGPT 负责 Factory 管理与职能岗位；Codex 负责项目开发、Development Lead 与 Console。** 副厂长可以兼任记录、厂务维护与基础设施规划等兼容职责。独立验收应与作者分离；Work 应谨慎使用，不应用于普通状态同步或 ACK 循环。这是一种可配置的协作建议，不是厂商权限规则。
