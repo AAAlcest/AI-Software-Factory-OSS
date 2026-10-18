@@ -2,7 +2,7 @@
 
 ## Staff Office
 
-Durable home for one organizational role: onboarding, inbox/outbox, current desk state, pending work and role-local continuity records.
+Durable home for one organizational role: onboarding, inbox/outbox, current desk state, pending work, optional event-driven Notes and role-local continuity records. Notes record meaningful deltas only; they are not daily reporting or authority. See [Staff Office Notes](STAFF_OFFICE_NOTES.md).
 
 ## Project Room
 
