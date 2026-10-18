@@ -24,12 +24,17 @@ private-bootstrap command requires Git metadata and therefore uses a Git checkou
 
 ## 2. Create your private Factory
 
-Preview first (read-only); use a new name under your authenticated GitHub user:
+Preview first (read-only); use a new name under your authenticated GitHub user.
+Current post-v1.6 `main` defaults new private Factories to the lower-run
+`manual` journal cadence:
 
 ```powershell
 py -3 -B scripts/create_private_factory.py --repository My-AI-Factory
 py -3 -B scripts/create_private_factory.py --repository My-AI-Factory --apply
 ```
+
+To explicitly keep automatic push/signal/hourly journal reconciliation after later
+activation, add `--journal-mode automatic` to both preview and apply.
 
 On macOS/Linux, substitute `python3` for `py -3`. The first invocation reads
 GitHub identity/source/destination and prints the plan; it creates nothing.
@@ -60,6 +65,14 @@ python -B scripts/factory_doctor.py --json
 ```
 
 Doctor PASS remains diagnostic only and never appoints a role or authorizes work.
+Staff Office Notes, when adopted, are [event-driven deltas](STAFF_OFFICE_NOTES.md),
+not daily reporting.
+
+The generated journal configuration records `cadence_mode`. In default `manual`
+mode, there are no automatic push/PR/hourly journal wake-ups; freshness advances
+only after an authorized manual reconcile. `automatic` mode retains the previous
+trigger cadence. Neither mode is activated by repository creation.
+
 Then run the journal manually with `dry_run=true`, and explicitly opt in with
 repository variable
 `DOCUMENTATION_JOURNAL_ENABLED=true`. Only real bot write/readback and a repeat
