@@ -105,6 +105,43 @@ Each entry should contain:
 - last_verified_against_current_authority: Issue #45 candidate.
 - notes: this changes execution discipline, never authority or retained gates.
 
+### `OSS-R006` — Staff Office Notes are event-driven deltas, not daily reports
+
+- status: `ACTIVE`
+- rule_or_surface: Staff Office recovery/execution notes
+- current_authority: `docs/STAFF_OFFICE_NOTES.md`,
+  `templates/STAFF_OFFICE_TEMPLATE.md`
+- originating_failure_mode_or_problem: chronological work logs can grow into duplicate
+  truth surfaces, empty heartbeat files and expensive recovery context.
+- why_the_rule_exists: meaningful deltas preserve useful recovery evidence while
+  keeping CURRENT concise and canonical work/evidence in the proper Issue/PR/state
+  surfaces.
+- introduced_by: Issue #47 / PR #48 operating-efficiency extraction.
+- provenance_links: Issue #47, PR #48,
+  `docs/WORK_ITEMS_AND_PROJECT_VIEW.md`.
+- last_verified_against_current_authority: Issue #47 candidate.
+- notes: date-based filenames are grouping only; no daily reporting obligation.
+
+### `OSS-R007` — New private Factories default to manual journal cadence
+
+- status: `ACTIVE`
+- rule_or_surface: private documentation-journal trigger cadence
+- current_authority: `docs/DOCUMENTATION_JOURNAL.md`,
+  `scripts/create_private_factory.py`
+- originating_failure_mode_or_problem: AI-native repositories can create bursts of
+  valid commits/events; automatic push/signal/hourly journal wake-ups multiply
+  GitHub Actions runs even when the recorder integrity model itself is sound.
+- why_the_rule_exists: manual cadence preserves the same explicit dry-run/opt-in,
+  recorder, receipt and replay model while removing automatic journal/signal runner
+  wake-ups for newly created private Factories. Users who value continuous freshness
+  can explicitly choose automatic cadence.
+- introduced_by: public CI-cost field note #44 and Issue #47 / PR #48.
+- provenance_links: Issue #44, Issue #47, PR #48,
+  `docs/DOCUMENTATION_JOURNAL.md`.
+- last_verified_against_current_authority: Issue #47 candidate.
+- notes: this is a freshness/cadence decision, not a guarantee of billed-minute or
+  monetary savings; public OSS #26 keeps its existing automatic cadence.
+
 ## Adding a rationale
 
 Add an entry only when the rule is durable enough to merit explanation. Prefer
