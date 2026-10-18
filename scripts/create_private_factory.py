@@ -33,7 +33,8 @@ COPY = (
     "templates/instance/state.json", "templates/instance/CURRENT.md",
     "templates/STAFF_OFFICE_TEMPLATE.md", "templates/PROJECT_ROOM_TEMPLATE.md",
     "templates/CORRESPONDENCE_RECORDS_TEMPLATE.md", "templates/RATIONALE_INDEX_TEMPLATE.md",
-    "docs/EXECUTION_FIRST.md", "docs/FACTORY_DOCTOR.md", "scripts/factory_doctor.py",
+    "docs/EXECUTION_FIRST.md", "docs/FACTORY_DOCTOR.md", "docs/STAFF_OFFICE_NOTES.md",
+    "scripts/factory_doctor.py", "templates/STAFF_OFFICE_NOTES_README.md",
     "scripts/documentation_journal.py", "scripts/documentation_journal_askpass.sh",
     "tests/test_documentation_journal.py",
 )
@@ -41,6 +42,7 @@ CONFIG = Path(".github/documentation-journal.json")
 WRITER = Path(".github/workflows/documentation-journal.yml")
 SIGNAL = Path(".github/workflows/documentation-journal-signal.yml")
 VARIABLE = "DOCUMENTATION_JOURNAL_ENABLED"
+JOURNAL_MODES = ("manual", "automatic")
 
 
 class BootstrapError(RuntimeError):
@@ -167,7 +169,8 @@ def staged_source(root, source_sha, source_ref="refs/heads/main"):
         "Doctor PASS never grants authority. Do not run operating work until real "
         "authority is recorded.\n\n"
         "The documentation journal is NOT_ACTIVATED. Its repository-local writer gate "
-        f"`{VARIABLE}` remains unset.\n")
+        f"`{VARIABLE}` remains unset. Journal cadence is recorded in the repository "
+        "configuration; manual cadence is the private-bootstrap default.\n")
     put(root, "AGENTS.md", "# Private Factory entry\n\nRead `AI_ENTRYPOINT.md` first. "
         "This is an unconfigured private instance, not an appointment. "
         "Do not infer authority from repository access or technical identity. "
@@ -185,8 +188,11 @@ def staged_source(root, source_sha, source_ref="refs/heads/main"):
         "correspondence or production authority is presumed.\n"
         "5. Once authority exists, follow Execution-First: execute authorized/unblocked "
         "work, verify evidence, and stop only at a valid bounded closure state.\n"
-        "6. The documentation notice is navigation, not authority; journal writing "
-        "requires separate repository-local opt-in and observed bot evidence.\n")
+        "6. Staff Office Notes, when used, are event-driven deltas rather than daily "
+        "heartbeats; see `docs/STAFF_OFFICE_NOTES.md`.\n"
+        "7. The documentation notice is navigation, not authority; journal writing "
+        "requires separate repository-local opt-in and observed bot evidence. Manual "
+        "cadence is fresh only after an authorized manual reconcile.\n")
     put(root, "projects/README.md", "# Private project references — unconfigured\n\n"
         "Projects may keep their source in separate private repositories. Add only "
         "Human-authorized project references and state here; never import project "
@@ -227,12 +233,15 @@ def verify_notice(receipt, created, dest, viewer_id):
         raise BootstrapError("Private notice creator/target/open readback failed.")
 
 
-def journal_files(root, dest, repo_id, notice, baseline):
+def journal_files(root, dest, repo_id, notice, baseline, mode="manual"):
+    if mode not in JOURNAL_MODES:
+        raise BootstrapError("Unsupported private journal cadence mode.")
     cfg = json.loads((ROOT / CONFIG).read_text(encoding="utf-8"))
     if cfg.get("repository") != UPSTREAM or cfg.get("repository_id") != UPSTREAM_ID:
         raise BootstrapError("OSS journal source configuration changed.")
     cfg.update(repository=dest, repository_id=repo_id, default_branch="main",
                visibility="private", notice_issue=notice, baseline_sha=baseline,
+               cadence_mode=mode,
                since=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"))
     writer = (ROOT / WRITER).read_text(encoding="utf-8")
     old_group = "group: documentation-journal-${{ github.repository_id }}-26"
@@ -243,9 +252,35 @@ def journal_files(root, dest, repo_id, notice, baseline):
     writer = writer.replace(old_guard,
         f"if: github.repository_id == '{repo_id}' && github.ref == 'refs/heads/main' "
         f"&& (vars.{VARIABLE} == 'true' || (github.event_name == 'workflow_dispatch' && inputs.dry_run))")
+    signal = (ROOT / SIGNAL).read_text(encoding="utf-8")
+    if mode == "manual":
+        automatic_events = """on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: [Documentation journal signal]
+    types: [completed]
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+"""
+        if writer.count(automatic_events) != 1:
+            raise BootstrapError("OSS writer triggers changed; explicit cadence adaptation review required.")
+        writer = writer.replace(automatic_events, "on:\n  workflow_dispatch:\n")
+        signal = """name: Documentation journal signal
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  signal:
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Manual cadence: automatic PR signal disabled."
+"""
     put(root, str(CONFIG), json.dumps(cfg, indent=2) + "\n")
     put(root, str(WRITER), writer)
-    shutil.copyfile(ROOT / SIGNAL, root / SIGNAL)
+    put(root, str(SIGNAL), signal)
     readme = (root / "README.md").read_text(encoding="utf-8")
     put(root, "README.md", readme + f"\nDocumentation notice: https://github.com/{dest}/issues/{notice}\n")
 
@@ -263,13 +298,13 @@ def commit(root, viewer, message):
     return git(root, "rev-parse", "HEAD")
 
 
-def apply(token, viewer, source_sha, source_ref, dest):
+def apply(token, viewer, source_sha, source_ref, dest, journal_mode="manual"):
     # Build and validate all source-dependent files before first remote mutation.
     with tempfile.TemporaryDirectory(prefix="private-factory-bootstrap-") as directory:
         root = Path(directory)
         staged_source(root, source_sha, source_ref)
         # A placeholder destination/notice checks source workflow shape before POST.
-        journal_files(root, dest, 1, 1, "0" * 40)
+        journal_files(root, dest, 1, 1, "0" * 40, journal_mode)
         (root / CONFIG).unlink()
         (root / WRITER).unlink()
         (root / SIGNAL).unlink()
@@ -303,21 +338,24 @@ def apply(token, viewer, source_sha, source_ref, dest):
             raise BootstrapError("Private notice number unavailable.")
         receipt = api(token, f"/repos/{dest}/issues/{number}")
         verify_notice(receipt, notice, dest, viewer["id"])
-        journal_files(root, dest, repo_id, number, baseline)
+        journal_files(root, dest, repo_id, number, baseline, journal_mode)
         final_sha = commit(root, viewer, "Configure disabled private documentation journal")
         git(root, "push", "origin", "HEAD:refs/heads/main", token=token)
         verify_destination(token, dest, repo_id, viewer["id"], "main")
         ref = api(token, f"/repos/{dest}/git/ref/heads/main")
         if (ref.get("object") or {}).get("sha") != final_sha:
             raise BootstrapError("Private default-branch push readback failed.")
-        print("CREATED private independent Factory; status=BLOCKED journal=NOT_ACTIVATED. "
-              "Inspect the new private repository and run a manual journal dry run before opt-in.")
+        print(f"CREATED private independent Factory; status=BLOCKED "
+              f"journal=NOT_ACTIVATED cadence={journal_mode}. Inspect the new private "
+              "repository and run a manual journal dry run before opt-in.")
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repository", required=True, help="New repository name under the authenticated user")
     parser.add_argument("--apply", action="store_true", help="Create new private repository and BLOCKED starter")
+    parser.add_argument("--journal-mode", choices=JOURNAL_MODES, default="manual",
+                        help="Private journal cadence; manual is the lower-run default")
     args = parser.parse_args()
     token = process(["gh", "auth", "token"])
     if not token:
@@ -325,10 +363,11 @@ def main():
     viewer, source_sha, source_ref, dest = source_and_target(token, args.repository)
     if not args.apply:
         print(f"DRY RUN: source={UPSTREAM}@{source_ref}:{source_sha}; destination={dest} "
-              "NEW private independent repository; plan=create BLOCKED starter, initial commit, "
-              "OPEN/UNLOCKED private notice, disabled same-repository journal. No writes performed.")
+              f"NEW private independent repository; journal_mode={args.journal_mode}; "
+              "plan=create BLOCKED starter, initial commit, OPEN/UNLOCKED private notice, "
+              "disabled same-repository journal. No writes performed.")
         return
-    apply(token, viewer, source_sha, source_ref, dest)
+    apply(token, viewer, source_sha, source_ref, dest, args.journal_mode)
 
 
 if __name__ == "__main__":
