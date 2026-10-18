@@ -60,7 +60,7 @@ A comprehensive fresh audit should cover at least:
 - **Boot / takeover path** — can a new context determine what the Factory is and where current truth lives?
 - **Authority integrity** — Human authority, role authority, project authority, technical identity and tool/account access remain distinct.
 - **Factory / Office / Project consistency** — central state, Project Rooms, Staff Offices, Issues/PRs and evidence do not materially contradict one another.
-- **CURRENT / notes / pending / handoff hygiene** — recovery aids stay bounded and non-authoritative.
+- **CURRENT / notes / pending / handoff hygiene** — recovery aids stay bounded and non-authoritative; Notes are event-driven deltas, not empty/daily heartbeat logs or duplicated chronology.
 - **Project-management boundaries** — project-level management does not invent Staff Office authority or borrow another role's records.
 - **Work visibility** — meaningful active work has a visible work surface and a recoverable owner/status/evidence/next action.
 - **Long-thread recovery** — current direction and superseded direction can be distinguished without routine whole-history replay.
@@ -125,6 +125,7 @@ The synthetic example in [`examples/factory-instance/audit/`](../examples/factor
 - a superseded HOLD still shown as current direction;
 - an authorized repository/release/visibility transition not propagated into an older Project State;
 - stale `CURRENT` / `pending` recovery queues retaining resolved work;
+- Notes accumulating empty heartbeat files, copied chronology or stale blockers instead of meaningful deltas;
 - an obsolete draft PR remaining highly visible after its governing decision is complete.
 
 These examples are newly authored fictional stress cases. They are not copies or redactions of a private Factory audit.

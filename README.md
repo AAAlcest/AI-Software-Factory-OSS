@@ -25,8 +25,9 @@ fresh-Agent routing from the public distribution into the correct operating
 context.
 
 Current `main` also contains **post-v1.6 unreleased operational hardening**:
-Execution-First behavior, the portable read-only Factory Doctor and a public design
-rationale index. New private Factories created from current `main` inherit those
+Execution-First behavior, the portable read-only Factory Doctor, a public design
+rationale index, event-driven Staff Office Notes, and selectable private-journal
+cadence with lower-run `manual` as the new private-bootstrap default. New private Factories created from current `main` inherit those
 surfaces; the immutable `v1.6.0` tag does not.
 
 Published-release status is authoritative on GitHub Releases and the release

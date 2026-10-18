@@ -10,7 +10,7 @@
 
 **1.6.0 是 AI Software Factory OSS 当前的 release line。** 它把 v1.5 之后的仓库治理和私人建厂能力收成一条可复现的普通使用路径：GitHub 原生文档公告墙／自动日志、公开 fork 自助初始化、无需 Fork 的独立 **Create Private Factory**、private writer 安全边界、真实 private bootstrap 验收，以及 Fresh Agent 从公开 distribution 自动路由到正确 operating context 的规则。
 
-当前 `main` 还包含一组 **post-v1.6、尚未单独发布的运行加固能力**：Execution-First、跨平台只读 Factory Doctor 和公开 Design Rationale Index。只有从当前 `main` 新建的 private Factory 才会继承这些新 surface；不可移动的 `v1.6.0` tag 不包含它们。
+当前 `main` 还包含一组 **post-v1.6、尚未单独发布的运行加固能力**：Execution-First、跨平台只读 Factory Doctor、公开 Design Rationale Index、event-driven Staff Office Notes，以及新 private Factory 可选的 journal cadence（默认较省 runner 唤醒的 `manual`）。只有从当前 `main` 新建的 private Factory 才会继承这些新 surface；不可移动的 `v1.6.0` tag 不包含它们。
 
 实际已发布版本状态以 GitHub Releases 与对应 release coordination Issue 为准；历史 tag 不会为了追随未来 `main` 而移动。
 

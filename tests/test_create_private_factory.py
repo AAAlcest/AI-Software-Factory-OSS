@@ -29,6 +29,7 @@ class PrivateFactoryTests(unittest.TestCase):
         command.assert_called_once_with(["gh", "auth", "token"])
         apply.assert_not_called()
         self.assertIn("No writes performed", output.call_args.args[0])
+        self.assertIn("journal_mode=manual", output.call_args.args[0])
 
     def source(self, origin=f"https://github.com/{subject.UPSTREAM}.git", branch="main",
                remote=HEAD, existing=None, tag_points=None):
@@ -107,6 +108,8 @@ class PrivateFactoryTests(unittest.TestCase):
             self.assertIn("scripts/factory_doctor.py", names)
             self.assertIn("docs/EXECUTION_FIRST.md", names)
             self.assertIn("docs/FACTORY_DOCTOR.md", names)
+            self.assertIn("docs/STAFF_OFFICE_NOTES.md", names)
+            self.assertIn("templates/STAFF_OFFICE_NOTES_README.md", names)
             self.assertIn("RATIONALE_INDEX.md", names)
             self.assertNotIn("templates/RATIONALE_INDEX_TEMPLATE.md", names)
             self.assertFalse(any(n.startswith("examples/") for n in names))
@@ -130,14 +133,65 @@ class PrivateFactoryTests(unittest.TestCase):
             subject.journal_files(root, DEST, 42, 17, HEAD)
             cfg = json.loads((root / subject.CONFIG).read_text())
             self.assertEqual((cfg["repository"], cfg["repository_id"], cfg["visibility"],
-                              cfg["notice_issue"], cfg["baseline_sha"]),
-                             (DEST, 42, "private", 17, HEAD))
+                              cfg["notice_issue"], cfg["baseline_sha"], cfg["cadence_mode"]),
+                             (DEST, 42, "private", 17, HEAD, "manual"))
             writer = (root / subject.WRITER).read_text()
+            signal = (root / subject.SIGNAL).read_text()
             self.assertIn("github.repository_id == '42'", writer)
             self.assertIn("vars.DOCUMENTATION_JOURNAL_ENABLED == 'true'", writer)
             self.assertIn("github.event_name == 'workflow_dispatch' && inputs.dry_run", writer)
             self.assertNotIn("github.repository_id == '1358307744'", writer)
+            self.assertNotIn("push:", writer)
+            self.assertNotIn("workflow_run:", writer)
+            self.assertNotIn("schedule:", writer)
+            self.assertIn("workflow_dispatch:", writer)
+            self.assertNotIn("pull_request:", signal)
+            self.assertIn("if: ${{ false }}", signal)
             self.assertIn(f"https://github.com/{DEST}/issues/17", (root / "README.md").read_text())
+
+    def test_private_journal_automatic_mode_retains_existing_triggers(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            subject.staged_source(root, HEAD)
+            subject.journal_files(root, DEST, 42, 17, HEAD, "automatic")
+            cfg = json.loads((root / subject.CONFIG).read_text())
+            writer = (root / subject.WRITER).read_text()
+            signal = (root / subject.SIGNAL).read_text()
+            self.assertEqual(cfg["cadence_mode"], "automatic")
+            self.assertIn("push:", writer)
+            self.assertIn("workflow_run:", writer)
+            self.assertIn("schedule:", writer)
+            self.assertIn("workflow_dispatch:", writer)
+            self.assertIn("pull_request:", signal)
+            self.assertIn("vars.DOCUMENTATION_JOURNAL_ENABLED == 'true'", writer)
+
+    def test_unknown_private_journal_mode_fails_closed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            subject.staged_source(root, HEAD)
+            with self.assertRaisesRegex(subject.BootstrapError, "cadence mode"):
+                subject.journal_files(root, DEST, 42, 17, HEAD, "unknown")
+
+    def test_public_oss_journal_sources_remain_automatic(self):
+        writer = (ROOT / subject.WRITER).read_text(encoding="utf-8")
+        signal = (ROOT / subject.SIGNAL).read_text(encoding="utf-8")
+        self.assertIn("push:", writer)
+        self.assertIn("workflow_run:", writer)
+        self.assertIn("schedule:", writer)
+        self.assertIn("workflow_dispatch:", writer)
+        self.assertIn("pull_request:", signal)
+
+    def test_explicit_automatic_mode_is_visible_in_preview(self):
+        with patch("sys.argv", ["create_private_factory.py", "--repository", "Private-Factory",
+                                "--journal-mode", "automatic"]), \
+             patch.object(subject, "process", return_value="secret-in-memory"), \
+             patch.object(subject, "source_and_target",
+                          return_value=(VIEWER, HEAD, "refs/heads/main", DEST)), \
+             patch.object(subject, "apply") as apply, \
+             patch("builtins.print") as output:
+            subject.main()
+        apply.assert_not_called()
+        self.assertIn("journal_mode=automatic", output.call_args.args[0])
 
     def test_issues_enablement_is_scoped_and_read_back(self):
         row = {"id": 42, "full_name": DEST, "owner": VIEWER, "private": True,
@@ -232,7 +286,9 @@ class PrivateFactoryTests(unittest.TestCase):
             self.assertFalse(any(item[0] == "fork" for item in writes))
             self.assertTrue(all(item[0] != "variable" for item in writes))
             self.assertEqual(json.loads((root / "authority.json").read_text())["status"], "UNKNOWN")
-            self.assertEqual(json.loads((root / subject.CONFIG).read_text())["visibility"], "private")
+            cfg = json.loads((root / subject.CONFIG).read_text())
+            self.assertEqual(cfg["visibility"], "private")
+            self.assertEqual(cfg["cadence_mode"], "manual")
 
 
 if __name__ == "__main__":
