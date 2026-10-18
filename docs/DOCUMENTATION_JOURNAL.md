@@ -102,6 +102,47 @@ Authentication failure is a gap, not permission to substitute another token
 or public destination. Private names, paths, SHAs and run evidence stay in
 that private repository; do not post them to public OSS Issues.
 
+### Private Factory cadence profiles
+
+The public OSS repository keeps its existing automatic #26 cadence unchanged.
+
+New private Factories created from current post-v1.6 `main` can choose one of two
+journal cadence profiles:
+
+- **`manual` (default)** — the writer has only `workflow_dispatch`; default
+  `dry_run=true` remains read-only; a real write still requires the private
+  repository variable `DOCUMENTATION_JOURNAL_ENABLED=true`. The copied signal
+  workflow has no automatic PR subscription and its job is disabled. There is no
+  push, hourly or signal-completion writer wake-up. The journal is current only
+  after an authorized successful manual reconcile.
+- **`automatic` (explicit opt-in at creation)** — retains the existing private
+  adaptation: default-branch push, validated signal completion, hourly reconcile
+  and manual dispatch, with the same repository-local writer gate and private
+  authentication/receipt rules.
+
+Select automatic cadence at creation with:
+
+```sh
+python -B scripts/create_private_factory.py --repository My-AI-Factory --journal-mode automatic
+```
+
+Omitting `--journal-mode` selects `manual`. Preview remains zero-write and shows
+the selected cadence.
+
+Both profiles start `NOT_ACTIVATED`: run a manual `dry_run=true`, review the
+scope, explicitly opt in with the repository-local writer variable, then verify a
+real bot write/readback and a repeat without duplicate receipts before calling the
+journal ACTIVE.
+
+This is a **freshness/cost tradeoff**, not a promise of billed-minute or monetary
+savings. Field observation #44 shows that AI-native commit/event frequency can
+amplify Actions wake-ups; manual cadence removes those automatic journal/signal
+wake-ups for a newly created private Factory while preserving the same recorder,
+receipt, reconciliation and fail-closed model when a manual run occurs.
+
+Changing cadence on an already-running private Factory is not silently performed by
+this slice; that belongs to an explicit framework-update/migration path such as #39.
+
 ### Notice access: OPEN and UNLOCKED
 
 The Human-approved policy is recorded in [#28 comment 5736793940](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736793940):
