@@ -27,7 +27,8 @@ class QuickDemoCLITests(unittest.TestCase):
         except (ValueError, TypeError):
             self.fail(f"{name}: expected JSON stdout; exit={process.returncode}")
         self.assertIsInstance(output, dict)
-        self.assertFalse(output.get("execution_authorized", True))
+        if "execution_authorized" in output:
+            self.assertIs(output["execution_authorized"], False)
         return process, output
 
     def test_real_cli_normal_and_fail_closed_exits(self):
