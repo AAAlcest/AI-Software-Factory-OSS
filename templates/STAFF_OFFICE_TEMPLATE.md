@@ -25,7 +25,8 @@ verify evidence, and stop only at a valid bounded closure state.
 
 Canonical inbox: UNKNOWN. Sent-reference outbox: UNKNOWN.
 Rolling cursor: UNKNOWN. Active pending directory: UNKNOWN.
-Optional Wardrobe: UNKNOWN. Finalized tenure archive: absent until applicable.
+Event-driven Notes directory: UNKNOWN. Optional Wardrobe: UNKNOWN.
+Finalized tenure archive: absent until applicable.
 Concurrent titles share the governed primary endpoint unless explicitly split.
 
 `To` owns action. `CC_REFERENCE` is visibility only. A durable reply uses its
@@ -37,8 +38,10 @@ execution/return/acknowledgement facts justify those transitions.
 
 Keep task/Issue pointers, last reliable inbox checkpoint, unresolved work,
 observed ref/HEAD, blockers and next action. Record verification time/source,
-not a guessed timestamp. Current cursor and pending notes are navigation, never
-new authority. Completed items leave the active queue with durable provenance.
+not a guessed timestamp. Current cursor and pending queue are navigation, never
+new authority. Use [event-driven Notes](../docs/STAFF_OFFICE_NOTES.md) only for
+meaningful deltas; no daily heartbeat or empty note is required. Completed items
+leave the active queue with durable provenance.
 
 ## Rationale and health
 
