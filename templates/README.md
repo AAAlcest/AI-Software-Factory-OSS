@@ -14,6 +14,8 @@ an organization's own records. File existence is not proof of real authority.
 
 [STAFF_OFFICE_TEMPLATE.md](STAFF_OFFICE_TEMPLATE.md) and
 [PROJECT_ROOM_TEMPLATE.md](PROJECT_ROOM_TEMPLATE.md) define durable facilities.
+[STAFF_OFFICE_NOTES_README.md](STAFF_OFFICE_NOTES_README.md) is the reusable
+event-driven Notes starter: delta-only, non-authoritative and no daily heartbeat.
 [RATIONALE_INDEX_TEMPLATE.md](RATIONALE_INDEX_TEMPLATE.md) is an optional local
 historical-explanation index for an operating Factory. It records why durable
 rules exist and their provenance, but never replaces current authority/state.
@@ -42,6 +44,7 @@ offices/<role>/
   outbox/                       # SENT_REFERENCE, not duplicate full bodies
   desk/CURRENT.md               # one rolling recovery cursor
   desk/pending/                 # unresolved items only
+  desk/notes/README.md          # event-driven delta guidance; no daily heartbeat
   wardrobe/                     # optional execution-session transition records
 projects/<project>/
   README.md                     # project identity and product repo pointer
