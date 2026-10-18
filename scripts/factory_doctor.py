@@ -176,8 +176,14 @@ def journal_check(root, checks, origin):
             "missing/invalid binding fields")
         return
 
+    cadence = value.get("cadence_mode")
+    if cadence is not None and cadence not in {"manual", "automatic"}:
+        add(checks, "documentation-journal-config", "FAIL",
+            "unsupported cadence_mode")
+        return
     detail = (f"{value['repository']} visibility={visibility} "
-              f"notice=#{value['notice_issue']}")
+              f"notice=#{value['notice_issue']}"
+              + (f" cadence={cadence}" if cadence else ""))
     if origin:
         normalized = origin.rstrip("/").removesuffix(".git")
         repo = value["repository"]
