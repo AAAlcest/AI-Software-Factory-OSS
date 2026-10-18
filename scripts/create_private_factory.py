@@ -282,7 +282,15 @@ jobs:
     put(root, str(WRITER), writer)
     put(root, str(SIGNAL), signal)
     readme = (root / "README.md").read_text(encoding="utf-8")
-    put(root, "README.md", readme + f"\nDocumentation notice: https://github.com/{dest}/issues/{notice}\n")
+    cadence_text = (
+        "manual — no automatic push/PR/hourly journal wake-ups; freshness follows "
+        "authorized manual reconciliation"
+        if mode == "manual" else
+        "automatic — push/signal/hourly reconciliation is available after explicit activation"
+    )
+    put(root, "README.md", readme
+        + f"\nDocumentation notice: https://github.com/{dest}/issues/{notice}\n"
+        + f"Journal cadence: {cadence_text}.\n")
 
 
 def git(root, *args, token=None):
@@ -331,7 +339,8 @@ def apply(token, viewer, source_sha, source_ref, dest, journal_mode="manual"):
                      "Issue is navigation, not authority or proof of activation. "
                      "Read README.md, AI_ENTRYPOINT.md, SOURCE_PROVENANCE.json and the instance contract. "
                      "Journal writer is NOT_ACTIVATED until dry run, explicit repository-local opt-in, "
-                     "real bot write/readback and no-duplicate replay.\n"),
+                     "real bot write/readback and no-duplicate replay. "
+                     f"Selected cadence: {journal_mode}.\n"),
         })
         number = notice.get("number")
         if not isinstance(number, int):
