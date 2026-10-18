@@ -172,6 +172,27 @@ class PrivateFactoryTests(unittest.TestCase):
             with self.assertRaisesRegex(subject.BootstrapError, "cadence mode"):
                 subject.journal_files(root, DEST, 42, 17, HEAD, "unknown")
 
+    def test_public_oss_journal_sources_remain_automatic(self):
+        writer = (ROOT / subject.WRITER).read_text(encoding="utf-8")
+        signal = (ROOT / subject.SIGNAL).read_text(encoding="utf-8")
+        self.assertIn("push:", writer)
+        self.assertIn("workflow_run:", writer)
+        self.assertIn("schedule:", writer)
+        self.assertIn("workflow_dispatch:", writer)
+        self.assertIn("pull_request:", signal)
+
+    def test_explicit_automatic_mode_is_visible_in_preview(self):
+        with patch("sys.argv", ["create_private_factory.py", "--repository", "Private-Factory",
+                                "--journal-mode", "automatic"]), \
+             patch.object(subject, "process", return_value="secret-in-memory"), \
+             patch.object(subject, "source_and_target",
+                          return_value=(VIEWER, HEAD, "refs/heads/main", DEST)), \
+             patch.object(subject, "apply") as apply, \
+             patch("builtins.print") as output:
+            subject.main()
+        apply.assert_not_called()
+        self.assertIn("journal_mode=automatic", output.call_args.args[0])
+
     def test_issues_enablement_is_scoped_and_read_back(self):
         row = {"id": 42, "full_name": DEST, "owner": VIEWER, "private": True,
                "fork": False, "has_issues": False, "permissions": {"admin": True}}
