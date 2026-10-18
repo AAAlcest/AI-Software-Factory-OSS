@@ -6,10 +6,10 @@ V1.3 adds a thin **work-item checkpoint layer** above the V1.2 workstream model 
 
 `Issue / PR / Project-visible item = visible work surface and evidence/authority pointer`  
 `work-item checkpoint = bounded current recovery pointer`  
-`daily note = role execution diary where an operating Factory uses one`  
+`event-driven note = non-authoritative role execution/recovery delta where used`  
 `cockpit / Project projection = derived management view`
 
-A generated Project view never overrides repository state, Human decisions, approvals, Git evidence or the linked work surface.
+A generated Project view never overrides repository state, Human decisions, approvals, Git evidence or the linked work surface. Notes are event-driven deltas, not daily reports; see [Staff Office Notes](STAFF_OFFICE_NOTES.md).
 
 ## Work-item record
 
