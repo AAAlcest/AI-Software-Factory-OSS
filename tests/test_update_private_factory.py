@@ -79,7 +79,12 @@ class UpgradePlanTests(unittest.TestCase):
         stack.enter_context(patch.object(subject, "target_identity", return_value=REPO))
         stack.enter_context(patch.object(subject, "target_tip", return_value=BASE))
         stack.enter_context(patch.object(subject, "get_bytes", side_effect=read))
-        stack.enter_context(patch.object(subject, "historical_bytes", side_effect=lambda _sha, p: old[p]))
+        # Both old/new source bytes are Git objects. The new content is not
+        # taken from ROOT's platform-dependent working-tree line endings.
+        stack.enter_context(patch.object(
+            subject, "historical_bytes",
+            side_effect=lambda sha, p: old[p] if sha == prior else new[p],
+        ))
         stack.enter_context(patch.object(subject, "is_ancestor", return_value=ancestry))
         journal = stack.enter_context(patch.object(subject, "verify_journal"))
         conflict = stack.enter_context(patch.object(subject, "no_conflicting_upgrade"))
@@ -220,6 +225,7 @@ class UpgradeApplyTests(unittest.TestCase):
         plan = {
             "dest": DEST, "source_sha": NEW, "prior_sha": OLD,
             "base_sha": BASE, "branch": "factory-upgrade/aaaa-to-bbbb",
+            "target_id": 42, "viewer_id": 7,
             "changes": {
                 subject.PROVENANCE: b'{"source_sha":"new"}',
                 subject.LOCK: b'{"files":{}}',
@@ -231,6 +237,10 @@ class UpgradeApplyTests(unittest.TestCase):
         blob_number = [0]
         def api(_token, path, method="GET", payload=None, missing_ok=False):
             if method == "GET":
+                if path == "/user":
+                    return VIEWER
+                if path == f"/repos/{DEST}":
+                    return REPO
                 if path.endswith("/git/ref/heads/" + plan["branch"]):
                     return None
                 if path.endswith("/git/commits/" + BASE):
