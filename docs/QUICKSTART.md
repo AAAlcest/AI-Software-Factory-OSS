@@ -79,6 +79,16 @@ repository variable
 without duplicate receipts can establish ACTIVE. Do not expose the private
 repository identity or evidence in public OSS Issues.
 
+## 2a. Upgrade an existing private Factory (separate lifecycle)
+
+If you already have an independent private Factory, **do not recreate it** or
+sync it through a public Fork. Read the [minimal, provenance-checked framework
+upgrade](PRIVATE_FACTORY_UPGRADE.md) first. Its default command is read-only;
+with separate explicit authorization, `--apply` creates a **private draft PR**
+only. This first slice replaces three exact-copy framework files, stops on
+user edits and does not change private operating state, journal configuration,
+credential settings, branch visibility or target `main`.
+
 ## 3. Understand the split
 
 Read [the recommended role setup](RECOMMENDED_ROLE_SETUP.md). Use ChatGPT for

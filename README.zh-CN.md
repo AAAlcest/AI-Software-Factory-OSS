@@ -29,6 +29,8 @@
 
 **创建你的私人 Factory（普通使用入口）：**从公开 OSS 仓库取得当前 `main` 源码，先运行[只读的私有仓初始化预览](docs/QUICKSTART_ZH.md#先创建你的私人-factory)，确认后再显式执行。它创建一个**全新、独立、非 fork 的私有仓库**；正常私人使用**不需要 Fork**。新实例仍是 BLOCKED／未配置，日志 writer 也尚未启用。在 v1.6.0 release line 中，bootstrap 也接受官方精确 `v1.6.0` tag，因此普通用户不需要追随不断移动的 `main`。
 
+**已经拥有私人 Factory？** 请阅读[安全升级现有私厂（英文）](docs/PRIVATE_FACTORY_UPGRADE.md)。默认只读预览，历史来源不符或用户修改过的文件直接拒绝；显式授权后才允许在私有仓库创建 Draft PR，不覆盖私人运行状态、不自动合并。
+
 **第一次使用的 Human：**先看 [快速开始](docs/QUICKSTART_ZH.md)，再看 [推荐的 ChatGPT + Codex 角色配置](docs/RECOMMENDED_ROLE_SETUP.md)。如果暂时不想运行脚本，可先浏览 [合成 Factory 实例](examples/factory-instance/README.md) 看整体结构。
 
 **Fork 本仓库（贡献／公开安全试用）：**公开 fork 是 OSS 分发／更新／贡献副本，**不是私人 Factory 的默认运行仓库**。fork 会复制文件，但不会继承本仓的公告 Issue 或已经激活的日志状态。公开 fork 的 [自助初始化](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup) 只适合公开安全的试用、框架维护／贡献，或你明确愿意公开的 Factory；**不要把私人项目、真实任命、客户／公司资料或私有 Factory 历史放进公开 fork。**
