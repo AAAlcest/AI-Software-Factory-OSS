@@ -132,7 +132,7 @@ class UpgradePlanTests(unittest.TestCase):
     def test_missing_wrong_or_unverifiable_provenance_stops(self):
         _root, raw, _, _ = self.synthetic()
         raw.pop(subject.PROVENANCE)
-        with self.assertRaisesRegex(subject.UpgradeError, "Missing source provenance"):
+        with self.assertRaisesRegex(subject.UpgradeError, "required managed/identity file"):
             subject.build_plan("t", DEST)
         self.synthetic(bad_provenance=True)
         with self.assertRaisesRegex(subject.UpgradeError, "Foreign"):
