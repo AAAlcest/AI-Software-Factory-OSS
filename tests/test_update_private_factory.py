@@ -157,6 +157,115 @@ class UpgradePlanTests(unittest.TestCase):
                      "state.json", "authority.json", "CURRENT.md", "AGENTS.md")
         self.assertTrue(all(not any(p.startswith(f) for f in forbidden) for p in subject.MANAGED))
 
+    def test_clean_crlf_checkout_normalizes_blobs_across_successive_upgrades(self):
+        """Clean core.autocrlf=true working files must never be written as CRLF blobs."""
+        with tempfile.TemporaryDirectory(prefix="synthetic-upgrade-crlf-") as tmp:
+            history = Path(tmp) / "synthetic-history"
+            work = Path(tmp) / "crlf-checkout"
+            history.mkdir()
+
+            def git(root, *args):
+                return subprocess.run(
+                    ["git", "-C", str(root), *args], capture_output=True,
+                    text=True, check=True, timeout=30,
+                ).stdout.strip()
+
+            def git_blob(root, sha, path):
+                return subprocess.run(
+                    ["git", "-C", str(root), "show", f"{sha}:{path}"],
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                    check=True, timeout=30,
+                ).stdout
+
+            git(history, "init", "-b", "main")
+            git(history, "config", "core.autocrlf", "false")
+            git(history, "config", "user.name", "Synthetic Test")
+            git(history, "config", "user.email", "synthetic@example.invalid")
+            for path in subject.MANAGED:
+                p = history / path
+                p.parent.mkdir(parents=True, exist_ok=True)
+                p.write_bytes(("v1:" + path + "\n").encode())
+            git(history, "add", ".")
+            git(history, "commit", "-m", "synthetic v1")
+            oldsha = git(history, "rev-parse", "HEAD")
+            managed_path = "templates/STAFF_OFFICE_TEMPLATE.md"
+            (history / managed_path).write_bytes(b"synthetic v2 template\n")
+            git(history, "add", ".")
+            git(history, "commit", "-m", "synthetic v2")
+            v2 = git(history, "rev-parse", "HEAD")
+
+            subprocess.run(
+                ["git", "clone", "-c", "core.autocrlf=true",
+                 str(history), str(work)], check=True, capture_output=True,
+                text=True, timeout=30,
+            )
+            git(work, "config", "core.autocrlf", "true")
+            git(work, "checkout", "-f", "main")
+            self.assertEqual(git(work, "status", "--porcelain"), "")
+            self.assertIn(b"\r\n", (work / managed_path).read_bytes())
+            self.assertNotIn(b"\r\n", git_blob(work, v2, managed_path))
+
+            raw = {
+                "instance.json": b'{"mode":"INSTANCE"}',
+                subject.PROVENANCE: subject.json_bytes({
+                    "upstream": subject.UPSTREAM,
+                    "upstream_repository_id": subject.UPSTREAM_ID,
+                    "source_sha": oldsha,
+                    "source_ref": "refs/heads/main",
+                    "license": "MIT",
+                    "status": "COPIED_FRAMEWORK_NOT_OPERATING_AUTHORITY",
+                }),
+            }
+            raw.update({p: git_blob(work, oldsha, p) for p in subject.MANAGED})
+            source_tip = [v2]
+
+            def read(_token, _dest, path, *, optional=False, ref="main"):
+                self.assertEqual(ref, BASE)
+                if path not in raw and optional:
+                    return None
+                if path not in raw:
+                    raise subject.UpgradeError("Required file missing.")
+                return raw[path]
+
+            with patch.object(subject, "ROOT", work), \
+                 patch.object(subject, "source_identity",
+                              side_effect=lambda _token: (VIEWER, source_tip[0])), \
+                 patch.object(subject, "target_identity", return_value=REPO), \
+                 patch.object(subject, "target_tip", return_value=BASE), \
+                 patch.object(subject, "get_bytes", side_effect=read), \
+                 patch.object(subject, "verify_journal"), \
+                 patch.object(subject, "no_conflicting_upgrade"):
+                first = subject.build_plan("FAKE_TOKEN", DEST)
+                self.assertEqual(first["prior_sha"], oldsha)
+                self.assertEqual(first["changed_managed"], [managed_path])
+                self.assertEqual(first["changes"][managed_path],
+                                 git_blob(work, v2, managed_path))
+                self.assertNotIn(b"\r\n", first["changes"][managed_path])
+                first_lock = json.loads(first["changes"][subject.LOCK])
+                for p in subject.MANAGED:
+                    self.assertEqual(first_lock["files"][p],
+                                     subject.digest(git_blob(work, v2, p)))
+                # Model a private, separately accepted PR without touching a real repo.
+                raw.update(first["changes"])
+                git(work, "config", "user.name", "Synthetic Test")
+                git(work, "config", "user.email", "synthetic@example.invalid")
+                (work / managed_path).write_bytes(b"synthetic v3 template\r\n")
+                git(work, "add", managed_path)
+                git(work, "commit", "-m", "synthetic v3")
+                v3 = git(work, "rev-parse", "HEAD")
+                source_tip[0] = v3
+                self.assertEqual(git(work, "status", "--porcelain"), "")
+                self.assertIn(b"\r\n", (work / managed_path).read_bytes())
+
+                # The next preview must accept the prior normalized Git blobs.
+                second = subject.build_plan("FAKE_TOKEN", DEST)
+                self.assertEqual(second["prior_sha"], v2)
+                self.assertEqual(second["source_sha"], v3)
+                self.assertEqual(second["changed_managed"], [managed_path])
+                self.assertEqual(second["changes"][managed_path],
+                                 git_blob(work, v3, managed_path))
+                self.assertNotIn(b"\r\n", second["changes"][managed_path])
+
     def test_private_target_rejects_wrong_owner_public_fork_or_default_branch(self):
         subject.target_identity
         valid = dict(REPO)
@@ -279,6 +388,76 @@ class UpgradeApplyTests(unittest.TestCase):
         self.assertTrue(all(method == "POST" for _, method, _ in created))
         self.assertFalse(any("variable" in path or "/contents" in path for path, _, _ in created))
         self.assertTrue(all("PRIVATE_SECRET" not in json.dumps(payload) for _, _, payload in created))
+
+    def test_apply_rebinds_private_identity_before_first_mutation(self):
+        """An unchanged main SHA is not evidence of unchanged private visibility."""
+        plan = {
+            "dest": DEST, "source_sha": NEW, "prior_sha": OLD,
+            "base_sha": BASE, "branch": "factory-upgrade/aaaa-to-bbbb",
+            "target_id": 42, "viewer_id": 7,
+            "changes": {subject.LOCK: b'{"files":{}}'},
+            "changed_managed": [],
+        }
+        cases = {
+            "became-public": ({"private": False}, VIEWER),
+            "became-fork": ({"fork": True}, VIEWER),
+            "wrong-repository-id": ({"id": 43}, VIEWER),
+            "wrong-owner-id": ({"owner": {"id": 8}}, VIEWER),
+            "lost-push-permission": ({"permissions": {"push": False}}, VIEWER),
+            "authenticated-account-changed": ({}, {"login": "other-user", "id": 9}),
+        }
+        for label, (changed, viewer) in cases.items():
+            with self.subTest(case=label):
+                writes = []
+                reads = []
+                def api(_token, path, method="GET", payload=None, missing_ok=False):
+                    if method != "GET":
+                        writes.append((path, method))
+                        raise AssertionError("A preflight identity drift must never POST.")
+                    reads.append(path)
+                    if path == "/user":
+                        return viewer
+                    if path == f"/repos/{DEST}":
+                        return {**REPO, **changed}
+                    if path.endswith("/git/ref/heads/" + plan["branch"]):
+                        return None
+                    if path.endswith("/git/commits/" + BASE):
+                        return {"tree": {"sha": "d" * 40}}
+                    raise AssertionError(("unexpected GET", path))
+                with patch.object(subject, "target_tip", return_value=BASE), \
+                     patch.object(subject.bootstrap, "api", side_effect=api):
+                    with self.assertRaises(subject.UpgradeError):
+                        subject.commit_private_candidate("FAKE_TOKEN", plan)
+                self.assertEqual(writes, [], label)
+                self.assertIn("/user", reads)
+
+    def test_apply_accepts_only_the_original_verified_repo_and_owner_ids(self):
+        """The saved plan's immutable identities are part of the write gate."""
+        plan = {
+            "dest": DEST, "source_sha": NEW, "prior_sha": OLD,
+            "base_sha": BASE, "branch": "factory-upgrade/aaaa-to-bbbb",
+            "target_id": 999, "viewer_id": 7,
+            "changes": {subject.LOCK: b'{"files":{}}'},
+        }
+        writes = []
+        def api(_token, path, method="GET", payload=None, missing_ok=False):
+            if method != "GET":
+                writes.append(path)
+                raise AssertionError("Unexpected write.")
+            if path == "/user":
+                return VIEWER
+            if path == f"/repos/{DEST}":
+                return REPO
+            if path.endswith("/git/ref/heads/" + plan["branch"]):
+                return None
+            if path.endswith("/git/commits/" + BASE):
+                return {"tree": {"sha": "d" * 40}}
+            raise AssertionError(path)
+        with patch.object(subject, "target_tip", return_value=BASE), \
+             patch.object(subject.bootstrap, "api", side_effect=api):
+            with self.assertRaisesRegex(subject.UpgradeError, "repository ID changed"):
+                subject.commit_private_candidate("FAKE_TOKEN", plan)
+        self.assertEqual(writes, [])
 
     def test_main_moved_means_zero_writes(self):
         with patch.object(subject, "target_tip", return_value="d" * 40), \
