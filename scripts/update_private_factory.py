@@ -236,9 +236,9 @@ def build_plan(token: str, dest: str) -> dict:
             raise UpgradeError("Locally changed managed file: conflict, no overwrite.")
         if current_lock is not None and recorded["files"].get(path) != digest(expected):
             raise UpgradeError("Managed lock hash mismatch.")
-        desired = (ROOT / path).read_bytes()
-        if len(desired) > MAX_BYTES:
-            raise UpgradeError("New framework managed file is oversized.")
+        # Both sides must come from committed Git objects, not the platform's
+        # working tree (which can contain CRLF with core.autocrlf=true).
+        desired = historical_bytes(newsha, path)
         file_hashes[path] = digest(desired)
         if desired != expected:
             changes[path] = desired
@@ -271,6 +271,20 @@ def build_plan(token: str, dest: str) -> dict:
     }
 
 
+def revalidate_private_target(token: str, plan: dict) -> None:
+    """Fail closed on target/credential drift immediately before private writes."""
+    dest = plan["dest"]
+    viewer = bootstrap.api(token, "/user")
+    if (not isinstance(viewer, dict)
+            or viewer.get("id") != plan["viewer_id"]
+            or viewer.get("login") != dest.split("/", 1)[0]):
+        raise UpgradeError("Authenticated private repository owner changed.")
+    # Re-read current GitHub metadata instead of trusting the planned state.
+    row = target_identity(token, dest, viewer)
+    if row["id"] != plan["target_id"]:
+        raise UpgradeError("Private target repository ID changed.")
+
+
 def commit_private_candidate(token: str, plan: dict) -> int:
     dest = plan["dest"]
     # All checks and conflicts were resolved before the first remote mutation.
@@ -284,6 +298,11 @@ def commit_private_candidate(token: str, plan: dict) -> int:
     tree_sha = (commit.get("tree") or {}).get("sha")
     if not isinstance(tree_sha, str) or not SHA.fullmatch(tree_sha):
         raise UpgradeError("Private base tree unavailable.")
+
+    # The last read before the first POST must bind the same immutable target
+    # repository/owner IDs and require it to remain private, non-fork and writable.
+    # A stable commit SHA does NOT prove a repository has stayed private.
+    revalidate_private_target(token, plan)
 
     elements = []
     for path, data in sorted(plan["changes"].items()):
