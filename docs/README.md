@@ -6,6 +6,7 @@ provides navigation and the documentation-change journal. Canonical documents re
 ## Start and configure
 
 - [5-minute Quick Demo](QUICK_DEMO.md): runnable synthetic success and fail-closed refusal, with zero real authority.
+- [Upgrade an existing private Factory](PRIVATE_FACTORY_UPGRADE.md): preview first, a tiny managed-file lock, private PR only.
 - [Quickstart](QUICKSTART.md) and [中文上手](QUICKSTART_ZH.md).
 - [Recommended ChatGPT/Codex staffing](RECOMMENDED_ROLE_SETUP.md).
 - [Thirty-second mental model](AI_FACTORY_IN_30_SECONDS.md).
