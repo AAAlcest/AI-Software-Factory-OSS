@@ -64,7 +64,8 @@ class UpgradePlanTests(unittest.TestCase):
                 "files": {p: subject.digest(v) for p, v in old.items()},
             })
 
-        def read(_token, _dest, path, *, optional=False):
+        def read(_token, _dest, path, *, optional=False, ref="main"):
+            self.assertEqual(ref, BASE)
             if path not in raw and optional:
                 return None
             if path not in raw:
@@ -108,7 +109,7 @@ class UpgradePlanTests(unittest.TestCase):
             "status": "COPIED_FRAMEWORK_NOT_OPERATING_AUTHORITY",
             "private_extension": "preserved",
         }).encode())
-        journal.assert_called_once_with("FAKE_TOKEN", DEST, 42)
+        journal.assert_called_once_with("FAKE_TOKEN", DEST, 42, ref=BASE)
         conflict.assert_called_once()
 
     def test_existing_lock_revalidation_and_bad_lock_stop(self):
