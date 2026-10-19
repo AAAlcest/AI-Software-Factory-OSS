@@ -6,6 +6,13 @@
 
 一个以仓库为中心、由 Human 主导的软件工程协作框架，用于组织 ChatGPT 管理角色与 Codex 开发角色。角色、权限、项目状态与证据可以跨越单次对话持续存在；模型名称或账号凭据本身并不授予任何 Factory 权限。
 
+## 5 分钟快速演示 · Quick Demo
+
+**能看到什么：** 在本机生成完全虚构的 Factory，并实际检查角色、项目与授权记录，而不是只看概念图。  
+**立即体验：** [**运行 5 分钟 Quick Demo →**](docs/QUICK_DEMO.md)；只需 Python 3.10+，不需要 AI 账号、API Key 或真实私有 Factory。  
+**安全拒绝：** 虚构项目 Atlas 可以得到结构性 `VALID`，但未配置的 starter 会按预期返回 `BLOCKED`（退出码 `3`）；两者的 `execution_authorized` 均为 `false`，不代表任命或执行许可。  
+**架构路径：** [仓库原生角色与项目](docs/AI_FACTORY_IN_30_SECONDS.md) → [实例授权记录](docs/INSTANCE_BOOT_PROTOCOL.md) → 只读验证；不自动派发 Agent、不部署云服务、不操作生产环境。
+
 通过让 ChatGPT 负责规划、治理、任务路由与评审协调，并把 Codex 尽量留给真正需要实现能力的开发工作，这套 Factory 的目标是显著减少不必要的 Codex token 消耗。再结合可复用的 skills 与角色化工作流，可以提高整套 AI 工具链的利用率，并让相同的 token 与订阅预算产生更高的实际回报。具体节省幅度取决于任务类型、模型选择与 Factory 配置方式；这是一个运营效率目标，不是固定额度承诺。
 
 **1.6.0 是 AI Software Factory OSS 当前的 release line。** 它把 v1.5 之后的仓库治理和私人建厂能力收成一条可复现的普通使用路径：GitHub 原生文档公告墙／自动日志、公开 fork 自助初始化、无需 Fork 的独立 **Create Private Factory**、private writer 安全边界、真实 private bootstrap 验收，以及 Fresh Agent 从公开 distribution 自动路由到正确 operating context 的规则。

@@ -8,6 +8,13 @@ A repository-first operating framework for Human-led software work with AI
 management and coding agents. Roles, authority, project state and evidence
 survive a conversation; a model name or account credential never grants authority.
 
+## 5-minute Quick Demo
+
+**What:** See a fictional Factory's role/project/authority records checked locally, rather than watching a conceptual slideshow.  
+**Try:** [**Run the 5-minute Quick Demo →**](docs/QUICK_DEMO.md) — Python 3.10+, no AI account, API key or private Factory needed.  
+**Failure behavior:** The synthetic Atlas records can be structurally `VALID`, while an unconfigured starter deliberately returns `BLOCKED` (exit `3`). Both keep `execution_authorized: false`; neither appoints an Agent or authorizes execution.  
+**Architecture:** [Repository-first roles and projects](docs/AI_FACTORY_IN_30_SECONDS.md) → [explicit instance authority](docs/INSTANCE_BOOT_PROTOCOL.md) → read-only validation. No automatic agent dispatch, cloud deployment or production action.
+
 By keeping planning, governance, task routing and review coordination in ChatGPT
 while reserving Codex for implementation-heavy work, the Factory is designed to
 materially reduce unnecessary Codex token consumption. Combined with reusable
