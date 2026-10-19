@@ -95,11 +95,13 @@ def target_identity(token: str, dest: str, viewer: dict) -> dict:
     return row
 
 
-def get_bytes(token: str, dest: str, path: str, *, optional: bool = False) -> bytes | None:
+def get_bytes(token: str, dest: str, path: str, *, optional: bool = False, ref: str = "main") -> bytes | None:
     # Only fixed paths from this module are accepted; never interpolate input paths.
     if path not in (*MANAGED, PROVENANCE, JOURNAL, LOCK, "instance.json"):
         raise UpgradeError("Unmanaged read path rejected.")
-    item = bootstrap.api(token, f"/repos/{dest}/contents/{path}?ref=main", missing_ok=optional)
+    if ref != "main" and not SHA.fullmatch(ref):
+        raise UpgradeError("Unverified private read ref.")
+    item = bootstrap.api(token, f"/repos/{dest}/contents/{path}?ref={ref}", missing_ok=optional)
     if item is None:
         if optional:
             return None
@@ -160,8 +162,8 @@ def is_ancestor(old: str, new: str) -> bool:
     return run.returncode == 0
 
 
-def verify_journal(token: str, dest: str, repo_id: int) -> None:
-    raw = get_bytes(token, dest, JOURNAL, optional=True)
+def verify_journal(token: str, dest: str, repo_id: int, ref: str = "main") -> None:
+    raw = get_bytes(token, dest, JOURNAL, optional=True, ref=ref)
     if raw is None:
         return
     row = object_json(raw, "private journal configuration")
@@ -200,20 +202,20 @@ def build_plan(token: str, dest: str) -> dict:
     mainsha = target_tip(token, dest)
 
     # Confirm a real instance without inspecting or publishing its operating records.
-    if get_bytes(token, dest, "instance.json", optional=True) is None:
+    if get_bytes(token, dest, "instance.json", optional=True, ref=mainsha) is None:
         raise UpgradeError("Target is missing its private instance anchor.")
-    old = object_json(get_bytes(token, dest, PROVENANCE), "source provenance")
+    old = object_json(get_bytes(token, dest, PROVENANCE, ref=mainsha), "source provenance")
     oldsha = old.get("source_sha")
     if (old.get("upstream") != UPSTREAM or old.get("upstream_repository_id") != UPSTREAM_ID
             or not isinstance(oldsha, str) or not SHA.fullmatch(oldsha)
             or not is_ancestor(oldsha, newsha)):
         raise UpgradeError("Foreign, invalid or unverified prior OSS provenance.")
-    verify_journal(token, dest, repo_id)
+    verify_journal(token, dest, repo_id, ref=mainsha)
 
     name = f"factory-upgrade/{oldsha[:12]}-to-{newsha[:12]}"
     no_conflicting_upgrade(token, dest, name)
 
-    current_lock = get_bytes(token, dest, LOCK, optional=True)
+    current_lock = get_bytes(token, dest, LOCK, optional=True, ref=mainsha)
     if current_lock is not None:
         recorded = object_json(current_lock, "managed lock")
         if (recorded.get("schema_version") != 1
@@ -228,7 +230,7 @@ def build_plan(token: str, dest: str) -> dict:
     file_hashes = {}
     for path in MANAGED:
         expected = historical_bytes(oldsha, path)
-        actual = get_bytes(token, dest, path)
+        actual = get_bytes(token, dest, path, ref=mainsha)
         if actual != expected:
             # Includes missing, edited and unreconstructable managed files.
             raise UpgradeError("Locally changed managed file: conflict, no overwrite.")
@@ -241,6 +243,8 @@ def build_plan(token: str, dest: str) -> dict:
         if desired != expected:
             changes[path] = desired
 
+    if target_tip(token, dest) != mainsha:
+        raise UpgradeError("Private main changed during preview; retry.")
     if oldsha == newsha and not changes:
         raise UpgradeError("Target managed framework is already at current source.")
     provenance = dict(old)
