@@ -59,6 +59,8 @@ BLOCKED/unconfigured and its journal writer remains off until separately accepte
 In the v1.6.0 release line, the bootstrap also accepts the exact official
 `v1.6.0` tag so normal users do not have to follow a moving `main`.
 
+**Already have a private Factory?** Use the [provenance-checked minimal upgrade](docs/PRIVATE_FACTORY_UPGRADE.md): default read-only preview, conflict refusal, and (only after explicit authorization) a private draft PR. No upstream fork-sync, operating-state overwrite or automatic merge.
+
 **New Human user:** open the [Quickstart](docs/QUICKSTART.md), then the
 [recommended ChatGPT + Codex role setup](docs/RECOMMENDED_ROLE_SETUP.md). If you
 want to understand the shape before running anything, browse the
