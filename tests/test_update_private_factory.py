@@ -27,6 +27,88 @@ REPO = {
 }
 
 
+
+class SourceIdentityReleaseTagTests(unittest.TestCase):
+    """No GitHub access: exact official main/tag source identity contracts."""
+
+    def probe(self, *, branch="main", tag_points=None, api_sha=NEW,
+              remote_sha=NEW, repo_override=None, origin=None,
+              dirty=False, tag_type=None, viewer=None, local_head=NEW):
+        wanted = subject.bootstrap.RELEASE_TAG
+        ref_name = "refs/heads/main" if branch == "main" else f"refs/tags/{wanted}"
+        commands = {
+            ("git", "status", "--porcelain"): " M docs/README.md" if dirty else "",
+            ("git", "rev-parse", "--show-toplevel"): str(subject.ROOT),
+            ("git", "remote", "get-url", "origin"):
+                origin or f"https://github.com/{subject.UPSTREAM}.git",
+            ("git", "rev-parse", "HEAD"): local_head,
+            ("git", "branch", "--show-current"): branch,
+            ("git", "tag", "--points-at", "HEAD"):
+                wanted if tag_points is None else tag_points,
+            ("git", "ls-remote", "origin", ref_name):
+                f"{remote_sha}\t{ref_name}",
+        }
+        seen = []
+        def process(args, **kwargs):
+            seen.append(("git", tuple(args)))
+            if tuple(args) not in commands:
+                raise AssertionError(("unexpected git command", args))
+            return commands[tuple(args)]
+        def api(_token, path, method="GET", payload=None, missing_ok=False):
+            self.assertEqual(method, "GET")
+            seen.append(("api", path))
+            if path == f"/repos/{subject.UPSTREAM}":
+                return {
+                    "id": subject.UPSTREAM_ID, "full_name": subject.UPSTREAM,
+                    "private": False, "default_branch": "main", **(repo_override or {}),
+                }
+            if path == f"/repos/{subject.UPSTREAM}/git/ref/{ref_name.removeprefix('refs/')}":
+                return {"object": {"sha": api_sha,
+                    "type": tag_type if tag_type is not None else "commit"}}
+            if path == "/user":
+                return viewer or VIEWER
+            raise AssertionError(("unexpected API call", path))
+        with patch.object(subject.bootstrap, "process", side_effect=process), \
+             patch.object(subject.bootstrap, "api", side_effect=api):
+            result = subject.source_identity("FAKE_TOKEN")
+        return result, seen
+
+    def test_main_requires_exact_local_remote_and_api_main_tip(self):
+        got, seen = self.probe()
+        self.assertEqual(got, (VIEWER, NEW, "refs/heads/main"))
+        self.assertIn(("api", f"/repos/{subject.UPSTREAM}/git/ref/heads/main"), seen)
+        for option in ({"remote_sha": OLD}, {"api_sha": OLD},
+                       {"dirty": True},
+                       {"origin": "https://github.com/fake/another.git"},
+                       {"repo_override": {"id": 12345}},
+                       {"repo_override": {"private": True}},
+                       {"branch": "feature/preview"}):
+            with self.subTest(option=option), self.assertRaises(subject.UpgradeError):
+                self.probe(**option)
+
+    def test_detached_release_tag_requires_triple_equality(self):
+        got, seen = self.probe(branch="")
+        self.assertEqual(got, (VIEWER, NEW,
+                               f"refs/tags/{subject.bootstrap.RELEASE_TAG}"))
+        self.assertIn(("git", ("git", "tag", "--points-at", "HEAD")), seen)
+        self.assertIn(("api", f"/repos/{subject.UPSTREAM}/git/ref/tags/"
+                                f"{subject.bootstrap.RELEASE_TAG}"), seen)
+
+        for option in ({"tag_points": "v1.6.0"}, {"tag_points": ""},
+                       {"api_sha": OLD}, {"remote_sha": OLD},
+                       {"tag_type": "tag"},  # no unsupported annotated-tag fallback
+                       {"dirty": True},
+                       {"repo_override": {"default_branch": "other"}},
+                       {"local_head": "bad_sha"}):
+            with self.subTest(option=option), self.assertRaises(subject.UpgradeError):
+                self.probe(branch="", **option)
+
+    def test_other_branch_never_becomes_current_release(self):
+        with self.assertRaisesRegex(subject.UpgradeError, "official main or"):
+            self.probe(branch="release/v1.7.0-rc")
+
+
+
 class UpgradePlanTests(unittest.TestCase):
     def synthetic(self, *, lock=False, edited=None, prior=OLD, ancestry=True,
                   missing=None, bad_provenance=False):
@@ -75,7 +157,7 @@ class UpgradePlanTests(unittest.TestCase):
         stack = ExitStack()
         self.addCleanup(stack.close)
         stack.enter_context(patch.object(subject, "ROOT", root))
-        stack.enter_context(patch.object(subject, "source_identity", return_value=(VIEWER, NEW)))
+        stack.enter_context(patch.object(subject, "source_identity", return_value=(VIEWER, NEW, "refs/heads/main")))
         stack.enter_context(patch.object(subject, "target_identity", return_value=REPO))
         stack.enter_context(patch.object(subject, "target_tip", return_value=BASE))
         stack.enter_context(patch.object(subject, "get_bytes", side_effect=read))
@@ -96,6 +178,8 @@ class UpgradePlanTests(unittest.TestCase):
         self.assertTrue(plan["legacy_without_lock"])
         self.assertEqual(plan["base_sha"], BASE)
         self.assertEqual(plan["source_sha"], NEW)
+        self.assertEqual(plan["source_ref"], "refs/heads/main")
+
         self.assertEqual(plan["prior_sha"], OLD)
         self.assertEqual(plan["changed_managed"], ["templates/STAFF_OFFICE_TEMPLATE.md"])
         self.assertEqual(set(plan["changes"]), {
@@ -104,10 +188,12 @@ class UpgradePlanTests(unittest.TestCase):
         updated = json.loads(plan["changes"][subject.PROVENANCE])
         self.assertEqual(updated["private_extension"], "preserved")
         self.assertEqual(updated["source_sha"], NEW)
+        self.assertEqual(updated["source_ref"], "refs/heads/main")
         self.assertEqual(updated["managed_scope"], "EXPLICIT_PARTIAL_FRAMEWORK_UPGRADE")
         new_lock = json.loads(plan["changes"][subject.LOCK])
         self.assertEqual(set(new_lock["files"]), set(subject.MANAGED))
         self.assertEqual(new_lock["source_sha"], NEW)
+        self.assertEqual(new_lock["source_ref"], "refs/heads/main")
         self.assertEqual(raw[subject.PROVENANCE], json.dumps({
             "upstream": subject.UPSTREAM, "upstream_repository_id": subject.UPSTREAM_ID,
             "source_ref": "refs/tags/v1.6.0", "source_sha": OLD, "license": "MIT",
@@ -229,7 +315,7 @@ class UpgradePlanTests(unittest.TestCase):
 
             with patch.object(subject, "ROOT", work), \
                  patch.object(subject, "source_identity",
-                              side_effect=lambda _token: (VIEWER, source_tip[0])), \
+                              side_effect=lambda _token: (VIEWER, source_tip[0], "refs/heads/main")), \
                  patch.object(subject, "target_identity", return_value=REPO), \
                  patch.object(subject, "target_tip", return_value=BASE), \
                  patch.object(subject, "get_bytes", side_effect=read), \
@@ -316,7 +402,8 @@ class UpgradePlanTests(unittest.TestCase):
                 subject.no_conflicting_upgrade("t", DEST, "factory-upgrade/abc-to-def")
 
     def test_preview_only_never_uses_mutation_path(self):
-        plan = {"source_sha": NEW, "prior_sha": OLD, "changed_managed": [],
+        plan = {"source_sha": NEW, "source_ref": "refs/heads/main",
+                "prior_sha": OLD, "changed_managed": [],
                 "legacy_without_lock": True}
         with patch("sys.argv", ["update_private_factory.py", "--repository", DEST]), \
              patch.object(subject.bootstrap, "process", return_value="FAKE_TOKEN") as proc, \
