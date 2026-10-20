@@ -53,7 +53,7 @@ Source ZIP 仍可用于后面的虚构／离线演练，但 Create Private Facto
 ```sh
 git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
 cd AI-Software-Factory-OSS
-git checkout v1.6.0
+git checkout --detach v1.7.0  # 仅在 v1.7.0 正式发布后
 ```
 
 先确认版本：
