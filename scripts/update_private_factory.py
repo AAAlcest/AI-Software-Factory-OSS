@@ -84,6 +84,13 @@ def source_identity(token: str) -> tuple[dict, str, str]:
         local_tags = bootstrap.process(["git", "tag", "--points-at", "HEAD"]).splitlines()
         if bootstrap.RELEASE_TAG not in local_tags:
             raise UpgradeError("Detached source is not the current official release tag.")
+        # --points-at dereferences annotated tags to their commit. Verify
+        # the unpeeled local ref object separately: it MUST be the commit
+        # itself, with no tag object in between (exact lightweight tag).
+        local_ref_object = bootstrap.process(["git", "rev-parse", source_ref])
+        local_ref_type = bootstrap.process(["git", "cat-file", "-t", source_ref])
+        if local_ref_object != head or local_ref_type != "commit":
+            raise UpgradeError("Local release tag is not the exact lightweight commit ref.")
         ref = bootstrap.api(token, f"/repos/{UPSTREAM}/git/ref/tags/{bootstrap.RELEASE_TAG}")
         remote = bootstrap.process(["git", "ls-remote", "origin", source_ref]).split()
         obj = ref.get("object") or {}
