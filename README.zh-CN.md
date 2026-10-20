@@ -15,19 +15,17 @@
 
 通过让 ChatGPT 负责规划、治理、任务路由与评审协调，并把 Codex 尽量留给真正需要实现能力的开发工作，这套 Factory 的目标是显著减少不必要的 Codex token 消耗。再结合可复用的 skills 与角色化工作流，可以提高整套 AI 工具链的利用率，并让相同的 token 与订阅预算产生更高的实际回报。具体节省幅度取决于任务类型、模型选择与 Factory 配置方式；这是一个运营效率目标，不是固定额度承诺。
 
-**1.6.0 是 AI Software Factory OSS 当前的 release line。** 它把 v1.5 之后的仓库治理和私人建厂能力收成一条可复现的普通使用路径：GitHub 原生文档公告墙／自动日志、公开 fork 自助初始化、无需 Fork 的独立 **Create Private Factory**、private writer 安全边界、真实 private bootstrap 验收，以及 Fresh Agent 从公开 distribution 自动路由到正确 operating context 的规则。
+**当前源码版本线：1.7.0。** 在 v1.6.0 的私人建厂、GitHub 文档日志与 Fresh Agent 路由基础上，本源码增加 Execution-First、只读 Factory Doctor、公开 Design Rationale Index、event-driven Staff Office Notes、新私人 Factory 默认 `manual` 的 journal cadence、可执行 Quick Demo，以及小范围安全升级现有私人 Factory 的能力。
 
-当前 `main` 还包含一组 **post-v1.6、尚未单独发布的运行加固能力**：Execution-First、跨平台只读 Factory Doctor、公开 Design Rationale Index、event-driven Staff Office Notes，以及新 private Factory 可选的 journal cadence（默认较省 runner 唤醒的 `manual`）。只有从当前 `main` 新建的 private Factory 才会继承这些新 surface；不可移动的 `v1.6.0` tag 不包含它们。
+**`VERSION=1.7.0` 不代表 GitHub Release 已正式发布。** 已发布版本以 [GitHub Releases](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases) 和 [v1.7.0 发布协调 Issue](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/54) 为准。旧版 `v1.6.0` Tag 不含这些 post-v1.6 功能，不会因源码更新而被移动。
 
-实际已发布版本状态以 GitHub Releases 与对应 release coordination Issue 为准；历史 tag 不会为了追随未来 `main` 而移动。
-
-发布说明见 [1.6.0 Release Notes](docs/releases/1.6.0.md)、[1.5.0 历史 Release Notes](docs/releases/1.5.0.md)、[1.4.0 历史 Release Notes](docs/releases/1.4.0.md) 与 [1.0.0 历史 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
+发布说明见 [1.7.0 Release Notes](docs/releases/1.7.0.md)、[1.6.0 历史 Release Notes](docs/releases/1.6.0.md)、[1.5.0 历史 Release Notes](docs/releases/1.5.0.md)、[1.4.0 历史 Release Notes](docs/releases/1.4.0.md) 与 [1.0.0 历史 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
 
 ## 从这里开始
 
 **文档公告墙：**[仓库文档索引与变更记录](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26)。正文导航，评论记变更；规则见 [公告与自动记账契约](docs/REPOSITORY_NOTICES.md)。[本仓自动日志已启用](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736870432)：配置范围内进入 `main` 的文档改动和已观察到的 PR 候选会异步记入，不是每次本地保存即刻记账。fork 不会继承公告或已启用的 writer；请看 [fork 自助初始化](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup)。
 
-**创建你的私人 Factory（普通使用入口）：**从公开 OSS 仓库取得当前 `main` 源码，先运行[只读的私有仓初始化预览](docs/QUICKSTART_ZH.md#先创建你的私人-factory)，确认后再显式执行。它创建一个**全新、独立、非 fork 的私有仓库**；正常私人使用**不需要 Fork**。新实例仍是 BLOCKED／未配置，日志 writer 也尚未启用。在 v1.6.0 release line 中，bootstrap 也接受官方精确 `v1.6.0` tag，因此普通用户不需要追随不断移动的 `main`。
+**创建你的私人 Factory（普通使用入口）：**从公开 OSS 仓库取得当前 `main` 源码，先运行[只读的私有仓初始化预览](docs/QUICKSTART_ZH.md#先创建你的私人-factory)，确认后再显式执行。它创建一个**全新、独立、非 fork 的私有仓库**；正常私人使用**不需要 Fork**。新实例仍是 BLOCKED／未配置，日志 writer 也尚未启用。本源码版本可核对官方当前 `main`，或在 **`v1.7.0` 正式发布且 Tag 可核验之后** 接受对应精确 release tag。正式发布前请以 GitHub Releases 中实际存在的版本为准。
 
 **已经拥有私人 Factory？** 请阅读[安全升级现有私厂（英文）](docs/PRIVATE_FACTORY_UPGRADE.md)。默认只读预览，历史来源不符或用户修改过的文件直接拒绝；显式授权后才允许在私有仓库创建 Draft PR，不覆盖私人运行状态、不自动合并。
 
