@@ -2,22 +2,25 @@
 
 ## 1. Get the public OSS source
 
-For normal reproducible private-Factory creation, use the exact `v1.6.0` release
-tag. Install Git, Python 3.10+ and GitHub CLI (`gh`), then clone the official
-public source without forking:
+For reproducible private-Factory creation, prefer the latest **published**
+[GitHub Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases)
+and verify its exact tag. This source line is **1.7.0**; its `v1.7.0` tag is
+usable **only after publication**. Until then, `v1.6.0` remains the latest
+published release. Install Git, Python 3.10+ and GitHub CLI (`gh`), then clone
+the official source without forking:
 
 ```sh
 git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
 cd AI-Software-Factory-OSS
-git checkout v1.6.0
+git checkout --detach v1.7.0  # only after v1.7.0 is published
 gh auth login
 ```
 
-Keep the checkout clean. The private-bootstrap command accepts either this exact
-official `v1.6.0` tag or the clean exact current official `main`, and verifies
-the local HEAD against the corresponding origin ref and GitHub API before any
-write. Normal users should prefer the release tag; current `main` is primarily
-for framework development/evaluation.
+Keep the checkout clean. This source version's private-bootstrap command accepts
+either exact official current `main` or the exact official release tag matching
+`VERSION` (here `v1.7.0` once published). It verifies local HEAD, origin ref
+and GitHub API before any write. Do not treat a proposed tag as already available.
+Stable users should prefer a real published release tag over moving `main`.
 
 GitHub Source ZIP is still fine for the fictional/offline exercises below, but the
 private-bootstrap command requires Git metadata and therefore uses a Git checkout.
@@ -25,7 +28,7 @@ private-bootstrap command requires Git metadata and therefore uses a Git checkou
 ## 2. Create your private Factory
 
 Preview first (read-only); use a new name under your authenticated GitHub user.
-Current post-v1.6 `main` defaults new private Factories to the lower-run
+Version 1.7.0 source defaults **new** private Factories to the lower-run
 `manual` journal cadence:
 
 ```powershell
@@ -43,9 +46,9 @@ Git history, an unconfigured/BLOCKED Factory starter, exact OSS source provenanc
 and MIT license, and an OPEN/UNLOCKED private documentation notice. It configures
 the existing journal for that private repository, with writer disabled. No real
 role/project appointment, existing private project import, or production authority
-is inferred. V1.6 supports the authenticated user's own account and either the
-exact official current `main` or exact official `v1.6.0` tag; a pre-existing
-destination fails closed. A partially failed apply is not
+is inferred. This source line supports the authenticated user's own account,
+current exact official `main` or exact official version-matching release tag
+(after publication); a pre-existing destination fails closed. A partially failed apply is not
 auto-deleted or automatically resumed; inspect it privately before retrying.
 
 The source checkout remains a distribution/update surface; the **new private
@@ -54,10 +57,10 @@ private repositories, referenced only from the private Factory. Normal private
 use does **not** require a GitHub Fork. A public fork is for OSS contribution,
 public-safe evaluation or intentionally public work.
 
-After creation, inspect the private repository and its notice. **On current
-post-v1.6 `main`**, newly generated private starters also include
+After creation, inspect the private repository and its notice. **On the 1.7.0
+source line**, newly generated private starters include
 `docs/EXECUTION_FIRST.md`, `RATIONALE_INDEX.md` and the portable read-only
-Doctor. The immutable `v1.6.0` tag predates those post-release hardening files.
+Doctor. The immutable older `v1.6.0` tag predates this hardening.
 From a starter that contains Doctor:
 
 ```sh
@@ -97,14 +100,18 @@ no example appoints its reader. Unconfigured values remain unknown.
 
 ## 4. Get an exact release locally for the fictional exercise
 
-For the `1.6.0` release line, use the exact `v1.6.0` tag rather than an arbitrary
-future `main` when you want reproducible results.
+For source version `1.7.0`, prefer the exact `v1.7.0` tag **after its
+publication** rather than an arbitrary future `main` for reproducibility.
+Until that tag is publicly available, the previous stable `v1.6.0` release
+remains a usable historical source with its older feature set.
 
 ### No Git: GitHub Source ZIP
 
-Open the [v1.6.0 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.6.0),
+After `v1.7.0` is published, open the [v1.7.0 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.7.0),
 download **Source code (zip)**, extract it, and open a terminal in the extracted
-repository directory.
+repository directory. Before publication, use the latest **actually published**
+release instead. ZIP mode is for local/synthetic exercises; private bootstrap and
+upgrade require a Git checkout.
 
 ### Git
 
