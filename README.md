@@ -23,23 +23,19 @@ toolchain and improve the practical return from the same token and subscription
 budget. Actual savings depend on workload, model choice and how the Factory is
 configured; this is an operating-efficiency goal, not a guaranteed quota result.
 
-**Version 1.6.0 is the current release line of AI Software Factory OSS.**
-It packages the post-v1.5 repository-governance and private-Factory work into a
-reproducible normal-use flow: a GitHub-native documentation notice/journal,
-public-fork self-setup, independent **Create Private Factory** bootstrap without
-Fork, private writer safety, live private-bootstrap acceptance, and explicit
-fresh-Agent routing from the public distribution into the correct operating
-context.
+**Source version line: 1.7.0.** This source line combines the published
+v1.6.0 private-bootstrap/journal/fresh-Agent routing foundation with
+Execution-First, read-only Factory Doctor, public rationale index, event-driven
+Staff Office Notes, new-private-Factory journal `manual` cadence by default,
+the executable Quick Demo and **minimal private Factory upgrade**.
 
-Current `main` also contains **post-v1.6 unreleased operational hardening**:
-Execution-First behavior, the portable read-only Factory Doctor, a public design
-rationale index, event-driven Staff Office Notes, and selectable private-journal
-cadence with lower-run `manual` as the new private-bootstrap default. New private Factories created from current `main` inherit those
-surfaces; the immutable `v1.6.0` tag does not.
-
-Published-release status is authoritative on GitHub Releases and the release
-coordination Issue; historical tags are never moved to follow later `main`
-changes. See [1.6.0 release notes](docs/releases/1.6.0.md),
+`VERSION` identifies these source bytes; **it does not mean a GitHub Release
+has already been published**. Consult [GitHub Releases](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases)
+and [v1.7.0 release coordination](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/54)
+for the actual published tag and approval. The immutable `v1.6.0` tag does
+**not** contain these post-v1.6 additions. No historical tag is moved.
+See [1.7.0 release notes](docs/releases/1.7.0.md),
+[1.6.0 historical release notes](docs/releases/1.6.0.md),
 [1.5.0 historical release notes](docs/releases/1.5.0.md),
 [1.4.0 historical release notes](docs/releases/1.4.0.md),
 [1.0.0 historical release notes](docs/releases/1.0.0.md) and
@@ -56,8 +52,10 @@ run the [read-only private-bootstrap preview](docs/QUICKSTART.md#2-create-your-p
 before explicitly applying it. This creates a **new independent private repository**;
 normal private use does **not** require Fork. The operating starter remains
 BLOCKED/unconfigured and its journal writer remains off until separately accepted.
-In the v1.6.0 release line, the bootstrap also accepts the exact official
-`v1.6.0` tag so normal users do not have to follow a moving `main`.
+This source version's bootstrap verifies either exact official current `main`
+or its matching **official `v1.7.0` release tag once published**. Until the
+v1.7.0 tag exists, follow the most recent **published** release for normal
+stable use; a proposed tag is not a valid checkout.
 
 **Already have a private Factory?** Use the [provenance-checked minimal upgrade](docs/PRIVATE_FACTORY_UPGRADE.md): default read-only preview, conflict refusal, and (only after explicit authorization) a private draft PR. No upstream fork-sync, operating-state overwrite or automatic merge.
 
