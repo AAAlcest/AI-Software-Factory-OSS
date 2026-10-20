@@ -2,26 +2,26 @@
 
 ## 先创建你的私人 Factory
 
-v1.6.0 已把私人建厂能力收进精确 release。准备 Git、Python 3.10+ 和 GitHub CLI (`gh`)，从官方公开 OSS 取得精确 `v1.6.0`；**不需要 Fork**：
+此源码版本线为 **1.7.0**。私人建厂应使用**已正式发布、可核验的精确 GitHub Release Tag**；`v1.7.0` 发布后才能从它运行命令，在此之前 `v1.6.0` 仍是历史最新已发布版本。准备 Git、Python 3.10+ 和 GitHub CLI (`gh`)，从官方公开 OSS 克隆，**不需要 Fork**：
 
 ```powershell
 git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
 cd AI-Software-Factory-OSS
-git checkout v1.6.0
+git checkout --detach v1.7.0  # 仅在 v1.7.0 正式发布后
 gh auth login
 py -3 -B scripts/create_private_factory.py --repository My-AI-Factory
 py -3 -B scripts/create_private_factory.py --repository My-AI-Factory --apply
 ```
 
-当前 post-v1.6 `main` 新建 private Factory 时，journal 默认使用较省 runner
+1.7.0 源码版本新建 private Factory 时，journal 默认使用较少自动 runner
 唤醒的 `manual` cadence；如果明确需要激活后的 push／PR signal／hourly 自动
 reconcile，可在 preview 和 apply 都加 `--journal-mode automatic`。
 
-macOS/Linux 可把 `py -3` 换成 `python3`。先运行不带 `--apply` 的只读预览；它核对登录身份、官方源码 ref／本地 HEAD／origin／GitHub API 以及目标是否不存在，并列出计划，不创建仓库或文件。显式 `--apply` 才创建**全新、独立、非 fork 的私有仓库**、全新 Git 历史、保留 MIT 和精确来源 ref/SHA 的 BLOCKED／未配置实例、私有 OPEN／UNLOCKED 公告，以及默认关闭的日志 writer。V1.6 支持登录者自己的账号，并接受官方精确当前 `main` 或官方精确 `v1.6.0` tag；普通用户建议优先使用 release tag。目标已存在则拒绝，部分失败不会自动删除或偷偷续跑。
+macOS/Linux 可把 `py -3` 换成 `python3`。先运行不带 `--apply` 的只读预览；它核对登录身份、官方源码 ref／本地 HEAD／origin／GitHub API 以及目标是否不存在，并列出计划，不创建仓库或文件。显式 `--apply` 才创建**全新、独立、非 fork 的私有仓库**、全新 Git 历史、保留 MIT 和精确来源 ref/SHA 的 BLOCKED／未配置实例、私有 OPEN／UNLOCKED 公告，以及默认关闭的日志 writer。当前源码支持登录者自己的账号，并接受官方精确当前 `main` 或与 `VERSION` 匹配的官方精确 `v1.7.0` tag（仅在其发布后）；普通用户建议优先使用实际已发布的 release tag。目标已存在则拒绝，部分失败不会自动删除或偷偷续跑。
 
 Source ZIP 仍可用于后面的虚构／离线演练，但 Create Private Factory 需要 Git 元数据，因此私人建厂请使用 Git checkout。
 
-公开 OSS checkout 是分发／更新来源，**新私有仓库**才是运行实例。项目源码可以继续放在各自私有项目仓库中。Human 必须另行写明真实岗位、项目与权限；脚本不会虚构任命或导入旧项目。**当前 post-v1.6 `main`** 新建的私厂还会带上 `docs/EXECUTION_FIRST.md`、`RATIONALE_INDEX.md` 和跨平台只读 Doctor；不可移动的 `v1.6.0` tag 早于这批运行加固文件。若 starter 中已有 Doctor，可先运行 `python -B scripts/factory_doctor.py --json` 查看健康状态；Doctor PASS 仍不授予权限。Staff Office Notes 按 [event-driven delta](STAFF_OFFICE_NOTES.md) 记录真实变化，不做每日打卡。生成的 journal config 会记录 `cadence_mode`：默认 `manual` 没有 push／PR／hourly 自动唤醒，只有人工 reconcile 后才变新；显式 `automatic` 保留原自动节奏。两种模式建仓时都仍是 NOT_ACTIVATED。之后再手动执行 journal `dry_run=true`，并明确设置本仓变量 `DOCUMENTATION_JOURNAL_ENABLED=true`；必须有真实机器人写入、读回和重跑无重复证据，才能称日志已启用。不要把私有仓信息或验收证据贴到公开 OSS Issue。
+公开 OSS checkout 是分发／更新来源，**新私有仓库**才是运行实例。项目源码可以继续放在各自私有项目仓库中。Human 必须另行写明真实岗位、项目与权限；脚本不会虚构任命或导入旧项目。**1.7.0 源码版本** 新建的私厂还会带上 `docs/EXECUTION_FIRST.md`、`RATIONALE_INDEX.md` 和跨平台只读 Doctor；不可移动的 `v1.6.0` tag 早于这批运行加固文件。若 starter 中已有 Doctor，可先运行 `python -B scripts/factory_doctor.py --json` 查看健康状态；Doctor PASS 仍不授予权限。Staff Office Notes 按 [event-driven delta](STAFF_OFFICE_NOTES.md) 记录真实变化，不做每日打卡。生成的 journal config 会记录 `cadence_mode`：默认 `manual` 没有 push／PR／hourly 自动唤醒，只有人工 reconcile 后才变新；显式 `automatic` 保留原自动节奏。两种模式建仓时都仍是 NOT_ACTIVATED。之后再手动执行 journal `dry_run=true`，并明确设置本仓变量 `DOCUMENTATION_JOURNAL_ENABLED=true`；必须有真实机器人写入、读回和重跑无重复证据，才能称日志已启用。不要把私有仓信息或验收证据贴到公开 OSS Issue。
 
 公开 Fork 只用于贡献、公开安全试用或你明确希望公开的 Factory，不是普通私人使用的前置步骤。
 
@@ -40,12 +40,12 @@ Source ZIP 仍可用于后面的虚构／离线演练，但 Create Private Facto
 
 ## 先把精确版本拿到本地
 
-`1.6.0` 版本线应使用精确 `v1.6.0` tag；如果你希望结果可复现，不要直接假定
-未来某个 `main` 仍然等于这个版本。
+`1.7.0` 版本线应在**正式发布后**使用精确 `v1.7.0` tag；不要直接假定
+未来某个 `main` 仍然等于此版本，也不要把尚未发布的候选源码当作 Release。
 
 ### 不用 Git：Source ZIP
 
-打开 [v1.6.0 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.6.0)，
+打开 [v1.7.0 Release（发布后）](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.7.0)，
 下载 **Source code (zip)**，解压后在该目录打开终端。
 
 ### 使用 Git
@@ -68,7 +68,7 @@ Windows PowerShell：
 Get-Content VERSION
 ```
 
-应看到 `1.6.0`。
+正式发布的 `v1.7.0` Tag 应显示 `1.7.0`。
 
 ## 运行一套完全虚构的工厂
 
