@@ -203,6 +203,27 @@ class UpgradePlanTests(unittest.TestCase):
         journal.assert_called_once_with("FAKE_TOKEN", DEST, 42, ref=BASE)
         conflict.assert_called_once()
 
+    def test_tag_source_ref_is_preserved_in_private_provenance_and_lock(self):
+        # Private GitHub operations are fully mocked by the existing synthetic fixture.
+        self.synthetic()
+        release_ref = f"refs/tags/{subject.bootstrap.RELEASE_TAG}"
+        with patch.object(subject, "source_identity",
+                          return_value=(VIEWER, NEW, release_ref)):
+            plan = subject.build_plan("FAKE_TOKEN", DEST)
+        self.assertEqual(plan["source_ref"], release_ref)
+        self.assertEqual(json.loads(plan["changes"][subject.PROVENANCE])["source_ref"],
+                         release_ref)
+        self.assertEqual(json.loads(plan["changes"][subject.LOCK])["source_ref"],
+                         release_ref)
+
+    def test_explicit_old_lock_source_ref_cannot_disagree_with_provenance(self):
+        _root, raw, _, _ = self.synthetic(lock=True)
+        previous = json.loads(raw[subject.LOCK])
+        previous["source_ref"] = "refs/heads/foreign"
+        raw[subject.LOCK] = subject.json_bytes(previous)
+        with self.assertRaisesRegex(subject.UpgradeError, "lock conflicts"):
+            subject.build_plan("FAKE_TOKEN", DEST)
+
     def test_existing_lock_revalidation_and_bad_lock_stop(self):
         _root, raw, _, _ = self.synthetic(lock=True)
         self.assertFalse(subject.build_plan("t", DEST)["legacy_without_lock"])
