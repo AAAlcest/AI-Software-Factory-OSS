@@ -33,7 +33,8 @@ class SourceIdentityReleaseTagTests(unittest.TestCase):
 
     def probe(self, *, branch="main", tag_points=None, api_sha=NEW,
               remote_sha=NEW, repo_override=None, origin=None,
-              dirty=False, tag_type=None, viewer=None, local_head=NEW):
+              dirty=False, tag_type=None, viewer=None, local_head=NEW,
+              local_ref_sha=NEW, local_tag_type="commit"):
         wanted = subject.bootstrap.RELEASE_TAG
         ref_name = "refs/heads/main" if branch == "main" else f"refs/tags/{wanted}"
         commands = {
@@ -45,6 +46,8 @@ class SourceIdentityReleaseTagTests(unittest.TestCase):
             ("git", "branch", "--show-current"): branch,
             ("git", "tag", "--points-at", "HEAD"):
                 wanted if tag_points is None else tag_points,
+            ("git", "rev-parse", f"refs/tags/{wanted}"): local_ref_sha,
+            ("git", "cat-file", "-t", f"refs/tags/{wanted}"): local_tag_type,
             ("git", "ls-remote", "origin", ref_name):
                 f"{remote_sha}\t{ref_name}",
         }
@@ -91,17 +94,88 @@ class SourceIdentityReleaseTagTests(unittest.TestCase):
         self.assertEqual(got, (VIEWER, NEW,
                                f"refs/tags/{subject.bootstrap.RELEASE_TAG}"))
         self.assertIn(("git", ("git", "tag", "--points-at", "HEAD")), seen)
+        self.assertIn(("git", ("git", "rev-parse",
+                                f"refs/tags/{subject.bootstrap.RELEASE_TAG}")), seen)
+        self.assertIn(("git", ("git", "cat-file", "-t",
+                                f"refs/tags/{subject.bootstrap.RELEASE_TAG}")), seen)
         self.assertIn(("api", f"/repos/{subject.UPSTREAM}/git/ref/tags/"
                                 f"{subject.bootstrap.RELEASE_TAG}"), seen)
 
         for option in ({"tag_points": "v1.6.0"}, {"tag_points": ""},
                        {"api_sha": OLD}, {"remote_sha": OLD},
-                       {"tag_type": "tag"},  # no unsupported annotated-tag fallback
+                       {"tag_type": "tag"},  # no unsupported official annotated tag
+                       {"local_ref_sha": OLD},  # local annotated raw tag object
+                       {"local_tag_type": "tag"},
                        {"dirty": True},
                        {"repo_override": {"default_branch": "other"}},
                        {"local_head": "bad_sha"}):
             with self.subTest(option=option), self.assertRaises(subject.UpgradeError):
                 self.probe(branch="", **option)
+
+    def test_real_git_annotated_local_tag_is_rejected_even_if_commit_matches(self):
+        """A peeled local annotated tag can match HEAD but its ref object must not."""
+        with tempfile.TemporaryDirectory(prefix="synthetic-local-tag-") as tmp:
+            root = Path(tmp)
+            tag = subject.bootstrap.RELEASE_TAG
+            ref = f"refs/tags/{tag}"
+
+            def git(*args):
+                result = subprocess.run(
+                    ["git", *args], cwd=root, text=True, capture_output=True,
+                    check=False, timeout=30,
+                )
+                self.assertEqual(result.returncode, 0, result.stderr)
+                return result.stdout.strip()
+
+            git("init", "-b", "main")
+            git("config", "user.name", "Synthetic Release Reviewer")
+            git("config", "user.email", "test@example.invalid")
+            (root / "dummy.txt").write_text("synthetic only\n", encoding="utf-8")
+            git("add", "dummy.txt")
+            git("commit", "-m", "synthetic release input")
+            sha = git("rev-parse", "HEAD")
+            git("tag", tag)
+            git("checkout", "--detach", tag)
+
+            observed = []
+            def local_process(args, **_kwargs):
+                observed.append(tuple(args))
+                if args == ["git", "remote", "get-url", "origin"]:
+                    return f"https://github.com/{subject.UPSTREAM}.git"
+                if args == ["git", "ls-remote", "origin", ref]:
+                    return f"{sha}\t{ref}"
+                result = subprocess.run(args, cwd=root, capture_output=True,
+                                        text=True, check=False, timeout=30)
+                if result.returncode:
+                    raise subject.bootstrap.BootstrapError("Synthetic Git operation failed.")
+                return result.stdout.strip()
+
+            def fake_api(_token, path, method="GET", payload=None, missing_ok=False):
+                self.assertEqual(method, "GET")
+                if path == f"/repos/{subject.UPSTREAM}":
+                    return {"id": subject.UPSTREAM_ID,
+                            "full_name": subject.UPSTREAM,
+                            "private": False, "default_branch": "main"}
+                if path == f"/repos/{subject.UPSTREAM}/git/ref/tags/{tag}":
+                    return {"object": {"type": "commit", "sha": sha}}
+                if path == "/user":
+                    return VIEWER
+                raise AssertionError(path)
+
+            with patch.object(subject, "ROOT", root), \
+                 patch.object(subject.bootstrap, "process", side_effect=local_process), \
+                 patch.object(subject.bootstrap, "api", side_effect=fake_api):
+                self.assertEqual(subject.source_identity("FAKE_TOKEN"),
+                                 (VIEWER, sha, ref))
+                git("tag", "-d", tag)
+                git("tag", "-a", tag, "-m", "annotated tag with same commit")
+                self.assertEqual(git("tag", "--points-at", "HEAD"), tag)
+                self.assertEqual(git("cat-file", "-t", ref), "tag")
+                self.assertNotEqual(git("rev-parse", ref), sha)
+                with self.assertRaisesRegex(subject.UpgradeError,
+                                            "exact lightweight commit ref"):
+                    subject.source_identity("FAKE_TOKEN")
+            self.assertIn(("git", "cat-file", "-t", ref), observed)
 
     def test_other_branch_never_becomes_current_release(self):
         with self.assertRaisesRegex(subject.UpgradeError, "official main or"):
