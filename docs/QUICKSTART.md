@@ -118,7 +118,7 @@ upgrade require a Git checkout.
 ```sh
 git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
 cd AI-Software-Factory-OSS
-git checkout v1.6.0
+git checkout --detach v1.7.0  # after publication
 ```
 
 Confirm the version before continuing:
@@ -133,7 +133,7 @@ On Windows PowerShell:
 Get-Content VERSION
 ```
 
-It should print `1.6.0` for this release.
+It should print `1.7.0` for the published v1.7.0 tag; before publication, use the actual version of the older released checkout.
 
 ## 5. Run the fictional exercise locally
 
