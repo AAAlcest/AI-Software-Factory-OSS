@@ -1,6 +1,6 @@
 # V1 public baseline
 
-Version: see [VERSION](../VERSION). The current repository delivery line is **1.6.0**.
+Version: see [VERSION](../VERSION). The current source line is **1.7.0**; this does **not** prove publication. The exact latest published version is determined by [GitHub Releases](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases) and release-coordination evidence.
 The repository is public, distributed under MIT, and uses GitHub Private
 Vulnerability Reporting. Exact Git targets, executed checks, review evidence and
 release readbacks remain on the corresponding repository Issues/PRs rather than
@@ -101,7 +101,14 @@ Later feature and release evidence remains scoped to the corresponding work surf
   PRs #32/#34/#36, Issue #37 / PR #38, public-safe live private-bootstrap PASS
   comment `5744321155`, and PRs #40/#41;
 - v1.6.0 release consolidation/publication: Issue #42 and its exact RC/CI/tag/Release
-  readback.
+  readback;
+- post-v1.6.0 operational hardening: PR #46; event-driven Notes/cadence: PR #48;
+  runnable Quick Demo: Issue #49/PR #50; bounded private upgrade: Issue #39/PR #51
+  with independent exact-head review and disposable-private Issue #52 sanitized
+  live PASS receipt;
+- 1.7.0 candidate / source tag usability / publication coordination: Issue #54.
+  The evidence in earlier PRs/CI applies to those exact targets, not unreviewed
+  future RC commits.
 
 The V1.3 fresh-context result demonstrates bounded recovery for that accepted
 synthetic work-item/checkpoint path. The post-release v1.4.0 Fresh product acceptance
@@ -111,7 +118,7 @@ result is described as a blanket privacy certification of all future bytes.
 
 ## Release integrity
 
-Repository version line: **1.6.0**.
+Source version line: **1.7.0** (release candidate until separately published).
 
 Historical published tags remain immutable:
 
@@ -122,13 +129,15 @@ Historical published tags remain immutable:
 Historical GitHub Releases and their coordination evidence remain historical truth
 after later `main` changes and must not be rewritten to follow 1.6.0.
 
-For `v1.6.0`, Issue #42 is the release-coordination surface. Human has authorized
-publication in the recorded release flow; the final `v1.6.0` tag must point to the
-exact accepted release commit and must never later move. The same Issue records the
-candidate, current CI and final tag/Release readback.
+For the **already published** `v1.6.0`, Issue #42 preserves the exact historical
+publication and immutable target. For the proposed **v1.7.0** feature release,
+[Issue #54](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/54) governs
+candidate/tag usability, independent review, exact RC/CI, Human publication
+permission and final target/Release readback. The 1.7.0 Tag/Release is **not**
+authorized or proven merely by this source line.
 
-Release notes: [1.6.0](releases/1.6.0.md), historical
-[1.5.0](releases/1.5.0.md), [1.4.0](releases/1.4.0.md) and
+Release notes: [1.7.0 candidate](releases/1.7.0.md), historical
+[1.6.0](releases/1.6.0.md), [1.5.0](releases/1.5.0.md), [1.4.0](releases/1.4.0.md) and
 [1.0.0](releases/1.0.0.md).
 
 Earlier slice-specific reviews remain historical scoped evidence, not blanket
