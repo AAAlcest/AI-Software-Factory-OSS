@@ -47,8 +47,13 @@ def json_bytes(row: dict) -> bytes:
     return (json.dumps(row, indent=2, ensure_ascii=False, sort_keys=True) + "\n").encode("utf-8")
 
 
-def source_identity(token: str) -> tuple[dict, str]:
-    """Verify exact, clean official main using local, remote and API identities."""
+def source_identity(token: str) -> tuple[dict, str, str]:
+    """Verify exact official main OR the current VERSION's detached release tag.
+
+    A tag is not trusted merely because it exists in a local checkout: the
+    local HEAD, exact official origin tag and official API tag ref must agree.
+    Lightweight commit tags only in this bounded version.
+    """
     if bootstrap.process(["git", "status", "--porcelain"]):
         raise UpgradeError("Use a clean official OSS checkout.")
     if Path(bootstrap.process(["git", "rev-parse", "--show-toplevel"])).resolve() != ROOT.resolve():
@@ -56,8 +61,6 @@ def source_identity(token: str) -> tuple[dict, str]:
     origin = bootstrap.process(["git", "remote", "get-url", "origin"])
     if origin not in (f"https://github.com/{UPSTREAM}.git", f"git@github.com:{UPSTREAM}.git"):
         raise UpgradeError("Unexpected official OSS origin.")
-    if bootstrap.process(["git", "branch", "--show-current"]) != "main":
-        raise UpgradeError("Use official OSS main, not a branch or release tag.")
     head = bootstrap.process(["git", "rev-parse", "HEAD"])
     if not SHA.fullmatch(head):
         raise UpgradeError("Invalid OSS source HEAD.")
@@ -65,17 +68,44 @@ def source_identity(token: str) -> tuple[dict, str]:
     if (row.get("id") != UPSTREAM_ID or row.get("full_name") != UPSTREAM
             or row.get("private") is not False or row.get("default_branch") != "main"):
         raise UpgradeError("Official OSS repository identity mismatch.")
-    ref = bootstrap.api(token, f"/repos/{UPSTREAM}/git/ref/heads/main")
-    remote = bootstrap.process(["git", "ls-remote", "origin", "refs/heads/main"]).split()
-    if ((ref.get("object") or {}).get("sha") != head
-            or not remote or remote[0] != head):
-        raise UpgradeError("Local/origin/API main disagreement.")
+
+    branch = bootstrap.process(["git", "branch", "--show-current"])
+    if branch == "main":
+        source_ref = "refs/heads/main"
+        ref = bootstrap.api(token, f"/repos/{UPSTREAM}/git/ref/heads/main")
+        remote = bootstrap.process(["git", "ls-remote", "origin", source_ref]).split()
+        if ((ref.get("object") or {}).get("sha") != head
+                or len(remote) < 2 or remote[0] != head or remote[1] != source_ref):
+            raise UpgradeError("Local/origin/API main disagreement.")
+    elif branch == "":
+        # Do not accept arbitrary tags, a detached random commit, a fork, or an
+        # annotated tag that cannot be compared to the exact commit directly.
+        source_ref = f"refs/tags/{bootstrap.RELEASE_TAG}"
+        local_tags = bootstrap.process(["git", "tag", "--points-at", "HEAD"]).splitlines()
+        if bootstrap.RELEASE_TAG not in local_tags:
+            raise UpgradeError("Detached source is not the current official release tag.")
+        # --points-at dereferences annotated tags to their commit. Verify
+        # the unpeeled local ref object separately: it MUST be the commit
+        # itself, with no tag object in between (exact lightweight tag).
+        local_ref_object = bootstrap.process(["git", "rev-parse", source_ref])
+        local_ref_type = bootstrap.process(["git", "cat-file", "-t", source_ref])
+        if local_ref_object != head or local_ref_type != "commit":
+            raise UpgradeError("Local release tag is not the exact lightweight commit ref.")
+        ref = bootstrap.api(token, f"/repos/{UPSTREAM}/git/ref/tags/{bootstrap.RELEASE_TAG}")
+        remote = bootstrap.process(["git", "ls-remote", "origin", source_ref]).split()
+        obj = ref.get("object") or {}
+        if (obj.get("type") != "commit" or obj.get("sha") != head
+                or len(remote) < 2 or remote[0] != head or remote[1] != source_ref):
+            raise UpgradeError("Local/origin/API release-tag targets differ.")
+    else:
+        raise UpgradeError("Use exact official main or the current release-tag checkout.")
+
     viewer = bootstrap.api(token, "/user")
     if (not isinstance(viewer.get("id"), int)
             or not isinstance(viewer.get("login"), str)
             or not NAME.fullmatch(viewer["login"])):
         raise UpgradeError("Authenticated owner cannot be verified.")
-    return viewer, head
+    return viewer, head, source_ref
 
 
 def target_identity(token: str, dest: str, viewer: dict) -> dict:
@@ -196,7 +226,7 @@ def no_conflicting_upgrade(token: str, dest: str, branch: str) -> None:
 
 
 def build_plan(token: str, dest: str) -> dict:
-    viewer, newsha = source_identity(token)
+    viewer, newsha, source_ref = source_identity(token)
     row = target_identity(token, dest, viewer)
     repo_id = row["id"]
     mainsha = target_tip(token, dest)
@@ -222,6 +252,8 @@ def build_plan(token: str, dest: str) -> dict:
                 or recorded.get("upstream") != UPSTREAM
                 or recorded.get("repository_id") != UPSTREAM_ID
                 or recorded.get("source_sha") != oldsha
+                or (recorded.get("source_ref") is not None
+                    and recorded.get("source_ref") != old.get("source_ref"))
                 or not isinstance(recorded.get("files"), dict)
                 or set(recorded["files"]) != set(MANAGED)):
             raise UpgradeError("Managed lock conflicts with source provenance.")
@@ -248,7 +280,7 @@ def build_plan(token: str, dest: str) -> dict:
     if oldsha == newsha and not changes:
         raise UpgradeError("Target managed framework is already at current source.")
     provenance = dict(old)
-    provenance.update(source_ref="refs/heads/main", source_sha=newsha,
+    provenance.update(source_ref=source_ref, source_sha=newsha,
                       managed_scope="EXPLICIT_PARTIAL_FRAMEWORK_UPGRADE",
                       managed_lock=LOCK)
     locked = {
@@ -256,6 +288,7 @@ def build_plan(token: str, dest: str) -> dict:
         "upstream": UPSTREAM,
         "repository_id": UPSTREAM_ID,
         "source_sha": newsha,
+        "source_ref": source_ref,
         "files": file_hashes,
     }
     # This fixed candidate set expressly excludes README, AGENTS, state, Offices,
@@ -263,7 +296,8 @@ def build_plan(token: str, dest: str) -> dict:
     changes[PROVENANCE] = json_bytes(provenance)
     changes[LOCK] = json_bytes(locked)
     return {
-        "dest": dest, "source_sha": newsha, "prior_sha": oldsha,
+        "dest": dest, "source_sha": newsha, "source_ref": source_ref,
+        "prior_sha": oldsha,
         "target_id": repo_id, "viewer_id": viewer["id"],
         "base_sha": mainsha, "branch": name, "changes": changes,
         "changed_managed": [p for p in MANAGED if p in changes],
@@ -362,6 +396,7 @@ def main() -> int:
     print(json.dumps({
         "status": "READY_FOR_PRIVATE_REVIEW" if args.apply else "PREVIEW_ONLY",
         "source_sha": plan["source_sha"],
+        "source_ref": plan["source_ref"],
         "prior_source_sha": plan["prior_sha"],
         "changed_managed_paths": plan["changed_managed"],
         "legacy_lock_reconstruction": plan["legacy_without_lock"],

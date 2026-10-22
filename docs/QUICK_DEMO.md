@@ -4,7 +4,7 @@ Run a **fictional, local-only AI Software Factory** and observe both successful 
 
 **Time:** about 3–5 minutes after you have the source and Python. **Requirements:** Python 3.10+ and an official OSS source checkout (or Source ZIP); no Python packages, GitHub login, ChatGPT account, API key, cloud runtime, or network access is required *for the commands below*.
 
-> The following exercises run against the **checked-out source**, not against a real private operating Factory. The `v1.6.0` release is immutable; current `main` may contain additional unreleased improvements. For reproducibility, record `git rev-parse HEAD` when Git metadata is available.
+> The following exercises run against the **checked-out source**, not against a real private operating Factory. The historical `v1.6.0` release is immutable. This source line is 1.7.0, but a checked-in `VERSION` or release note does not mean that `v1.7.0` has already been published. Verify a real GitHub Release before checking out its exact tag. For reproducibility, record `git rev-parse HEAD` when Git metadata is available.
 
 ## What you will see
 

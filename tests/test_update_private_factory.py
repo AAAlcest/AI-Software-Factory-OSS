@@ -27,6 +27,162 @@ REPO = {
 }
 
 
+
+class SourceIdentityReleaseTagTests(unittest.TestCase):
+    """No GitHub access: exact official main/tag source identity contracts."""
+
+    def probe(self, *, branch="main", tag_points=None, api_sha=NEW,
+              remote_sha=NEW, repo_override=None, origin=None,
+              dirty=False, tag_type=None, viewer=None, local_head=NEW,
+              local_ref_sha=NEW, local_tag_type="commit"):
+        wanted = subject.bootstrap.RELEASE_TAG
+        ref_name = "refs/heads/main" if branch == "main" else f"refs/tags/{wanted}"
+        commands = {
+            ("git", "status", "--porcelain"): " M docs/README.md" if dirty else "",
+            ("git", "rev-parse", "--show-toplevel"): str(subject.ROOT),
+            ("git", "remote", "get-url", "origin"):
+                origin or f"https://github.com/{subject.UPSTREAM}.git",
+            ("git", "rev-parse", "HEAD"): local_head,
+            ("git", "branch", "--show-current"): branch,
+            ("git", "tag", "--points-at", "HEAD"):
+                wanted if tag_points is None else tag_points,
+            ("git", "rev-parse", f"refs/tags/{wanted}"): local_ref_sha,
+            ("git", "cat-file", "-t", f"refs/tags/{wanted}"): local_tag_type,
+            ("git", "ls-remote", "origin", ref_name):
+                f"{remote_sha}\t{ref_name}",
+        }
+        seen = []
+        def process(args, **kwargs):
+            seen.append(("git", tuple(args)))
+            if tuple(args) not in commands:
+                raise AssertionError(("unexpected git command", args))
+            return commands[tuple(args)]
+        def api(_token, path, method="GET", payload=None, missing_ok=False):
+            self.assertEqual(method, "GET")
+            seen.append(("api", path))
+            if path == f"/repos/{subject.UPSTREAM}":
+                return {
+                    "id": subject.UPSTREAM_ID, "full_name": subject.UPSTREAM,
+                    "private": False, "default_branch": "main", **(repo_override or {}),
+                }
+            if path == f"/repos/{subject.UPSTREAM}/git/ref/{ref_name.removeprefix('refs/')}":
+                return {"object": {"sha": api_sha,
+                    "type": tag_type if tag_type is not None else "commit"}}
+            if path == "/user":
+                return viewer or VIEWER
+            raise AssertionError(("unexpected API call", path))
+        with patch.object(subject.bootstrap, "process", side_effect=process), \
+             patch.object(subject.bootstrap, "api", side_effect=api):
+            result = subject.source_identity("FAKE_TOKEN")
+        return result, seen
+
+    def test_main_requires_exact_local_remote_and_api_main_tip(self):
+        got, seen = self.probe()
+        self.assertEqual(got, (VIEWER, NEW, "refs/heads/main"))
+        self.assertIn(("api", f"/repos/{subject.UPSTREAM}/git/ref/heads/main"), seen)
+        for option in ({"remote_sha": OLD}, {"api_sha": OLD},
+                       {"dirty": True},
+                       {"origin": "https://github.com/fake/another.git"},
+                       {"repo_override": {"id": 12345}},
+                       {"repo_override": {"private": True}},
+                       {"branch": "feature/preview"}):
+            with self.subTest(option=option), self.assertRaises(subject.UpgradeError):
+                self.probe(**option)
+
+    def test_detached_release_tag_requires_triple_equality(self):
+        got, seen = self.probe(branch="")
+        self.assertEqual(got, (VIEWER, NEW,
+                               f"refs/tags/{subject.bootstrap.RELEASE_TAG}"))
+        self.assertIn(("git", ("git", "tag", "--points-at", "HEAD")), seen)
+        self.assertIn(("git", ("git", "rev-parse",
+                                f"refs/tags/{subject.bootstrap.RELEASE_TAG}")), seen)
+        self.assertIn(("git", ("git", "cat-file", "-t",
+                                f"refs/tags/{subject.bootstrap.RELEASE_TAG}")), seen)
+        self.assertIn(("api", f"/repos/{subject.UPSTREAM}/git/ref/tags/"
+                                f"{subject.bootstrap.RELEASE_TAG}"), seen)
+
+        for option in ({"tag_points": "v1.6.0"}, {"tag_points": ""},
+                       {"api_sha": OLD}, {"remote_sha": OLD},
+                       {"tag_type": "tag"},  # no unsupported official annotated tag
+                       {"local_ref_sha": OLD},  # local annotated raw tag object
+                       {"local_tag_type": "tag"},
+                       {"dirty": True},
+                       {"repo_override": {"default_branch": "other"}},
+                       {"local_head": "bad_sha"}):
+            with self.subTest(option=option), self.assertRaises(subject.UpgradeError):
+                self.probe(branch="", **option)
+
+    def test_real_git_annotated_local_tag_is_rejected_even_if_commit_matches(self):
+        """A peeled local annotated tag can match HEAD but its ref object must not."""
+        with tempfile.TemporaryDirectory(prefix="synthetic-local-tag-") as tmp:
+            root = Path(tmp)
+            tag = subject.bootstrap.RELEASE_TAG
+            ref = f"refs/tags/{tag}"
+
+            def git(*args):
+                result = subprocess.run(
+                    ["git", *args], cwd=root, text=True, capture_output=True,
+                    check=False, timeout=30,
+                )
+                self.assertEqual(result.returncode, 0, result.stderr)
+                return result.stdout.strip()
+
+            git("init", "-b", "main")
+            git("config", "user.name", "Synthetic Release Reviewer")
+            git("config", "user.email", "test@example.invalid")
+            (root / "dummy.txt").write_text("synthetic only\n", encoding="utf-8")
+            git("add", "dummy.txt")
+            git("commit", "-m", "synthetic release input")
+            sha = git("rev-parse", "HEAD")
+            git("tag", tag)
+            git("checkout", "--detach", tag)
+
+            observed = []
+            def local_process(args, **_kwargs):
+                observed.append(tuple(args))
+                if args == ["git", "remote", "get-url", "origin"]:
+                    return f"https://github.com/{subject.UPSTREAM}.git"
+                if args == ["git", "ls-remote", "origin", ref]:
+                    return f"{sha}\t{ref}"
+                result = subprocess.run(args, cwd=root, capture_output=True,
+                                        text=True, check=False, timeout=30)
+                if result.returncode:
+                    raise subject.bootstrap.BootstrapError("Synthetic Git operation failed.")
+                return result.stdout.strip()
+
+            def fake_api(_token, path, method="GET", payload=None, missing_ok=False):
+                self.assertEqual(method, "GET")
+                if path == f"/repos/{subject.UPSTREAM}":
+                    return {"id": subject.UPSTREAM_ID,
+                            "full_name": subject.UPSTREAM,
+                            "private": False, "default_branch": "main"}
+                if path == f"/repos/{subject.UPSTREAM}/git/ref/tags/{tag}":
+                    return {"object": {"type": "commit", "sha": sha}}
+                if path == "/user":
+                    return VIEWER
+                raise AssertionError(path)
+
+            with patch.object(subject, "ROOT", root), \
+                 patch.object(subject.bootstrap, "process", side_effect=local_process), \
+                 patch.object(subject.bootstrap, "api", side_effect=fake_api):
+                self.assertEqual(subject.source_identity("FAKE_TOKEN"),
+                                 (VIEWER, sha, ref))
+                git("tag", "-d", tag)
+                git("tag", "-a", tag, "-m", "annotated tag with same commit")
+                self.assertEqual(git("tag", "--points-at", "HEAD"), tag)
+                self.assertEqual(git("cat-file", "-t", ref), "tag")
+                self.assertNotEqual(git("rev-parse", ref), sha)
+                with self.assertRaisesRegex(subject.UpgradeError,
+                                            "exact lightweight commit ref"):
+                    subject.source_identity("FAKE_TOKEN")
+            self.assertIn(("git", "cat-file", "-t", ref), observed)
+
+    def test_other_branch_never_becomes_current_release(self):
+        with self.assertRaisesRegex(subject.UpgradeError, "official main or"):
+            self.probe(branch="release/v1.7.0-rc")
+
+
+
 class UpgradePlanTests(unittest.TestCase):
     def synthetic(self, *, lock=False, edited=None, prior=OLD, ancestry=True,
                   missing=None, bad_provenance=False):
@@ -75,7 +231,7 @@ class UpgradePlanTests(unittest.TestCase):
         stack = ExitStack()
         self.addCleanup(stack.close)
         stack.enter_context(patch.object(subject, "ROOT", root))
-        stack.enter_context(patch.object(subject, "source_identity", return_value=(VIEWER, NEW)))
+        stack.enter_context(patch.object(subject, "source_identity", return_value=(VIEWER, NEW, "refs/heads/main")))
         stack.enter_context(patch.object(subject, "target_identity", return_value=REPO))
         stack.enter_context(patch.object(subject, "target_tip", return_value=BASE))
         stack.enter_context(patch.object(subject, "get_bytes", side_effect=read))
@@ -96,6 +252,8 @@ class UpgradePlanTests(unittest.TestCase):
         self.assertTrue(plan["legacy_without_lock"])
         self.assertEqual(plan["base_sha"], BASE)
         self.assertEqual(plan["source_sha"], NEW)
+        self.assertEqual(plan["source_ref"], "refs/heads/main")
+
         self.assertEqual(plan["prior_sha"], OLD)
         self.assertEqual(plan["changed_managed"], ["templates/STAFF_OFFICE_TEMPLATE.md"])
         self.assertEqual(set(plan["changes"]), {
@@ -104,10 +262,12 @@ class UpgradePlanTests(unittest.TestCase):
         updated = json.loads(plan["changes"][subject.PROVENANCE])
         self.assertEqual(updated["private_extension"], "preserved")
         self.assertEqual(updated["source_sha"], NEW)
+        self.assertEqual(updated["source_ref"], "refs/heads/main")
         self.assertEqual(updated["managed_scope"], "EXPLICIT_PARTIAL_FRAMEWORK_UPGRADE")
         new_lock = json.loads(plan["changes"][subject.LOCK])
         self.assertEqual(set(new_lock["files"]), set(subject.MANAGED))
         self.assertEqual(new_lock["source_sha"], NEW)
+        self.assertEqual(new_lock["source_ref"], "refs/heads/main")
         self.assertEqual(raw[subject.PROVENANCE], json.dumps({
             "upstream": subject.UPSTREAM, "upstream_repository_id": subject.UPSTREAM_ID,
             "source_ref": "refs/tags/v1.6.0", "source_sha": OLD, "license": "MIT",
@@ -116,6 +276,27 @@ class UpgradePlanTests(unittest.TestCase):
         }).encode())
         journal.assert_called_once_with("FAKE_TOKEN", DEST, 42, ref=BASE)
         conflict.assert_called_once()
+
+    def test_tag_source_ref_is_preserved_in_private_provenance_and_lock(self):
+        # Private GitHub operations are fully mocked by the existing synthetic fixture.
+        self.synthetic()
+        release_ref = f"refs/tags/{subject.bootstrap.RELEASE_TAG}"
+        with patch.object(subject, "source_identity",
+                          return_value=(VIEWER, NEW, release_ref)):
+            plan = subject.build_plan("FAKE_TOKEN", DEST)
+        self.assertEqual(plan["source_ref"], release_ref)
+        self.assertEqual(json.loads(plan["changes"][subject.PROVENANCE])["source_ref"],
+                         release_ref)
+        self.assertEqual(json.loads(plan["changes"][subject.LOCK])["source_ref"],
+                         release_ref)
+
+    def test_explicit_old_lock_source_ref_cannot_disagree_with_provenance(self):
+        _root, raw, _, _ = self.synthetic(lock=True)
+        previous = json.loads(raw[subject.LOCK])
+        previous["source_ref"] = "refs/heads/foreign"
+        raw[subject.LOCK] = subject.json_bytes(previous)
+        with self.assertRaisesRegex(subject.UpgradeError, "lock conflicts"):
+            subject.build_plan("FAKE_TOKEN", DEST)
 
     def test_existing_lock_revalidation_and_bad_lock_stop(self):
         _root, raw, _, _ = self.synthetic(lock=True)
@@ -229,7 +410,7 @@ class UpgradePlanTests(unittest.TestCase):
 
             with patch.object(subject, "ROOT", work), \
                  patch.object(subject, "source_identity",
-                              side_effect=lambda _token: (VIEWER, source_tip[0])), \
+                              side_effect=lambda _token: (VIEWER, source_tip[0], "refs/heads/main")), \
                  patch.object(subject, "target_identity", return_value=REPO), \
                  patch.object(subject, "target_tip", return_value=BASE), \
                  patch.object(subject, "get_bytes", side_effect=read), \
@@ -316,7 +497,8 @@ class UpgradePlanTests(unittest.TestCase):
                 subject.no_conflicting_upgrade("t", DEST, "factory-upgrade/abc-to-def")
 
     def test_preview_only_never_uses_mutation_path(self):
-        plan = {"source_sha": NEW, "prior_sha": OLD, "changed_managed": [],
+        plan = {"source_sha": NEW, "source_ref": "refs/heads/main",
+                "prior_sha": OLD, "changed_managed": [],
                 "legacy_without_lock": True}
         with patch("sys.argv", ["update_private_factory.py", "--repository", DEST]), \
              patch.object(subject.bootstrap, "process", return_value="FAKE_TOKEN") as proc, \

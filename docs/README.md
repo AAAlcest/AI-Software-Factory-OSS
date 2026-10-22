@@ -38,6 +38,6 @@ provides navigation and the documentation-change journal. Canonical documents re
 
 - [Cold-takeover procedure](COLD_TAKEOVER_EXERCISE.md).
 - [V1 scope and status](V1_BASELINE_STATUS.md).
-- [1.6.0 release notes](releases/1.6.0.md), historical [1.5.0 release notes](releases/1.5.0.md), [1.4.0 release notes](releases/1.4.0.md) and [1.0.0 release notes](releases/1.0.0.md).
+- [1.7.0 release notes](releases/1.7.0.md) (source candidate until GitHub publication; [release coordination](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/54)), historical [1.6.0 notes](releases/1.6.0.md), [1.5.0 notes](releases/1.5.0.md), [1.4.0 notes](releases/1.4.0.md) and [1.0.0 notes](releases/1.0.0.md).
 - [Privacy standard](PUBLIC_PRIVACY_STANDARD.md).
 - [Publication checklist](PUBLICATION_CHECKLIST.md).
