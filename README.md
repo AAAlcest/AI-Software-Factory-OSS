@@ -4,9 +4,11 @@
 
 [简体中文](README.zh-CN.md)
 
-A repository-first operating framework for Human-led software work with AI
-management and coding agents. Roles, authority, project state and evidence
-survive a conversation; a model name or account credential never grants authority.
+A **provider-neutral** framework for Human-led software work. Humans set
+direction; **user-chosen AI management roles** plan and coordinate; capable
+**engineering Agents** implement and test. You choose the models and tools.
+Repository-backed roles, authority, state and evidence survive conversations,
+but a model identity or credential never grants organizational authority.
 
 ## 5-minute Quick Demo
 
@@ -15,13 +17,13 @@ survive a conversation; a model name or account credential never grants authorit
 **Failure behavior:** The synthetic Atlas records can be structurally `VALID`, while an unconfigured starter deliberately returns `BLOCKED` (exit `3`). Both keep `execution_authorized: false`; neither appoints an Agent or authorizes execution.  
 **Architecture:** [Repository-first roles and projects](docs/AI_FACTORY_IN_30_SECONDS.md) → [explicit instance authority](docs/INSTANCE_BOOT_PROTOCOL.md) → read-only validation. No automatic agent dispatch, cloud deployment or production action.
 
-By keeping planning, governance, task routing and review coordination in ChatGPT
-while reserving Codex for implementation-heavy work, the Factory is designed to
-materially reduce unnecessary Codex token consumption. Combined with reusable
-skills and role-specific workflows, it can increase utilization across the AI
-toolchain and improve the practical return from the same token and subscription
-budget. Actual savings depend on workload, model choice and how the Factory is
-configured; this is an operating-efficiency goal, not a guaranteed quota result.
+By keeping planning, governance, task routing and review coordination in
+chosen management AI roles, and using capable engineering Agents primarily for
+coding and tests, the Factory aims to avoid unnecessary coding-agent quota or
+token consumption. **ChatGPT + Codex is one optional pairing**, not a
+requirement; Claude, Gemini, Claude Code and other suitable tools can fill
+appropriate roles. Actual savings depend on workload and tools; no fixed
+token, cost or subscription saving is guaranteed.
 
 **Source version line: 1.7.0.** This source line combines the published
 v1.6.0 private-bootstrap/journal/fresh-Agent routing foundation with
@@ -59,10 +61,13 @@ stable use; a proposed tag is not a valid checkout.
 
 **Already have a private Factory?** Use the [provenance-checked minimal upgrade](docs/PRIVATE_FACTORY_UPGRADE.md): default read-only preview, conflict refusal, and (only after explicit authorization) a private draft PR. No upstream fork-sync, operating-state overwrite or automatic merge.
 
-**New Human user:** open the [Quickstart](docs/QUICKSTART.md), then the
-[recommended ChatGPT + Codex role setup](docs/RECOMMENDED_ROLE_SETUP.md). If you
-want to understand the shape before running anything, browse the
-[synthetic Factory instance](examples/factory-instance/README.md).
+**New Human user and your assisting AI Agent:** while creating your own
+Factory, first review the [provider-neutral role recommendations](docs/RECOMMENDED_ROLE_SETUP.md)
+and decide who should manage, develop and review. The [Quickstart](docs/QUICKSTART.md)
+and [AI entrypoint](AI_ENTRYPOINT.md) bring these suggestions directly into
+the **creation flow**. ChatGPT + Codex is just one optional example. Explore
+the [synthetic Factory instance](examples/factory-instance/README.md)
+without making any real appointments.
 
 **Fork this repository (contributors/public-safe evaluation):** a GitHub fork is **public OSS/distribution space, not
 the default home for a private operating Factory**. A fork receives the files, but
@@ -119,11 +124,12 @@ rules and provenance without becoming a second authority source.
 **Want to audit an operating Factory:** use [Fresh Factory Audit](docs/FRESH_FACTORY_AUDIT.md)
 or choose the Fresh Factory Audit template from GitHub **New issue**.
 
-Recommended setup: **ChatGPT for Factory staff and management; Codex for project
-development, Development Lead and Console.** The deputy may combine records,
-governance maintenance and infrastructure planning. Keep independent acceptance
-separate from its author; use Work sparingly, not for routine status/ACK cycles.
-This is a configurable operating recommendation, not a vendor permission rule.
+Recommended staffing: **Human director + chosen AI management roles +
+capable engineering Agents + independent review as needed**. A Deputy can
+combine compatible record/governance/planning duties; Development Lead and
+Console can be combined. ChatGPT + Codex is one optional example; no vendor
+combination is required. Independent acceptance remains separate from its
+author, and Work/execution sessions should be used proportionately.
 
 ## Project cockpit, recovery and bounded work
 

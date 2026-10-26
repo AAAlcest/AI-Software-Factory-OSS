@@ -27,6 +27,24 @@ private-bootstrap command requires Git metadata and therefore uses a Git checkou
 
 ## 2. Create your private Factory
 
+**First: let your AI Agent recommend a team *while you create* the Factory.**
+Before using `--apply`, read the
+[provider-neutral role recommendations](RECOMMENDED_ROLE_SETUP.md) with
+your assisting Agent. Start with a Human director, an AI management role
+(planning, task packaging and acceptance) and a tool-capable engineering
+Agent (code/tests), plus independent review when needed. The Human may add
+Deputy/PDM, project manager, secretary, governance, infrastructure,
+Project Primary and Development Lead/Console roles as useful.
+
+Ask your Agent to explain the positions, ask which models and tools you have
+(ChatGPT, Claude, Gemini, Codex, Claude Code or any compatible alternatives),
+and discuss combined roles and first project ownership. **No provider is
+required.** Confirm a proposed role map **during this creation conversation**.
+Bootstrap remains noninteractive: `--apply` creates a private, BLOCKED
+starter, not live sessions or permissions; once the private repository is
+verified, continue setting up only the roles and scope the Human approved.
+This is the same guided building process, not a separate wizard.
+
 Preview first (read-only); use a new name under your authenticated GitHub user.
 Version 1.7.0 source defaults **new** private Factories to the lower-run
 `manual` journal cadence:
@@ -94,9 +112,12 @@ credential settings, branch visibility or target `main`.
 
 ## 3. Understand the split
 
-Read [the recommended role setup](RECOMMENDED_ROLE_SETUP.md). Use ChatGPT for
-Factory staff/management and Codex for engineering roles. A Human owns decisions;
-no example appoints its reader. Unconfigured values remain unknown.
+Read the [provider-neutral role setup](RECOMMENDED_ROLE_SETUP.md) **with
+your assisting AI during Factory creation**. Assign management, engineering
+and review responsibilities to whichever models/tools fit your capabilities,
+permissions and preferences. ChatGPT + Codex is an optional example only.
+A Human owns decisions; no example appoints its reader, and unknown
+assignments remain UNCONFIGURED.
 
 ## 4. Get an exact release locally for the fictional exercise
 

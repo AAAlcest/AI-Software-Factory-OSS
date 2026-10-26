@@ -1,6 +1,15 @@
 # AGENTS.md
 
-This repository is an AI Software Factory framework.
+This repository is a **provider-neutral** AI Software Factory framework:
+roles are based on responsibility and actual tool capabilities, not AI brands.
+
+**During private-Factory creation**, proactively present the role recommendations
+in `docs/RECOMMENDED_ROLE_SETUP.md` to the Human *before* any `--apply`.
+Ask which Agents/tools they can use, which management, development and review
+roles they want, and which compatible responsibilities to combine. This is
+part of the same guided creation, not a separate onboarding product.
+A ChatGPT, Claude, Gemini or other Agent can guide the Human. No provider is
+required; role suggestions are never appointments or permission grants.
 
 Before acting:
 

@@ -30,6 +30,9 @@ class PrivateFactoryTests(unittest.TestCase):
         apply.assert_not_called()
         self.assertIn("No writes performed", output.call_args.args[0])
         self.assertIn("journal_mode=manual", output.call_args.args[0])
+        self.assertTrue(any("ROLE-FIRST RECOMMENDATION" in c.args[0] and
+                            "No provider is required" in c.args[0]
+                            for c in output.call_args_list))
 
     def source(self, origin=f"https://github.com/{subject.UPSTREAM}.git", branch="main",
                remote=HEAD, existing=None, tag_points=None):
@@ -109,6 +112,13 @@ class PrivateFactoryTests(unittest.TestCase):
             self.assertIn("docs/EXECUTION_FIRST.md", names)
             self.assertIn("docs/FACTORY_DOCTOR.md", names)
             self.assertIn("docs/STAFF_OFFICE_NOTES.md", names)
+            self.assertIn("docs/RECOMMENDED_ROLE_SETUP.md", names)
+            roles = (root / "docs/RECOMMENDED_ROLE_SETUP.md").read_text()
+            self.assertIn("provider-neutral", roles)
+            self.assertIn("Claude", roles)
+            self.assertIn("Codex", roles)
+            self.assertIn("docs/RECOMMENDED_ROLE_SETUP.md",
+                          (root / "AI_ENTRYPOINT.md").read_text())
             self.assertIn("templates/STAFF_OFFICE_NOTES_README.md", names)
             self.assertIn("RATIONALE_INDEX.md", names)
             self.assertNotIn("templates/RATIONALE_INDEX_TEMPLATE.md", names)

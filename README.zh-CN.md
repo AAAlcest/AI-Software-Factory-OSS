@@ -4,7 +4,9 @@
 
 [English](README.md)
 
-一个以仓库为中心、由 Human 主导的软件工程协作框架，用于组织 ChatGPT 管理角色与 Codex 开发角色。角色、权限、项目状态与证据可以跨越单次对话持续存在；模型名称或账号凭据本身并不授予任何 Factory 权限。
+一个**不绑定 AI 厂商**、以仓库为中心、由 Human 主导的软件工程协作框架。Human 决定方向；用户选择的 AI 管理角色规划、协调和制定验收标准，具备工具能力的工程 Agent 执行开发和测试。ChatGPT、Claude、Gemini、Codex、Claude Code 等只是可选工具，不是准入条件。角色、权限、项目状态与证据可跨对话持续存在，但模型名称或账号凭据本身不授予组织权限。
+
+**正在建厂的用户和你的 AI Agent：** 请在建厂过程中阅读[不绑定厂商的角色配置建议](docs/RECOMMENDED_ROLE_SETUP.md)，让 Human 选择管理、工程与必要的审查角色。AI 应主动提出岗位建议，不要建完空仓库后才让用户另找入口。参见 [中文上手说明](docs/QUICKSTART_ZH.md) 和 [AI 建厂入口](AI_ENTRYPOINT.md)。
 
 ## 5 分钟快速演示 · Quick Demo
 
@@ -13,7 +15,7 @@
 **安全拒绝：** 虚构项目 Atlas 可以得到结构性 `VALID`，但未配置的 starter 会按预期返回 `BLOCKED`（退出码 `3`）；两者的 `execution_authorized` 均为 `false`，不代表任命或执行许可。  
 **架构路径：** [仓库原生角色与项目](docs/AI_FACTORY_IN_30_SECONDS.md) → [实例授权记录](docs/INSTANCE_BOOT_PROTOCOL.md) → 只读验证；不自动派发 Agent、不部署云服务、不操作生产环境。
 
-通过让 ChatGPT 负责规划、治理、任务路由与评审协调，并把 Codex 尽量留给真正需要实现能力的开发工作，这套 Factory 的目标是显著减少不必要的 Codex token 消耗。再结合可复用的 skills 与角色化工作流，可以提高整套 AI 工具链的利用率，并让相同的 token 与订阅预算产生更高的实际回报。具体节省幅度取决于任务类型、模型选择与 Factory 配置方式；这是一个运营效率目标，不是固定额度承诺。
+让用户选用的 AI 管理角色负责规划、治理、任务拆解和评审协调，把实际代码编辑与测试交给具备权限和工具的工程 Agent，Factory 希望减少不必要的编码 Agent token 或套餐额度消耗。管理和开发可由同一家或不同厂商的 AI 承担，**ChatGPT + Codex 只是一种示例组合**。具体节省取决于任务、模型和配置，不承诺固定比例。
 
 **当前源码版本线：1.7.0。** 在 v1.6.0 的私人建厂、GitHub 文档日志与 Fresh Agent 路由基础上，本源码增加 Execution-First、只读 Factory Doctor、公开 Design Rationale Index、event-driven Staff Office Notes、新私人 Factory 默认 `manual` 的 journal cadence、可执行 Quick Demo，以及小范围安全升级现有私人 Factory 的能力。
 
@@ -29,7 +31,7 @@
 
 **已经拥有私人 Factory？** 请阅读[安全升级现有私厂（英文）](docs/PRIVATE_FACTORY_UPGRADE.md)。默认只读预览，历史来源不符或用户修改过的文件直接拒绝；显式授权后才允许在私有仓库创建 Draft PR，不覆盖私人运行状态、不自动合并。
 
-**第一次使用的 Human：**先看 [快速开始](docs/QUICKSTART_ZH.md)，再看 [推荐的 ChatGPT + Codex 角色配置](docs/RECOMMENDED_ROLE_SETUP.md)。如果暂时不想运行脚本，可先浏览 [合成 Factory 实例](examples/factory-instance/README.md) 看整体结构。
+**第一次使用的 Human：**先看 [快速开始](docs/QUICKSTART_ZH.md)，再看 [不绑定厂商的岗位配置建议](docs/RECOMMENDED_ROLE_SETUP.md)。如果暂时不想运行脚本，可先浏览 [合成 Factory 实例](examples/factory-instance/README.md) 看整体结构。
 
 **Fork 本仓库（贡献／公开安全试用）：**公开 fork 是 OSS 分发／更新／贡献副本，**不是私人 Factory 的默认运行仓库**。fork 会复制文件，但不会继承本仓的公告 Issue 或已经激活的日志状态。公开 fork 的 [自助初始化](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup) 只适合公开安全的试用、框架维护／贡献，或你明确愿意公开的 Factory；**不要把私人项目、真实任命、客户／公司资料或私有 Factory 历史放进公开 fork。**
 
@@ -55,7 +57,7 @@
 
 **要审计一个运行中的 Factory：**使用 [Fresh Factory Audit](docs/FRESH_FACTORY_AUDIT.md)，也可以直接从 GitHub **New issue** 里选择 Fresh Factory Audit 模板。
 
-推荐配置：**ChatGPT 负责 Factory 管理与职能岗位；Codex 负责项目开发、Development Lead 与 Console。** 副厂长可以兼任记录、厂务维护与基础设施规划等兼容职责。独立验收应与作者分离；Work 应谨慎使用，不应用于普通状态同步或 ACK 循环。这是一种可配置的协作建议，不是厂商权限规则。
+推荐的是**岗位与能力分工**：Human 负责决策；自选 AI 管理者负责规划、协调和验收准备；具备工具能力的工程 Agent 负责开发与测试，必要时设置真正独立的审查者。**不指定任何必选 AI 厂商**。副厂长可兼任兼容职责，Development Lead 可兼任 Console；不要求一个头衔一个聊天。
 
 ## Project cockpit、恢复与有边界工作
 

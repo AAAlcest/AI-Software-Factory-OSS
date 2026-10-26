@@ -1,70 +1,72 @@
-# Recommended setup: ChatGPT staff, Codex engineering
+# Recommended Factory roles — provider-neutral
 
-This is the recommended small-Factory profile, not a mandatory vendor dependency,
-not a real appointment registry and not a permission grant. The machine-readable
-companion is [the profile](../profiles/chatgpt-codex.json). Other compatible tools
-may replace either surface through an explicit assignment and capability check.
+**The Factory recommends responsibilities, not AI vendors.** Humans direct
+the work and retain approvals; management Agents reason, plan, coordinate and
+specify acceptance; engineering Agents actually edit code, test and deliver
+evidence; independent reviewers evaluate when required. Any capable AI tools
+may be used—ChatGPT, Claude, Gemini, Codex, Claude Code, mixed providers or
+alternatives. None is mandatory.
 
-| Responsibility | Recommended surface | Scope |
-| --- | --- | --- |
-| Human Factory Director / owner | Human | Direction, retained risk decisions, license and publication |
-| Deputy / executive + product and development management | ChatGPT | Product direction, scope, prioritization, coordination, acceptance preparation |
-| Secretary / records | ChatGPT; may be the deputy | Current records, decisions and unresolved work, not duplicate chat transcripts |
-| Governance / consistency maintenance | ChatGPT; may be the deputy | Bounded consistency checks and policy upkeep |
-| Infrastructure / runtime planning | ChatGPT; may be the deputy | Architecture, environment boundaries, operational plans; no implied server rights |
-| Optional project-level manager | ChatGPT | Project planning and review responses, not automatic local worker creation |
-| Per-project development / execution primary | Codex | Implement, test, diagnose and prepare evidence in an explicitly assigned project |
-| Development Lead / development-group lead | Codex | Engineering coordination, quality and explicit engineering tasks |
-| Development Portfolio Console | Codex; may share Development Lead context | Portfolio visibility and routing, not execution ownership of every project |
-| Independent technical reviewer | Separate engineering context, usually Codex | Review the actual candidate, not the author's self-report |
-| Final independent privacy/public-safety reviewer | Separate ChatGPT context | Review content/history/disclosure independently of the author |
+## Read this while creating your private Factory
 
-“Each project in Codex” means its **development execution role**. A Project Room,
-repository or display title is not itself a live coding session. A project may
-also have a ChatGPT manager. Unknown execution identity, working directory or
-thread ID remains NOT_CONFIGURED / NOT_EXPOSED; do not create a worker because a
-registry entry is vacant. Console visibility never transfers implementation ownership.
+**To the AI Agent helping a Human build a Factory:** Before proposing
+`--apply`, show the Human the roles below and ask:
 
-## Minimal arrangement, without one chat per title
+1. Which AI models/tools do you already use for planning, coding, and review?
+   What repository/tools may each access? Never ask for passwords/API secrets.
+2. What is the first project? Do you want a small team or separate departments?
+   Which duties can safely be combined in one AI context?
+3. Who will hold management, engineering and separate-review roles, and which
+   assignments are not decided yet?
 
-Start with a Human, one ChatGPT deputy carrying compatible staff duties, and one
-Codex engineering context for an active project. Add separate project execution
-contexts as actual work requires. The Development Lead may carry Console duties.
-Add a separate reviewer when independence is required, rather than making the
-same author change hats and approve their own output. Management role bundles
-are configurable; combining staff work does not combine protected approvals.
+Present a **role map for the Human to approve as part of this creation
+conversation**. The private-bootstrap command is intentionally noninteractive:
+the preview is read-only; `--apply` makes a separate private repository whose
+roles/authority are **BLOCKED/UNCONFIGURED** until real Human decisions are
+recorded. Once the private destination is verified, continue this same guided
+creation process by recording approved roles only in the private Factory;
+leave unknown/declined roles unconfigured. Do not invent or auto-launch Agents.
 
-A deputy can maintain governance and prepare publication material, but that
-same author cannot sign the final **independent** privacy review. Separation is
-about actor/context/provenance, not whether two comments use the same GitHub
-technical account. No tool/provider label grants organizational authority.
+## Recommended organizational positions
 
-## Work is exceptional, not the default management path
+| Role (may be combined when compatible) | Responsibility |
+| --- | --- |
+| **Human Factory Director** | Intent, priorities, appointments, final protected decisions |
+| **Deputy / Product & Development Manager** | Product direction, planning, coordination, task packages, acceptance criteria |
+| **Secretary / Records** (optional) | Decisions, current state, unresolved work and evidence pointers |
+| **Governance / consistency** (optional) | Scoped authority, policy, state and evidence checks |
+| **Runtime / infrastructure planning** (optional) | Architecture and environments; no automatic server permission |
+| **Project Manager** (optional) | Project scope, roadmap and acceptance preparation |
+| **Project Primary / engineering executor** | Code changes, debugging, tests, reproducible delivery evidence |
+| **Development Lead / Portfolio Console** (optional) | Engineering coordination and portfolio visibility; not ownership of every execution |
+| **Independent reviewer** (as required) | Separate technical/privacy assessment of actual candidate and evidence |
 
-Keep ordinary reading, planning, bounded GitHub review, task coordination and
-short reports in the management chat. Use direct available repository tools.
-Do not launch Work to acknowledge a message, rewrite a short note, or check a
-status that a direct read resolves. Do not create a chain of Work sessions to
-imitate departments or claim background work that is not actually running.
+**Small-team default:** one Human director, one AI management context
+(Deputy/PM/records can share compatible duties), and one tool-capable
+engineering Agent per active project. Add more roles only as projects and
+risks require. One logical role can outlast many conversations. An office
+file or model identity does not mean there is a running Agent.
 
-Move substantial engineering execution to an explicitly assigned Codex role.
-Use a separate Work/execution surface only when a concrete capability or workload
-requires it and the task permits it. Carry a bounded task, exact repository/ref,
-allowed actions, evidence requirements and return route. Record session metadata
-only when exposed. A transition never creates a new tenure automatically.
+**Choose by capabilities, not brand:** For illustration, ChatGPT + Codex,
+Claude + Claude Code, Gemini + a coding Agent, or a cross-provider mixture
+are all valid if the chosen tools can actually access needed context, edit
+files, run tests and return evidence. The same AI provider can perform
+planning and engineering in **separate scoped roles**.
+The [ChatGPT + Codex profile](https://github.com/AAAlcest/AI-Software-Factory-OSS/blob/main/profiles/chatgpt-codex.json)
+is one optional example, **not a universal default** or an actual appointment.
 
-After an initial takeover, refresh new messages and changed relevant sources;
-do not repeat a full Factory audit for every small task. Expand inspection only
-for actual authority changes, conflicts, risks or a specifically scoped audit.
-Preserve meaningful tests and actual defects while avoiding receipt/ACK loops.
+## Carry the chosen structure into the new Factory
 
-## Product features versus staffing
+After creating and verifying the private destination, help the Human set up
+the selected office, project and role/authority records using the existing
+templates and original Human decision; keep any unapproved tool, scope or
+incumbent UNCONFIGURED/BLOCKED. Provide each selected AI role a short
+first-contact brief that names the private Factory, role, project, allowed
+scope, current Issue/PR and relevant evidence. The new Agent must verify
+its assignment; instructions do not create sessions or grant authority.
 
-This recommendation does not remove the optional correspondence, Console or
-Wardrobe framework features. A Factory may coordinate ordinary product work in
-Issue/PR threads without generating duplicate mailbox records. Use one primary
-working surface for each decision and keep evidence linked rather than copied.
-
-Terminology reference: OpenAI describes [Codex](https://help.openai.com/en/articles/11369540)
-as its coding agent. The allocation above is this framework's recommendation,
-not an OpenAI organizational rule or a promise about a plan's tools/limits.
+Work follows **Human intent → AI management planning/task/acceptance →
+tool-capable engineering implementation/tests → independent review where
+needed → Human decisions**. Separating inexpensive planning from costly
+coding may use quotas more efficiently, but no fixed token or cost saving
+is guaranteed. The public OSS never receives private roles or projects.

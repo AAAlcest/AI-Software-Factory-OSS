@@ -13,6 +13,34 @@ profiles are unconfigured defaults, not real assignments.
 
 ### Recommended first-contact Factory creation workflow
 
+**Role recommendations belong inside the factory-creation conversation.**
+As the Human's assisting AI (regardless of your provider), *before* offering
+`--apply`, present this role-first recommendation:
+
+- **Human Factory Director:** goals, priorities, real appointments and final
+  retained decisions.
+- **Management AI:** Deputy/Product & Development Management, project scope,
+  task planning, coordination and acceptance criteria; optional secretary,
+  governance, infrastructure planning or project manager responsibilities.
+- **Engineering Agent:** project Primary for code, debugging and tests; add
+  Development Lead/Console visibility as needed, with no implicit execution
+  rights beyond its project.
+- **Independent reviewer:** separate from the author when review is needed.
+
+Ask what AI systems and engineering tools the Human **actually has**, which
+duties can be combined, and which roles to leave vacant. Recommend a small
+team first; Claude, ChatGPT, Gemini, Codex, Claude Code and other capable
+tools can be combined freely. **Recommend positions and capabilities, not
+vendor names or subscriptions.** Present the role map and seek Human
+confirmation **during this same creation flow**. Consult
+[recommended roles](docs/RECOMMENDED_ROLE_SETUP.md) for details.
+
+The private-bootstrap preview still creates nothing; `--apply` creates a
+BLOCKED/UNCONFIGURED private starter, not live AI sessions. After verifying
+that private repo, help record only the Human-approved role/project/authority
+choices **inside it**. Unknown/declined roles remain BLOCKED; never place
+private assignments in this public OSS distribution.
+
 When a fresh Agent enters this public OSS repository, **do not assume the OSS
 distribution is the Human's operating Factory**. Determine the Human's intent
 before creating operating state.
@@ -55,9 +83,11 @@ Use this routing:
    `SOURCE_PROVENANCE.json`, instance/authority/state records and current cursor.
    The generated starter is intentionally **BLOCKED / UNCONFIGURED**; repository
    access does not appoint a role or create project authority.
-9. Human-approved real roles/projects/authority are configured only inside the
-   private Factory. Project source may remain in separate private repositories and
-   be referenced from the Factory.
+9. Continue the role plan discussed and approved with the Human as part
+   of creation: read the new private instance's role recommendations and help
+   record real appointments/authority only there. Leave any unapproved role
+   BLOCKED/UNCONFIGURED. Project source may remain in separate private
+   repositories and be referenced from the Factory.
 10. Treat documentation-journal activation as a separate acceptance step: first
     manual dry run, then explicit repository-local opt-in, then real bot
     write/readback and no-duplicate replay. Do not infer ACTIVE from creation alone.
@@ -127,11 +157,15 @@ For a first incumbent do not fabricate a predecessor handoff.
 
 ## 4. Default operational picture
 
-Human owner -> ChatGPT management/staff -> Codex engineering/project execution.
-The deputy may combine compatible staff duties, while the Development Lead may
-also carry Console visibility. The [recommended profile](profiles/chatgpt-codex.json)
-is replaceable and grants no execution rights. An independent reviewer must be
-separate from the author, even when staff titles are combined. Keep Work exceptional.
+Human owner -> user-chosen AI management roles -> user-chosen engineering Agents
+-> review/evidence. This is a **capability and responsibility split, not a
+vendor rule**. The same or different providers may fill management and
+engineering positions, if their actual tools/permissions allow it.
+The deputy can combine compatible staff duties; Development Lead may carry
+Console visibility. The [ChatGPT + Codex example profile](profiles/chatgpt-codex.json)
+is just one possible pairing, not a default appointment. Independent review
+must remain separate from the author where required. Keep expensive execution
+contexts focused on implementation; do not promise fixed token savings.
 
 The optional [Skills layer](docs/SKILLS_LAYER.md) can compress Factory/project/role
 context and build bounded Codex task packages. Skills reduce repeated context; they
