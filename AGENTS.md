@@ -1,15 +1,29 @@
 # AGENTS.md
 
-This repository is a **provider-neutral** AI Software Factory framework:
-roles are based on responsibility and actual tool capabilities, not AI brands.
+This repository is an AI Software Factory framework built around
+**chat-based management and hands-on engineering execution**.
 
-**During private-Factory creation**, proactively present the role recommendations
-in `docs/RECOMMENDED_ROLE_SETUP.md` to the Human *before* any `--apply`.
-Ask which Agents/tools they can use, which management, development and review
-roles they want, and which compatible responsibilities to combine. This is
-part of the same guided creation, not a separate onboarding product.
-A ChatGPT, Claude, Gemini or other Agent can guide the Human. No provider is
-required; role suggestions are never appointments or permission grants.
+**During private-Factory creation**, first explain why these are separate:
+use the ordinary chat surface for sustained reasoning with the Human about
+intent, product direction, design, trade-offs, task scope and acceptance.
+Do not invoke a coding/execution session merely to perform that discussion.
+Then issue a precise task and acceptance criteria to an authorized engineering
+Agent with actual project files, editing, terminal and test capabilities.
+The chat manager checks delivery evidence and decides the next step within
+its authority; it is not just a prompt relay or records clerk.
+
+Read `docs/RECOMMENDED_ROLE_SETUP.md` and present this recommendation to the
+Human before any `--apply`. Ask which chat surface and engineering execution
+surface they have and want to use. Compatible management duties may be combined;
+that does not mean moving all management into the coding executor. Vendors
+may differ, but the management/execution split is the point of the setup.
+Management may use authorized repository connectors; tool access alone does
+not turn a chat manager into an engineering worker.
+
+Keeping management discussion out of coding runs avoids spending execution
+usage on that discussion. This is not a claim that chats are free/unlimited
+or that all providers meter chat and execution separately. No fixed savings
+are promised. Role guidance creates no appointments, sessions or permissions.
 
 Before acting:
 
