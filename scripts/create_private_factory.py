@@ -34,6 +34,7 @@ COPY = (
     "templates/STAFF_OFFICE_TEMPLATE.md", "templates/PROJECT_ROOM_TEMPLATE.md",
     "templates/CORRESPONDENCE_RECORDS_TEMPLATE.md", "templates/RATIONALE_INDEX_TEMPLATE.md",
     "docs/EXECUTION_FIRST.md", "docs/FACTORY_DOCTOR.md", "docs/STAFF_OFFICE_NOTES.md",
+    "docs/RECOMMENDED_ROLE_SETUP.md",
     "scripts/factory_doctor.py", "templates/STAFF_OFFICE_NOTES_README.md",
     "scripts/documentation_journal.py", "scripts/documentation_journal_askpass.sh",
     "tests/test_documentation_journal.py",
@@ -164,6 +165,7 @@ def staged_source(root, source_sha, source_ref="refs/heads/main"):
         "This repository is a new independent operating instance, not an OSS fork. "
         "No Human, role, project, environment or production authority has been assigned. "
         "Read `AGENTS.md`, `AI_ENTRYPOINT.md`, `docs/EXECUTION_FIRST.md`, "
+        "`docs/RECOMMENDED_ROLE_SETUP.md`, "
         "the root instance contract, `RATIONALE_INDEX.md` and `SOURCE_PROVENANCE.json`. "
         "Run `python -B scripts/factory_doctor.py --json` for a read-only health view; "
         "Doctor PASS never grants authority. Do not run operating work until real "
@@ -182,15 +184,19 @@ def staged_source(root, source_sha, source_ref="refs/heads/main"):
         "and `CURRENT.md`. The rationale index explains history; it is not authority.\n"
         "2. Run `python -B scripts/factory_doctor.py --json` when a read-only health "
         "snapshot is useful. Doctor/validator PASS cannot appoint anyone or authorize work.\n"
-        "3. Resolve a real Human decision and role/project scope before editing any "
+        "3. Show `docs/RECOMMENDED_ROLE_SETUP.md` to the Human; discuss "
+        "which AI management, engineering and review roles they want, "
+        "which tools they have, and which duties can combine. "
+        "No provider is required.\n"
+        "4. Resolve a real Human decision and role/project scope before editing any "
         "operating record.\n"
-        "4. Current status is BLOCKED/UNCONFIGURED. No predecessor, project, "
+        "5. Current status is BLOCKED/UNCONFIGURED. No predecessor, project, "
         "correspondence or production authority is presumed.\n"
-        "5. Once authority exists, follow Execution-First: execute authorized/unblocked "
+        "6. Once authority exists, follow Execution-First: execute authorized/unblocked "
         "work, verify evidence, and stop only at a valid bounded closure state.\n"
-        "6. Staff Office Notes, when used, are event-driven deltas rather than daily "
+        "7. Staff Office Notes, when used, are event-driven deltas rather than daily "
         "heartbeats; see `docs/STAFF_OFFICE_NOTES.md`.\n"
-        "7. The documentation notice is navigation, not authority; journal writing "
+        "8. The documentation notice is navigation, not authority; journal writing "
         "requires separate repository-local opt-in and observed bot evidence. Manual "
         "cadence is fresh only after an authorized manual reconcile.\n")
     put(root, "projects/README.md", "# Private project references — unconfigured\n\n"
@@ -371,6 +377,11 @@ def main():
         raise BootstrapError("Authenticated GitHub token unavailable.")
     viewer, source_sha, source_ref, dest = source_and_target(token, args.repository)
     if not args.apply:
+        print("ROLE-FIRST RECOMMENDATION: During this creation show the Human "
+              "docs/RECOMMENDED_ROLE_SETUP.md: Human director; AI management; "
+              "tool-capable engineering and independent review as needed. "
+              "Ask which AI tools and combined roles they prefer. "
+              "No provider is required; nobody is appointed by this preview.")
         print(f"DRY RUN: source={UPSTREAM}@{source_ref}:{source_sha}; destination={dest} "
               f"NEW private independent repository; journal_mode={args.journal_mode}; "
               "plan=create BLOCKED starter, initial commit, OPEN/UNLOCKED private notice, "
