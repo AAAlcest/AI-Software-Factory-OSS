@@ -13,33 +13,45 @@ profiles are unconfigured defaults, not real assignments.
 
 ### Recommended first-contact Factory creation workflow
 
-**Role recommendations belong inside the factory-creation conversation.**
-As the Human's assisting AI (regardless of your provider), *before* offering
-`--apply`, present this role-first recommendation:
+**Teach the chat-management / hands-on-development split during creation.**
+As the Human's assisting AI, before offering `--apply`, explain:
 
-- **Human Factory Director:** goals, priorities, real appointments and final
-  retained decisions.
-- **Management AI:** Deputy/Product & Development Management, project scope,
-  task planning, coordination and acceptance criteria; optional secretary,
-  governance, infrastructure planning or project manager responsibilities.
-- **Engineering Agent:** project Primary for code, debugging and tests; add
-  Development Lead/Console visibility as needed, with no implicit execution
-  rights beyond its project.
-- **Independent reviewer:** separate from the author when review is needed.
+- **Human + chat manager:** use ordinary conversation for careful reasoning,
+  requirements, product direction, design, trade-offs and acceptance decisions.
+  Routine discussion should not launch a coding/execution run or spend its
+  execution allocation merely to talk through the work.
+- **Chat manager -> developer:** write a precise task with context, work surface,
+  scope, non-goals, acceptance criteria and required evidence. Management may
+  read/write authorized GitHub records; this is not the same as entering a
+  project development environment for routine planning.
+- **Developer with hands:** use an authorized engineering environment to edit
+  files, run commands, build, test and debug. A chat that prints code is not
+  itself this execution capability.
+- **Developer -> chat manager/Human:** return real artifacts and evidence.
+  Management checks alignment with Human intent and decides the next scoped
+  action, with independent review and Human-only approvals where required.
 
-Ask what AI systems and engineering tools the Human **actually has**, which
-duties can be combined, and which roles to leave vacant. Recommend a small
-team first; Claude, ChatGPT, Gemini, Codex, Claude Code and other capable
-tools can be combined freely. **Recommend positions and capabilities, not
-vendor names or subscriptions.** Present the role map and seek Human
-confirmation **during this same creation flow**. Consult
-[recommended roles](docs/RECOMMENDED_ROLE_SETUP.md) for details.
+Recommend **one Human director, one chat-based manager and one hands-on project
+engineering Agent** to start. Offer compatible management duties such as
+Deputy/PDM, project management, records, governance and infrastructure planning;
+add Development Lead/Console and appropriate reviewers as needed. First ask
+which chat and engineering execution surfaces the Human actually has. Then
+choose tools for each side. Vendors may differ, but **do not collapse routine
+management into the coding executor and call that the same split**.
 
-The private-bootstrap preview still creates nothing; `--apply` creates a
-BLOCKED/UNCONFIGURED private starter, not live AI sessions. After verifying
-that private repo, help record only the Human-approved role/project/authority
-choices **inside it**. Unknown/declined roles remain BLOCKED; never place
-private assignments in this public OSS distribution.
+The purpose is to let the chat manager focus on thinking and management while
+reserving development execution usage for actual implementation. This does
+not promise that chat is free/unlimited, that every provider separates usage
+pools, or that a fixed amount will be saved. Keep the operational distinction
+clear rather than replacing it with an unrestricted vendor/role menu.
+
+Present the proposal and seek Human confirmation **during this same creation
+conversation**. Read [recommended setup](docs/RECOMMENDED_ROLE_SETUP.md) for
+role responsibilities, provider examples and the actual handoff contract.
+The preview still creates nothing; `--apply` creates a BLOCKED/UNCONFIGURED
+private starter, not sessions or appointments. After verifying that private
+repo, help record only Human-approved roles and scope **inside it**; leave
+unknowns BLOCKED and never write private assignments into the public OSS.
 
 When a fresh Agent enters this public OSS repository, **do not assume the OSS
 distribution is the Human's operating Factory**. Determine the Human's intent
@@ -144,7 +156,7 @@ affected action fail-closed.
 5. Follow the selected role/project task and unprocessed primary working surface
    (Issue/PR or inbox according to the actual workflow), verify relevant Git/ref
    and environment facts, then current cursor and pending work. Report conflicts.
-6. Identify current role, known scope, unresolved facts, retained gates, evidence
+6. Identify current role, known scope, unresolved facts, gates, evidence
    and next safe action. A helper's VALID output does not complete this process.
 
 When explanation or provenance for a durable framework rule is needed, consult the
@@ -157,19 +169,29 @@ For a first incumbent do not fabricate a predecessor handoff.
 
 ## 4. Default operational picture
 
-Human owner -> user-chosen AI management roles -> user-chosen engineering Agents
--> review/evidence. This is a **capability and responsibility split, not a
-vendor rule**. The same or different providers may fill management and
-engineering positions, if their actual tools/permissions allow it.
-The deputy can combine compatible staff duties; Development Lead may carry
-Console visibility. The [ChatGPT + Codex example profile](profiles/chatgpt-codex.json)
-is just one possible pairing, not a default appointment. Independent review
-must remain separate from the author where required. Keep expensive execution
-contexts focused on implementation; do not promise fixed token savings.
+Human + ordinary chat manager reason and decide -> manager issues a bounded
+task and acceptance criteria -> hands-on engineering Agent implements/tests ->
+chat manager inspects evidence and gives a scoped disposition -> independent
+review and Human-retained decisions where applicable.
+
+**Management is real thinking, design and oversight, not only message routing.**
+Keep ordinary management work in chat rather than opening coding sessions for
+it. A manager may use authorized repository connectors; a developer needs the
+actual engineering environment. Execution Agents still make implementation
+judgments and escalate material product decisions rather than guessing.
+
+Providers can change on either side, but provider choice does not erase this
+working split. The [ChatGPT + Codex example profile](profiles/chatgpt-codex.json)
+is one optional illustration; Claude or other suitable chat/development tools
+may fill equivalent surfaces when capabilities and authority are verified.
+Compatible chat-side staff duties may be combined, as may Development Lead
+and Console engineering duties; this is not advice to make the coding executor
+do all the planning under a different title. Independent review stays separate
+from the author where required. No fixed quota savings are promised.
 
 The optional [Skills layer](docs/SKILLS_LAYER.md) can compress Factory/project/role
-context and build bounded Codex task packages. Skills reduce repeated context; they
-do not grant authority or replace freshness checks.
+context and build bounded engineering task packages. Skills reduce repeated context;
+they do not grant authority or replace freshness checks.
 
 ## 5. Execute authorized work and inspect health
 
