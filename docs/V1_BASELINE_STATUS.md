@@ -1,6 +1,6 @@
 # V1 public baseline
 
-Version: see [VERSION](../VERSION). The current source line is **1.7.0**; this does **not** prove publication. The exact latest published version is determined by [GitHub Releases](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases) and release-coordination evidence.
+Version: see [VERSION](../VERSION). The current source line is **1.7.1**; this does **not** prove publication. The exact latest published version is determined by [GitHub Releases](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases) and release-coordination evidence.
 The repository is public, distributed under MIT, and uses GitHub Private
 Vulnerability Reporting. Exact Git targets, executed checks, review evidence and
 release readbacks remain on the corresponding repository Issues/PRs rather than
@@ -118,7 +118,7 @@ result is described as a blanket privacy certification of all future bytes.
 
 ## Release integrity
 
-Source version line: **1.7.0** (release candidate until separately published).
+Source version line: **1.7.1** (release candidate until separately published).
 
 Historical published tags remain immutable:
 
@@ -129,14 +129,16 @@ Historical published tags remain immutable:
 Historical GitHub Releases and their coordination evidence remain historical truth
 after later `main` changes and must not be rewritten to follow 1.6.0.
 
-For the **already published** `v1.6.0`, Issue #42 preserves the exact historical
-publication and immutable target. For the proposed **v1.7.0** feature release,
-[Issue #54](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/54) governs
-candidate/tag usability, independent review, exact RC/CI, Human publication
-permission and final target/Release readback. The 1.7.0 Tag/Release is **not**
-authorized or proven merely by this source line.
+For published `v1.6.0` and `v1.7.0`, Issues #42 and #54 preserve the
+historical publication records. The **v1.7.1** patch packaging and exact-target
+checks are coordinated in [PR #59](https://github.com/AAAlcest/AI-Software-Factory-OSS/pull/59).
+The accepted Fresh first-use read-through remains scoped to its unchanged
+onboarding guidance; it is not independent engineering/privacy or publication
+approval. Final review, Human publication permission and tag/Release readback
+remain separate. This source line alone proves none of them.
 
-Release notes: [1.7.0 candidate](releases/1.7.0.md), historical
+Release notes: [1.7.1 candidate](releases/1.7.1.md), historical
+[1.7.0](releases/1.7.0.md),
 [1.6.0](releases/1.6.0.md), [1.5.0](releases/1.5.0.md), [1.4.0](releases/1.4.0.md) and
 [1.0.0](releases/1.0.0.md).
 

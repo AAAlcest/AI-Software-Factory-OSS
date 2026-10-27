@@ -20,14 +20,14 @@ This is not a generic migration engine, schema upgrader, file merge tool or back
 
 ## Requirements
 
-1. A **clean, full-history** checkout of the official `AAAlcest/AI-Software-Factory-OSS` repository from either **exact current official `main`** or **the exact official version-matching `v1.7.0` release tag after it is published**. Main mode requires local HEAD, origin main and GitHub API main equality. Detached tag mode requires the local version tag, remote tag and GitHub API tag target to resolve to exactly the same commit; unsupported annotated tags fail closed. Existing Factories may have been created from an older tag or main; their recorded source commit must be locally available and an ancestor of the selected source commit. Shallow/incomplete histories fail closed.
+1. A **clean, full-history** checkout of the official `AAAlcest/AI-Software-Factory-OSS` repository from either **exact current official `main`** or **the exact official version-matching `v1.7.1` release tag after it is published**. Main mode requires local HEAD, origin main and GitHub API main equality. Detached tag mode requires the local version tag, remote tag and GitHub API tag target to resolve to exactly the same commit; unsupported annotated tags fail closed. Existing Factories may have been created from an older tag or main; their recorded source commit must be locally available and an ancestor of the selected source commit. Shallow/incomplete histories fail closed.
 2. Python 3.10+, Git and GitHub CLI; authenticate explicitly with `gh auth login`. The tool accepts only an authenticated-user-owned **private, non-fork, `main`-default** repository with push permission.
 3. A valid `SOURCE_PROVENANCE.json` in the private Factory, its root instance anchor and all three managed files. For old #37 starters without a managed lock, their bytes must **exactly** equal historical OSS source counterparts. Edited/missing/ambiguous files cause a stop, not overwrite.
 4. If private documentation-journal configuration exists, it must still identify that private repository, private visibility, `main`, its notice, a valid baseline and a known cadence. No journal setting or existing private notice/history is edited.
 
 ## Preview first — **no mutations**
 
-From a clean official OSS checkout, use **exact current `main`** or the verified **detached `v1.7.0` release-tag checkout only after publication**. Do not run from a feature branch or assume the unreleased tag already exists:
+From a clean official OSS checkout, use **exact current `main`** or the verified **detached `v1.7.1` release-tag checkout only after publication**. Do not run from a feature branch or assume the unreleased tag already exists:
 
 ~~~powershell
 py -3 -B scripts/update_private_factory.py --repository YOUR_LOGIN/Your-Private-Factory

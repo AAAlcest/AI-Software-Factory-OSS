@@ -4,21 +4,21 @@
 
 For reproducible private-Factory creation, prefer the latest **published**
 [GitHub Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases)
-and verify its exact tag. This source line is **1.7.0**; its `v1.7.0` tag is
-usable **only after publication**. Until then, `v1.6.0` remains the latest
-published release. Install Git, Python 3.10+ and GitHub CLI (`gh`), then clone
+and verify its exact tag. This source line is **1.7.1**; its `v1.7.1` tag is
+usable **only after publication**. Until then, use the latest actually published release
+(currently `v1.7.0` at packaging time). Install Git, Python 3.10+ and GitHub CLI (`gh`), then clone
 the official source without forking:
 
 ```sh
 git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
 cd AI-Software-Factory-OSS
-git checkout --detach v1.7.0  # only after v1.7.0 is published
+git checkout --detach v1.7.1  # only after v1.7.1 is published
 gh auth login
 ```
 
 Keep the checkout clean. This source version's private-bootstrap command accepts
 either exact official current `main` or the exact official release tag matching
-`VERSION` (here `v1.7.0` once published). It verifies local HEAD, origin ref
+`VERSION` (here `v1.7.1` once published). It verifies local HEAD, origin ref
 and GitHub API before any write. Do not treat a proposed tag as already available.
 Stable users should prefer a real published release tag over moving `main`.
 
@@ -46,7 +46,7 @@ verified, continue setting up only the roles and scope the Human approved.
 This is the same guided building process, not a separate wizard.
 
 Preview first (read-only); use a new name under your authenticated GitHub user.
-Version 1.7.0 source defaults **new** private Factories to the lower-run
+Version 1.7.1 source defaults **new** private Factories to the lower-run
 `manual` journal cadence:
 
 ```powershell
@@ -75,7 +75,7 @@ private repositories, referenced only from the private Factory. Normal private
 use does **not** require a GitHub Fork. A public fork is for OSS contribution,
 public-safe evaluation or intentionally public work.
 
-After creation, inspect the private repository and its notice. **On the 1.7.0
+After creation, inspect the private repository and its notice. **On the 1.7.1
 source line**, newly generated private starters include
 `docs/EXECUTION_FIRST.md`, `RATIONALE_INDEX.md` and the portable read-only
 Doctor. The immutable older `v1.6.0` tag predates this hardening.
@@ -121,14 +121,14 @@ assignments remain UNCONFIGURED.
 
 ## 4. Get an exact release locally for the fictional exercise
 
-For source version `1.7.0`, prefer the exact `v1.7.0` tag **after its
+For source version `1.7.1`, prefer the exact `v1.7.1` tag **after its
 publication** rather than an arbitrary future `main` for reproducibility.
-Until that tag is publicly available, the previous stable `v1.6.0` release
+Until that tag is publicly available, the previous stable `v1.7.0` release
 remains a usable historical source with its older feature set.
 
 ### No Git: GitHub Source ZIP
 
-After `v1.7.0` is published, open the [v1.7.0 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.7.0),
+After `v1.7.1` is published, open the [v1.7.1 Release](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases/tag/v1.7.1),
 download **Source code (zip)**, extract it, and open a terminal in the extracted
 repository directory. Before publication, use the latest **actually published**
 release instead. ZIP mode is for local/synthetic exercises; private bootstrap and
@@ -139,7 +139,7 @@ upgrade require a Git checkout.
 ```sh
 git clone https://github.com/AAAlcest/AI-Software-Factory-OSS.git
 cd AI-Software-Factory-OSS
-git checkout --detach v1.7.0  # after publication
+git checkout --detach v1.7.1  # after publication
 ```
 
 Confirm the version before continuing:
@@ -154,7 +154,7 @@ On Windows PowerShell:
 Get-Content VERSION
 ```
 
-It should print `1.7.0` for the published v1.7.0 tag; before publication, use the actual version of the older released checkout.
+It should print `1.7.1` for the published v1.7.1 tag; before publication, use the actual version of the older released checkout.
 
 ## 5. Run the fictional exercise locally
 

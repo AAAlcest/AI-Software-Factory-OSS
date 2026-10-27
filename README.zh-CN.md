@@ -17,17 +17,17 @@
 
 让用户选用的 AI 管理角色负责规划、治理、任务拆解和评审协调，把实际代码编辑与测试交给具备权限和工具的工程 Agent，Factory 希望减少不必要的编码 Agent token 或套餐额度消耗。管理和开发可由同一家或不同厂商的 AI 承担，**ChatGPT + Codex 只是一种示例组合**。具体节省取决于任务、模型和配置，不承诺固定比例。
 
-**当前源码版本线：1.7.0。** 在 v1.6.0 的私人建厂、GitHub 文档日志与 Fresh Agent 路由基础上，本源码增加 Execution-First、只读 Factory Doctor、公开 Design Rationale Index、event-driven Staff Office Notes、新私人 Factory 默认 `manual` 的 journal cadence、可执行 Quick Demo，以及小范围安全升级现有私人 Factory 的能力。
+**当前源码版本线：1.7.1。** 本补丁明确建厂过程中的聊天管理与工程执行分工；建厂预览提示阅读岗位指南，新私有 starter 携带该指南。保留 v1.7.0 的诊断、Quick Demo、日志默认行为与小范围私厂升级能力；完整差异见本版发布说明。
 
-**`VERSION=1.7.0` 不代表 GitHub Release 已正式发布。** 已发布版本以 [GitHub Releases](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases) 和 [v1.7.0 发布协调 Issue](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/54) 为准。旧版 `v1.6.0` Tag 不含这些 post-v1.6 功能，不会因源码更新而被移动。
+**`VERSION=1.7.1` 不代表 GitHub Release 已正式发布。** 已发布版本以 [GitHub Releases](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases) 和 [v1.7.1 发布收尾记录](https://github.com/AAAlcest/AI-Software-Factory-OSS/pull/59) 为准。历史 Tag 保持不变。
 
-发布说明见 [1.7.0 Release Notes](docs/releases/1.7.0.md)、[1.6.0 历史 Release Notes](docs/releases/1.6.0.md)、[1.5.0 历史 Release Notes](docs/releases/1.5.0.md)、[1.4.0 历史 Release Notes](docs/releases/1.4.0.md) 与 [1.0.0 历史 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
+发布说明见 [1.7.1 Release Notes](docs/releases/1.7.1.md)、[1.7.0 历史 Release Notes](docs/releases/1.7.0.md)、[1.6.0 历史 Release Notes](docs/releases/1.6.0.md)、[1.5.0 历史 Release Notes](docs/releases/1.5.0.md)、[1.4.0 历史 Release Notes](docs/releases/1.4.0.md) 与 [1.0.0 历史 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
 
 ## 从这里开始
 
 **文档公告墙：**[仓库文档索引与变更记录](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/26)。正文导航，评论记变更；规则见 [公告与自动记账契约](docs/REPOSITORY_NOTICES.md)。[本仓自动日志已启用](https://github.com/AAAlcest/AI-Software-Factory-OSS/issues/28#issuecomment-5736870432)：配置范围内进入 `main` 的文档改动和已观察到的 PR 候选会异步记入，不是每次本地保存即刻记账。fork 不会继承公告或已启用的 writer；请看 [fork 自助初始化](docs/DOCUMENTATION_JOURNAL.md#fork-self-setup)。
 
-**创建你的私人 Factory（普通使用入口）：**从公开 OSS 仓库取得当前 `main` 源码，先运行[只读的私有仓初始化预览](docs/QUICKSTART_ZH.md#先创建你的私人-factory)，确认后再显式执行。它创建一个**全新、独立、非 fork 的私有仓库**；正常私人使用**不需要 Fork**。新实例仍是 BLOCKED／未配置，日志 writer 也尚未启用。本源码版本可核对官方当前 `main`，或在 **`v1.7.0` 正式发布且 Tag 可核验之后** 接受对应精确 release tag。正式发布前请以 GitHub Releases 中实际存在的版本为准。
+**创建你的私人 Factory（普通使用入口）：**从公开 OSS 仓库取得当前 `main` 源码，先运行[只读的私有仓初始化预览](docs/QUICKSTART_ZH.md#先创建你的私人-factory)，确认后再显式执行。它创建一个**全新、独立、非 fork 的私有仓库**；正常私人使用**不需要 Fork**。新实例仍是 BLOCKED／未配置，日志 writer 也尚未启用。本源码版本可核对官方当前 `main`，或在 **`v1.7.1` 正式发布且 Tag 可核验之后** 接受对应精确 release tag。正式发布前请以 GitHub Releases 中实际存在的版本为准。
 
 **已经拥有私人 Factory？** 请阅读[安全升级现有私厂（英文）](docs/PRIVATE_FACTORY_UPGRADE.md)。默认只读预览，历史来源不符或用户修改过的文件直接拒绝；显式授权后才允许在私有仓库创建 Draft PR，不覆盖私人运行状态、不自动合并。
 
