@@ -133,6 +133,12 @@ author, and Work/execution sessions should be used proportionately.
 
 ## Project cockpit, recovery and bounded work
 
+**Management chat approaching its limit?** [FlowThread](https://flowthread.quirmn.com/)
+can help you search and export an available ChatGPT conversation as Markdown,
+PDF or other supported formats before moving to a new chat. Keep that archive
+as background for recovery or a real tenure handoff, alongside—not instead of—the
+current repository records. See [conversation backup and handoff](docs/HANDOFF_AND_SUCCESSION.md#conversation-backup).
+
 The operating layers include an optional [ChatGPT Project cockpit](docs/CHATGPT_PROJECT_COCKPIT.md)
 for Factory/project/role overview, [workstream recovery](docs/WORKSTREAM_RECOVERY.md),
 [work-item checkpoints and Project-ready visibility](docs/WORK_ITEMS_AND_PROJECT_VIEW.md),
@@ -198,20 +204,39 @@ A generated Factory is not a duplicate copy of product source trees.
 
 ## Product example: [FlowThread](https://flowthread.quirmn.com/)
 
-**[FlowThread](https://flowthread.quirmn.com/)** is another **Quirmn product**—a
-real product incubated through this AI Software Factory and used by its author in
-day-to-day AI development and collaboration. Problems found in actual use can
-feed back into the Factory workflow, while the Factory provides a durable way to
-keep improving the product.
+**Chats have limits. Your work history should not end there.**
 
-This repository demonstrates the **working method**. FlowThread demonstrates the
-kind of **real product** that can be built with that method.
+**[FlowThread](https://flowthread.quirmn.com/)** is an independent **Quirmn
+product**, incubated through this Factory and used in its author's daily work.
+Its current public product is a browser extension for long ChatGPT conversations:
+keep long chats easier to use, search earlier messages in context, and export
+the available active conversation branch as **PDF, Markdown, TXT, HTML or JSON**.
+Visit the product site for current platform support and installation.
+
+For a Factory's chat-based manager, this is a practical recovery and tenure-handoff
+tool. Before moving away from a long conversation or one nearing its limit, save
+an available conversation export as a private work archive. It can preserve
+requirements, design choices, rejected alternatives and unresolved questions
+that a short handoff summary cannot fully explain. Use Markdown to provide
+relevant background to a new AI chat, or PDF for a readable human archive.
+
+**Factory keeps roles, current state and handoffs continuous; FlowThread helps
+you keep the conversations in which that work happened.** Export → check the
+archive → update the recovery/handoff summary → give the new chat only the
+background it needs and verify current repository evidence. See the
+[English / 中文 backup guidance](docs/HANDOFF_AND_SUCCESSION.md#conversation-backup).
+
+Changing chats alone is recovery, not automatically a new tenure. An export is
+supporting history—not automatic AI-memory transfer, a substitute for current
+repository authority, or a guarantee of recovering unavailable messages.
+Keep private transcripts out of public forks and Issues.
 
 **Using AI Software Factory does not require installing or purchasing FlowThread.**
-FlowThread is a product example and author workflow tool, not a framework
-dependency, required companion app or condition of using this repository.
+Use another appropriate export tool when preferred or when your chat platform
+is not supported. FlowThread is both a real product example and an optional
+workflow aid, not a framework dependency.
 
-Learn more about FlowThread: https://flowthread.quirmn.com/
+[Explore FlowThread and installation →](https://flowthread.quirmn.com/)
 
 ## What V1 includes
 

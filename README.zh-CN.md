@@ -21,7 +21,7 @@
 
 **`VERSION=1.7.1` 不代表 GitHub Release 已正式发布。** 已发布版本以 [GitHub Releases](https://github.com/AAAlcest/AI-Software-Factory-OSS/releases) 和 [v1.7.1 发布收尾记录](https://github.com/AAAlcest/AI-Software-Factory-OSS/pull/59) 为准。历史 Tag 保持不变。
 
-发布说明见 [1.7.1 Release Notes](docs/releases/1.7.1.md)、[1.7.0 历史 Release Notes](docs/releases/1.7.0.md)、[1.6.0 历史 Release Notes](docs/releases/1.6.0.md)、[1.5.0 历史 Release Notes](docs/releases/1.5.0.md)、[1.4.0 历史 Release Notes](docs/releases/1.4.0.md) 与 [1.0.0 历史 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
+发布说明见 [1.7.1 Release Notes](docs/releases/1.7.1.md)、[1.7.0 历史 Release Notes](docs/releases/1.7.0.md)、[1.6.0 历史 Release Notes](docs/releases/1.6.0.md)、[1.5.0 历史 Release Notes](docs/releases/1.5.0.md)、[1.4.0 历史 Release Notes](docs/releases/1.4.0.md)、[1.0.0 历史 Release Notes](docs/releases/1.0.0.md)，安全报告方式见 [SECURITY.md](SECURITY.md)。
 
 ## 从这里开始
 
@@ -61,6 +61,8 @@
 
 ## Project cockpit、恢复与有边界工作
 
+**管理者的聊天快到上限了？** 可以用 [FlowThread](https://flowthread.quirmn.com/) 搜索并导出仍可获取的 ChatGPT 对话，保存为 Markdown、PDF 等格式，在换聊天前留下工作档案，辅助恢复或真正的任期交接。对话档案补充历史背景，不替代仓库当前记录。参见[对话备份与交接指南（中英文）](docs/HANDOFF_AND_SUCCESSION.md#conversation-backup)。
+
 当前 operating layer 包含可选的 [ChatGPT Project cockpit](docs/CHATGPT_PROJECT_COCKPIT.md)，用于 Factory／项目／角色总览；[workstream recovery](docs/WORKSTREAM_RECOVERY.md)；[work-item checkpoint 与 Project-ready visibility](docs/WORK_ITEMS_AND_PROJECT_VIEW.md)；以及在仓库仍是 canonical truth 的前提下生成有边界的 Codex task package。
 
 [Skill contracts](skills/README.md) 统一 overview、recovery、handoff、health 与 task-packaging 的输入输出规则；[Token 效率设计](docs/TOKEN_EFFICIENCY.md) 给出可重复的对比方法，不承诺固定节省比例。
@@ -96,18 +98,23 @@ python -B scripts/check_all.py
 
 ## 产品案例：[FlowThread](https://flowthread.quirmn.com/)
 
-**[FlowThread](https://flowthread.quirmn.com/)** 是另一款 **Quirmn 产品**。它由这套 AI Software Factory 孵化，并被作者实际用于日常 AI 开发与协作。真实使用中发现的问题可以重新进入 Factory 工作流，Factory 则为持续改进产品提供长期、可追踪的协作方式。
+**聊天会到上限，工作历史不该随之丢失。**
 
-这个仓库展示的是**如何工作**；FlowThread 展示的是**用这种工作方式可以做出怎样的真实产品**。
+**[FlowThread](https://flowthread.quirmn.com/)** 是一款独立的 **Quirmn 产品**，由这套 Factory 孵化，并被作者用于日常工作。目前公开产品是一款面向 ChatGPT 长对话的浏览器扩展：让长聊天更易使用，在上下文中搜索早先的消息，并把仍可获取的当前对话分支导出为 **PDF、Markdown、TXT、HTML 或 JSON**。最新平台支持和安装入口见产品官网。
 
-**使用 AI Software Factory 不需要安装或购买 FlowThread。**
-FlowThread 是产品案例和作者自己的工作流工具，不是框架依赖、必备配套软件，也不是使用本仓库的前提。
+对工厂的聊天管理者来说，这也是实用的恢复与任期交接工具。准备离开一段长对话，或聊天接近上限时，先把仍能获取的对话导出，留作私有工作档案。它可以保留需求讨论、设计取舍、被否决的方案和未解决的问题，补充简短交接摘要难以完整解释的背景。Markdown 可用于向新 AI 聊天提供相关材料，PDF 可用于人类阅读和存档。
 
-了解 FlowThread：https://flowthread.quirmn.com/
+**Factory 让岗位、当前状态与交接持续存在；FlowThread 帮你保存这些工作发生过的对话。** 实用流程是：导出 → 检查档案 → 更新恢复／交接摘要 → 只向新聊天补充所需背景，并核对仓库当前证据。详见[对话备份与交接指南（中英文）](docs/HANDOFF_AND_SUCCESSION.md#conversation-backup)。
+
+仅仅换聊天属于恢复，不自动产生新任期。导出文件是历史补充，不是自动迁移 AI 记忆、替代仓库当前权限，或保证恢复已不可获取的消息。私有对话不要上传到公开 fork 或 Issue。
+
+**使用 AI Software Factory 不需要安装或购买 FlowThread。** 也可使用其他合适的导出工具，尤其当聊天平台暂未被支持时。FlowThread 既是工厂孵化的真实产品，也是可选的工作流工具，而不是框架依赖。
+
+[了解 FlowThread 与安装方式 →](https://flowthread.quirmn.com/)
 
 ## V1 包含什么
 
-V1 包含：可配置的 Human / executive / role 组合；Staff Offices 与 Project Rooms；current 与 pending 状态；Issue 会议与精确候选 PR；可选的一体化正文邮件、Reply-All 与仅用于可见性的 CC；Console / open-loop 记录；Work result receipts；首次任命、同一 incumbent 恢复与经授权的真实 succession 示例；可重复的软件检查；覆盖 8 类冷启动场景的 9 个 fixture 变体；Project cockpit 与 skills；可执行的 cockpit / Project-view 生成与 drift 检查；用于有边界长线程恢复的 work-item checkpoint；带合成 governance-drift 示例的 Fresh Factory Audit 模式；V1.5 的首次使用入口、精确版本获取、minimal safe boot 与原生审计入口改进；以及 V1.6 的仓库文档公告墙、已启用的文档自动日志、公开 fork 自助初始化、面向普通私人使用的独立 private Factory 初始化、release-tag 来源记录与 Fresh Agent 私人建厂路由。
+V1 包含：可配置的 Human / executive / role 组合；Staff Offices 与 Project Rooms；current 与 pending 状态；Issue 会议与精确候选 PR；可选的一体化正文邮件、Reply-All 与仅用于可见性的 CC；Console / open-loop 记录；Work result receipts；首次任命、同一 incumbent 恢复与经授权的真实 succession 示例；可重复的软件检查；覆盖 8 类冷启动场景的 9 个 fixture 变体；Project cockpit 与 skills；可执行的 cockpit / Project-view 生成与 drift 检查；用于有边界长线程恢复的 work-item checkpoint；带合成 governance-drift 示例的 Fresh Factory Audit 模式；V1.5 的首次使用入口、精确版本获取、minimal-safe-boot 和原生审计入口改进；以及 V1.6 的仓库文档公告墙、已启用的文档自动日志、公开 fork 自助初始化、面向普通私人使用的独立 private Factory 初始化、release-tag 来源记录与 Fresh Agent 私人建厂路由。
 
 它**不是**自主调度器、权限服务、生产部署系统或经过认证的邮件传输系统。其 helper 只检查声明的一致性；详细边界见 [V1 状态说明](docs/V1_BASELINE_STATUS.md)。
 
